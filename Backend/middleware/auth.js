@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import User from "../models/User.js";
 import jwt from "jsonwebtoken"; // library that creztes and verifies JSON Web Tokens (JWTs) for authentication and authorization purposes
 export const protect = async (req,res,next) => { // to protect the routes that require authentication by checking if the user is authenticated or not
     let token; // to store the token that is sent by the client in the request header
