@@ -24,8 +24,9 @@ router.post('/register', async (req,res)=>{
 
     res.status(201).json({id: newUser._id, username: newUser.username, email: newUser.email,token}); // to send a response with the status code 201 and a message and the user object
 
-   } catch(err){ 
-        return res.status(500).json({message: "Internal server error"});
+   } catch(err){
+    console.error("REGISTER ERROR:", err);
+    return res.status(500).json({message: err.message});
 }
 })
 
@@ -42,10 +43,12 @@ router.post('/login', async (req,res)=>{
     }  
     const token = generateToken(userExists._id)
     res.status(200).json({id: userExists._id, username: userExists.username, email: userExists.email,token}); // to send a response with the status code 200 and a message and the user object
-   } catch(err){
-        return res.status(500).json({message: "Internal server error"});
-}       
-})
+   }  catch(err){
+    console.error("LOGIN ERROR:", err);
+    return res.status(500).json({message: err.message});
+}
+}  )       
+
 //Profile route
 router.get('/profile',protect, async (req,res)=>{ // this function gives us access to the currently logged in user user
     res.status(200).json(req.user); // to send a response with the status code 200 and the user object that is stored in the request object by the authentication middleware
