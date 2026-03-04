@@ -7,13 +7,28 @@ import RootLayout from './_root/pages/RootLayout'
 import Login from './_root/pages/Login'
 import { useEffect, useState } from 'react'
 import Register from './_root/pages/Register'
-
+import axios from 'axios'
 const App = () => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState("")
   useEffect(() => {
     const fetchUser = async () => {
       const token= localStorage.getItem("token")
+      if(token){
+        try {
+          const response = await axios("/api/users/profile", {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          setUser(response.data)
+         } catch(err) {
+          setError("Failed to fetch user data")
+          localStorage.removeItem("token")
+        }
+      }
+    }
+    fetchUser()
   }, [])
   return (
     <Routes>
