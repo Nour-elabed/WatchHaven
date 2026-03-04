@@ -13,6 +13,9 @@ export const protect = async (req,res,next) => { // to protect the routes that r
             console.error("token verification error failed",err.message);
             return res.status(401).json({message:"Not authorized, token failed"});
        }
+    }else {
+       
+        return res.status(401).json({ message: "Not authorized, no token" });
     }
 
 } 
