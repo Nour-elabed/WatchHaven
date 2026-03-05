@@ -18,6 +18,7 @@ type User = {
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null)
+  const [error, setError] = useState<string | null>(null)
   console.log(user)
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const App = () => {
           setUser(response.data)
         } catch {
           localStorage.removeItem("token")
+            setError("Session expired, please log in again")
         }
       }
     }
@@ -40,7 +42,7 @@ const App = () => {
   return (
     <Routes>
       <Route element={<RootLayout />}>
-        <Route index element={<Home />} />
+        <Route index element={<Home user={user}  error={error}/>} />
         <Route path='/shop' element={<Shop />} />
         <Route path='/product' element={<Product />} />
         <Route path='/login' element={<Login setUser={setUser} />} />

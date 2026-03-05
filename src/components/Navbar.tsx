@@ -1,7 +1,7 @@
 import { LucideSearch } from "lucide-react";
 import DropDown from "./ui/DropDown";
 import { useState } from "react";
-const Navbar = () => {
+const Navbar = ({user,setUser}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className=" border-1 w-full fixed top-0 left-0 h-16 flex items-center bg-white z-50 px-6 ">
@@ -30,6 +30,11 @@ const Navbar = () => {
           </div>
         </div>
         <div className="hidden md:flex items-center gap-6 ml-auto">
+          <div>
+            {user ? (
+              <button>Logout</button>
+            )}
+          </div>
           <img
             src="/assets/icons/user-btn.svg"
             alt="user"
