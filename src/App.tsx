@@ -44,7 +44,7 @@ const App = () => {
 
   if (isLoading) return (
     <div className="min-h-screen flex items-center justify-center">
-      <Spinner/>
+      <Spinner/> // Simple loading spinner while checking for user authentication status on app load
     </div>
   )
 
