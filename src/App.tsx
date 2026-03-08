@@ -55,7 +55,7 @@ const App = () => {
         <Route element={<RootLayout user={user} setUser={setUser} />}> //setUser passed to RootLayout to manage user state across the app
           <Route index element={<Home user={user} error={error} />} /> //user and error passed to Home for personalized greeting and error display
           <Route path='/shop' element={<Shop />} />
-          <Route path='/product' element={<Product />} />
+          <Route path='/product' element={<Product />} /> 
           <Route path='/login' element={<Login setUser={setUser} />} />
           <Route path='/register' element={<Register />} />
         </Route>

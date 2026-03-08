@@ -13,13 +13,13 @@ const userSchema = mongoose.Schema({
     },
     password:{
         type: String,
-        required: true, 
+        required: true,  // to make sure that the password is always hashed before saving to the database and also to have a method to compare the entered password with the hashed password in the database
     }
 
 }, { timestamps: true });// to have createdAt and updatedAt fields
 
 userSchema.pre("save", async function() {
-    if (!this.isModified("password")) return;
+    if (!this.isModified("password")) return; // to check if the password is modified or not, if not then return and do not hash the password again
     
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
