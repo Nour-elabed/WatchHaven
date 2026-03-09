@@ -22,7 +22,7 @@ userSchema.pre("save", async function() {
     if (!this.isModified("password")) return; // to check if the password is modified or not, if not then return and do not hash the password again
     
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, salt); // to hash the password before saving to the database
 });
 userSchema.methods.matchPassword = async function(enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password);// to compare the entered password with the hashed password in the database
