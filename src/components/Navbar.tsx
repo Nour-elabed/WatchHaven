@@ -45,8 +45,12 @@ const Navbar = () => {
         <div className="w-full flex items-center justify-between max-w-7xl mx-auto">
 
           {/* Logo */}
-          <img src="/assets/images/logo.svg" alt="Logo" className="hidden md:block h-8 cursor-pointer" />
-          <img src="/assets/icons/logo.svg" alt="mobile_logo" className="w-10 h-10 cursor-pointer md:hidden" />
+          <Link to="/about" className="hidden md:block">
+            <img src="/assets/images/logo.svg" alt="Logo" className="h-8 cursor-pointer hover:opacity-80 transition-opacity" />
+          </Link>
+          <Link to="/about" className="md:hidden">
+            <img src="/assets/icons/logo.svg" alt="mobile_logo" className="w-10 h-10 cursor-pointer hover:opacity-80 transition-opacity" />
+          </Link>
 
           {/* Search */}
           <div className="flex-1 flex justify-center">
@@ -55,7 +59,12 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search in products..."
-                className="w-full pl-10 pr-3 py-1.5 sm:py-2 border border-gray-300 rounded-full bg-gray-100 shadow-sm outline-none text-xs sm:text-sm"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                    navigate(`/shop?q=${encodeURIComponent(e.currentTarget.value.trim())}`)
+                  }
+                }}
+                className="w-full pl-10 pr-3 py-1.5 sm:py-2 border border-gray-300 rounded-full bg-gray-100 shadow-sm outline-none text-xs sm:text-sm transition-shadow focus:ring-2 focus:ring-black/5"
               />
             </div>
           </div>

@@ -21,9 +21,10 @@ interface ShopContentProps {
   priceRange: [number, number]
   sortOrder: string
   selectedCategories: string[]
+  searchQuery?: string
 }
 
-const ShopContent = ({ priceRange, sortOrder, selectedCategories }: ShopContentProps) => {
+const ShopContent = ({ priceRange, sortOrder, selectedCategories, searchQuery }: ShopContentProps) => {
   const { addToCart } = useCart()
 
   const handleAddToCart = async (product: ProductProps) => {
@@ -41,6 +42,10 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories }: ShopContentP
   }
 
   const filteredProducts = paginationProducts.filter(product => {
+    if (searchQuery && !product.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false
+    }
+
     const price = parseFloat(product.price.replace(/[^0-9.]/g, ""))
     if (price < priceRange[0] || price > priceRange[1]) return false
     

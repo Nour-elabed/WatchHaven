@@ -3,11 +3,15 @@ import ShopContent from "@/components/ShopContent"
 import { PaginationDemo } from "@/components/ui/PaginationDemo"
 import Footer from "@/components/Footer"
 import { useState } from "react"
+import { useSearchParams } from "react-router-dom"
 
 const Shop = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
   const [sortOrder, setSortOrder] = useState("option-one")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  
+  const [searchParams] = useSearchParams()
+  const searchQuery = searchParams.get("q") || ""
 
   const handleCategoryChange = (category: string, checked: boolean) => {
     if (checked) {
@@ -54,6 +58,7 @@ const Shop = () => {
               priceRange={priceRange}
               sortOrder={sortOrder}
               selectedCategories={selectedCategories}
+              searchQuery={searchQuery}
             />
           </div>
 

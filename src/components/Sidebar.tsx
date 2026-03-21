@@ -42,9 +42,9 @@ const Sidebar = ({ priceRange, setPriceRange, sortOrder, setSortOrder, selectedC
 
       {/* Desktop Content */}
       <div className="hidden md:block">
-        <div className="flex flex-col -mt-14 space-y-2">
-          <div className="ml-14 px-6 py-4">
-            <p className="font-semibold">Price range</p>
+        <div className="flex flex-col -mt-14 space-y-2 cursor-pointer">
+          <div className="ml-14 px-6 py-4 cursor-pointer">
+            <p className="font-semibold cursor-pointer">Price range</p>
           </div>
 
           <div className="w-65 ml-16 px-4 cursor-pointer">
@@ -101,33 +101,33 @@ const Sidebar = ({ priceRange, setPriceRange, sortOrder, setSortOrder, selectedC
       </div>
 
       {/* Desktop Sort Order */}
-      <div className="hidden md:block px-18 mt-2">
-        <p className="font-semibold mb-4">Sort order</p>
+      <div className="hidden md:block px-18 mt-2 cursor-pointer">
+        <p className="font-semibold mb-4 cursor-pointer">Sort order</p>
 
-        <RadioGroup value={sortOrder} onValueChange={setSortOrder} className="space-y-2">
-          <div className="flex items-center space-x-3">
-            <RadioGroupItem value="option-one" id="option-one" />
-            <Label className="text-sm" htmlFor="option-one">Most Popular</Label>
+        <RadioGroup value={sortOrder} onValueChange={setSortOrder} className="space-y-2 cursor-pointer">
+          <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+            <RadioGroupItem value="option-one" id="option-one" className="cursor-pointer" />
+            <Label className="text-sm cursor-pointer" htmlFor="option-one">Most Popular</Label>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <RadioGroupItem value="option-two" id="option-two" />
-            <Label className="text-sm" htmlFor="option-two">Best Rating</Label>
+          <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+            <RadioGroupItem value="option-two" id="option-two" className="cursor-pointer" />
+            <Label className="text-sm cursor-pointer" htmlFor="option-two">Best Rating</Label>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <RadioGroupItem value="option-three" id="option-three" />
-            <Label className="text-sm" htmlFor="option-three">Newest</Label>
+          <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+            <RadioGroupItem value="option-three" id="option-three" className="cursor-pointer" />
+            <Label className="text-sm cursor-pointer" htmlFor="option-three">Newest</Label>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <RadioGroupItem value="option-four" id="option-four" />
-            <Label className="text-sm" htmlFor="option-four">Price Low → High</Label>
+          <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+            <RadioGroupItem value="option-four" id="option-four" className="cursor-pointer" />
+            <Label className="text-sm cursor-pointer" htmlFor="option-four">Price Low → High</Label>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <RadioGroupItem value="option-five" id="option-five" />
-            <Label className="text-sm" htmlFor="option-five">Price High → Low</Label>
+          <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+            <RadioGroupItem value="option-five" id="option-five" className="cursor-pointer" />
+            <Label className="text-sm cursor-pointer" htmlFor="option-five">Price High → Low</Label>
           </div>
         </RadioGroup>
       </div>

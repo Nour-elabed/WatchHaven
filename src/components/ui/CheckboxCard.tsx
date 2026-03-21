@@ -27,13 +27,14 @@ export function CheckboxDemo({
       </div>
       
       {labels.map((label) => (
-        <div key={label} className="flex items-center space-x-4 text-gray-600">
+        <div key={label} className="flex items-center space-x-4 text-gray-600 cursor-pointer hover:text-black transition-colors">
           <Checkbox
             id={label}
+            className="cursor-pointer"
             checked={selectedCategories.includes(label)}
             onCheckedChange={(checked) => onCategoryChange(label, checked === true)}
           />
-          <Label htmlFor={label}>{label}</Label>
+          <Label htmlFor={label} className="cursor-pointer">{label}</Label>
         </div>
       ))}
     </div>
