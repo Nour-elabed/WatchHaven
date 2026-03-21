@@ -5,9 +5,10 @@ import product2 from "/assets/images/product2.svg";
 import product3 from "/assets/images/product3.svg";
 import { Link } from "react-router-dom";
 import Cart from "./Cart";
-const ProductContent = () => {
-    const images = [watch, product1, product2, product3];
-    const [currentImage, setCurrentImage] = useState(watch);
+
+const ProductContent = ({ product }: { product: any }) => {
+    const images = [product?.image || watch, product1, product2, product3];
+    const [currentImage, setCurrentImage] = useState(images[0]);
     return (
     <div className="p-4 lg:p-16">
         <div className="grid grid-cols-1 lg:grid-cols-2  gap-8">
@@ -53,7 +54,7 @@ const ProductContent = () => {
     </div>
         </div>
         <div className="bg-white shadow-sm mt-10 rounded-2xl p-6 ">
-            <Cart/>
+            <Cart product={product} />
         </div>
         </div>
         

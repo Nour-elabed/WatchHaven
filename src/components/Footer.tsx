@@ -46,11 +46,12 @@ const Footer: React.FC = () => {
 
         <div className="py-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-gray-600">Nexton eCommerce. © 2024</p>
-          <img 
-            src="/assets/icons/payment-icons.svg" 
-            alt="Payment Methods" 
-            className="h-6 w-auto"
-          />
+          <div className="flex space-x-4 items-center">
+            <a href="https://stripe.com" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-blue-600 font-semibold text-sm transition-colors">Stripe</a>
+            <a href="https://paypal.com" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-blue-600 font-semibold text-sm transition-colors">PayPal</a>
+            <a href="https://visa.com" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-blue-600 font-semibold text-sm transition-colors">Visa</a>
+            <a href="https://mastercard.com" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-blue-600 font-semibold text-sm transition-colors">MasterCard</a>
+          </div>
         </div>
       </div>
     </footer>

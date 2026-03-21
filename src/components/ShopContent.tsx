@@ -17,7 +17,13 @@ interface ProductProps {
   rating: string
 }
 
-const ShopContent: React.FC = () => {
+interface ShopContentProps {
+  priceRange: [number, number]
+  sortOrder: string
+  selectedCategories: string[]
+}
+
+const ShopContent = ({ priceRange, sortOrder, selectedCategories }: ShopContentProps) => {
   const { addToCart } = useCart()
 
   const handleAddToCart = async (product: ProductProps) => {
@@ -34,10 +40,26 @@ const ShopContent: React.FC = () => {
     toast.success(`${product.description} added to cart!`)
   }
 
+  const filteredProducts = paginationProducts.filter(product => {
+    const price = parseFloat(product.price.replace(/[^0-9.]/g, ""))
+    if (price < priceRange[0] || price > priceRange[1]) return false
+    
+    if (selectedCategories.length > 0) {
+      if (!selectedCategories.includes(product.bottomText)) return false
+    }
+    return true
+  }).sort((a, b) => {
+    const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ""))
+    const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ""))
+    if (sortOrder === "option-four") return priceA - priceB
+    if (sortOrder === "option-five") return priceB - priceA
+    return 0
+  })
+
   return (
     <section className="w-full flex justify-center">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center w-full max-w-[1200px] px-2">
-        {paginationProducts.map((product: ProductProps) => (
+        {filteredProducts.map((product: ProductProps) => (
           <div
             key={product.id}
             className="product-card rounded-lg overflow-hidden hover:shadow-sm transition-shadow duration-300 w-full max-w-[380px] md:max-w-[300px]"

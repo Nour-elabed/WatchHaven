@@ -2,23 +2,15 @@ import { useState } from "react";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 
-// The product shown on the Product page is currently static/hardcoded.
-// This component mirrors the existing design but now wires to the real CartContext.
-const PRODUCT = {
-  productId: "watch-black-auto-001",
-  name: "Black Automatic Watch",
-  price: 169.99,
-  image: "/assets/images/watch.svg",
-};
-
-const Cart = () => {
+const Cart = ({ product }: { product: any }) => {
   const { addToCart, toggleCart } = useCart();
 
   const sizes = ["S", "M", "L", "XL", "2XL"];
   const [selected, setSelected] = useState(sizes[0]);
   const [count, setCount] = useState(1);
 
-  const subtotal = PRODUCT.price * count;
+  const numericPrice = parseFloat(product.price.replace(/[^0-9.]/g, ""));
+  const subtotal = numericPrice * count;
   const taxRate = 0.08;
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
@@ -27,8 +19,15 @@ const Cart = () => {
   const handleIncrement = () => setCount((prev) => prev + 1);
 
   const handleAddToCart = async () => {
-    await addToCart({ ...PRODUCT, quantity: count });
-    toast.success(`${PRODUCT.name} added to cart!`);
+    const finalProduct = {
+      productId: String(product.id) + "-" + selected,
+      name: `${product.description} (Size: ${selected})`,
+      price: numericPrice,
+      image: product.image,
+      quantity: count
+    };
+    await addToCart(finalProduct);
+    toast.success(`${finalProduct.name} added to cart!`);
     toggleCart(); // open the drawer immediately so user sees confirmation
   };
 

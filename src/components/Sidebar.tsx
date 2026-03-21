@@ -3,19 +3,25 @@
 import { CheckboxDemo } from "./ui/CheckboxCard"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "./ui/input"
-import { useState } from "react"
 import { Label } from "@radix-ui/react-label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-const Sidebar = () => {
-  const [priceRange, setPriceRange] = useState([0, 1000])
-  
+export type SidebarProps = {
+  priceRange: [number, number]
+  setPriceRange: (val: [number, number]) => void
+  sortOrder: string
+  setSortOrder: (val: string) => void
+  selectedCategories: string[]
+  onCategoryChange: (category: string, checked: boolean) => void
+}
+
+const Sidebar = ({ priceRange, setPriceRange, sortOrder, setSortOrder, selectedCategories, onCategoryChange }: SidebarProps) => {
 
   return (
     <div className="mt-6">
       {/* Desktop Sidebar */}
       <div className="hidden md:block w-80 p-18 rounded-lg">
-        <CheckboxDemo />
+        <CheckboxDemo selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />
         <div className="border w-60 mt-10"></div>
       </div>
 
@@ -44,7 +50,7 @@ const Sidebar = () => {
           <div className="w-65 ml-16 px-4 cursor-pointer">
             <Slider
               defaultValue={priceRange}
-              onValueChange={(value) => {setPriceRange(value)
+              onValueChange={(value) => {setPriceRange(value as [number, number])
               }}
               min={0}
               max={1000}
@@ -98,7 +104,7 @@ const Sidebar = () => {
       <div className="hidden md:block px-18 mt-2">
         <p className="font-semibold mb-4">Sort order</p>
 
-        <RadioGroup defaultValue="option-one" className="space-y-2">
+        <RadioGroup value={sortOrder} onValueChange={setSortOrder} className="space-y-2">
           <div className="flex items-center space-x-3">
             <RadioGroupItem value="option-one" id="option-one" />
             <Label className="text-sm" htmlFor="option-one">Most Popular</Label>
