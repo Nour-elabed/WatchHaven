@@ -6,25 +6,17 @@ import { toast } from "sonner"
 import { useCart } from "@/context/useCart"
 import CartDrawer from "./CartDrawer"
 
-type User = {
-  _id: string
-  username: string
-  email: string
-  token: string
-}
+import { useAuth } from "@/context/AuthContext"
 
-type NavbarProps = {
-  user: User | null
-  setUser: React.Dispatch<React.SetStateAction<User | null>>
-}
-
-const Navbar = ({ user, setUser }: NavbarProps) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const navigate = useNavigate()
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const { toggleCart, totalItems } = useCart()
+
+  const { user, logout } = useAuth()
 
   const handleMouseEnter = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
@@ -36,8 +28,7 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    setUser(null)
+    logout()
     toast.success("Logged out successfully")
     navigate('/login')
   }

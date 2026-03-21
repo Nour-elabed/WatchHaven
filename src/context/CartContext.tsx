@@ -16,6 +16,7 @@ import {
   useMemo,
   type ReactNode,
 } from "react";
+import { useAuth } from "@/context/AuthContext";
 import * as cartService from "@/lib/cartService";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -65,13 +66,14 @@ const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  // ── Hydrate on mount ─────────────────────────────────────────────────────
+  // ── Hydrate on mount and user change ─────────────────────────────────────────────
   useEffect(() => {
     const hydrate = async () => {
-      if (isLoggedIn()) {
+      if (user) {
         try {
           const { data } = await cartService.getCart();
           // data.items comes from MongoDB
@@ -85,7 +87,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
     };
     hydrate();
-  }, []);
+  }, [user]);
 
   // ── Keep localStorage in sync as a local cache ───────────────────────────
   useEffect(() => {
