@@ -56,31 +56,39 @@ const Hero = () => {
         ))}
       </EmblaCarousel>
 
-      {/* Stat cards — Desktop: flex row of 3 | Mobile: 2-column grid */}
-      <div className="w-full">
+      {/* Stat cards — Desktop: flex row of 3 | Mobile: grid */}
+      <div className="w-full relative z-10 -mt-10 md:-mt-8 pb-10">
         {/* Desktop */}
-        <div className="hidden md:flex items-center justify-center gap-6 mt-4 px-8">
+        <div className="hidden md:flex items-center justify-center gap-8 mt-4 px-8">
           {statCards.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-xl px-6 py-3 shadow-sm border border-gray-100">
-              <Icon className="w-5 h-5 text-gray-700" />
-              <div>
-                <p className="text-lg font-bold text-gray-900 leading-none">{value}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+            <Link to="/shop" key={label}>
+              <div className="flex items-center gap-5 bg-white/95 backdrop-blur-md rounded-2xl px-10 py-6 shadow-xl border border-gray-100 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
+                <div className="p-3.5 bg-gray-50 rounded-full group-hover:bg-black group-hover:text-white transition-colors duration-300">
+                  <Icon className="w-7 h-7 text-gray-700 group-hover:text-white transition-colors" />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-3xl font-extrabold text-gray-900 leading-tight">{value}</p>
+                  <p className="text-sm text-gray-500 font-semibold tracking-wide uppercase mt-0.5">{label}</p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
-        {/* Mobile: 2-column grid showing first 2 stats */}
-        <div className="md:hidden grid grid-cols-2 gap-3 mt-4 px-4">
-          {statCards.slice(0, 2).map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 shadow-sm border border-gray-100">
-              <Icon className="w-4 h-4 text-gray-700" />
-              <div>
-                <p className="text-base font-bold text-gray-900 leading-none">{value}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+        {/* Mobile: 3-item grid */}
+        <div className="md:hidden grid grid-cols-2 gap-3 mt-12 px-4">
+          {statCards.map(({ icon: Icon, value, label }, idx) => (
+            <Link to="/shop" key={label} className={idx === 2 ? 'col-span-2' : ''}>
+              <div className="flex justify-center items-center gap-3 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-4 shadow-lg border border-gray-100 transform transition-all active:scale-95 cursor-pointer group">
+                <div className="p-2.5 bg-gray-50 rounded-full group-hover:bg-black transition-colors">
+                  <Icon className="w-5 h-5 text-gray-700 group-hover:text-white transition-colors" />
+                </div>
+                <div>
+                  <p className="text-xl font-extrabold text-gray-900 leading-none">{value}</p>
+                  <p className="text-[11px] font-semibold text-gray-500 uppercase mt-0.5">{label}</p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

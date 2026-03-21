@@ -31,10 +31,6 @@ const ProductContent = ({ product }: { product: any }) => {
     src={currentImage}
     className="w-full h-[350px] lg:h-[430px] object-cover"
     />
-    <img 
-    src="/assets/icons/cart-btn.svg"
-    alt="cart"
-    className="absolute top-2 right-2 w-10 h-10 cursor-pointer "/>
     <div className="flex flex-col gap-2">
        <Link to="/shop">
     <button className="rounded-full px-4 py-2 top-2 left-2 bg-white absolute flex items-center gap-2 shadow-md hover:shadow-lg transition-shadow cursor-pointer">
@@ -55,6 +51,13 @@ const ProductContent = ({ product }: { product: any }) => {
         </div>
         <div className="bg-white shadow-sm mt-10 rounded-2xl p-6 ">
             <Cart product={product} />
+            <div className="mt-8 flex justify-center">
+                <Link to="/shop" className="w-full">
+                    <button className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border-2 border-black text-black font-semibold hover:bg-black hover:text-white transition-all w-full cursor-pointer group shadow-sm active:scale-95 duration-200">
+                        Continue Shopping
+                    </button>
+                </Link>
+            </div>
         </div>
         </div>
         
