@@ -8,7 +8,7 @@ export type CartItemPayload = {
     name: string;
     price: number;
     image: string;
-    quantity?: number;
+    quantity: number;
 };
 
 export const getCart = () =>
