@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import FooterSection from "./shared/FooterSection";
 import { footerSections, socialIcons } from "./constants/Footer";
 
@@ -8,11 +9,13 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-12">
           <div className="space-y-6">
-            <img 
-              src="/assets/images/logo.svg" 
-              alt="NEXTON eCommerce" 
-              className="h-8 w-auto mb-2"
-            />
+            <Link to="/about">
+              <img 
+                src="/assets/images/logo.svg" 
+                alt="NEXTON eCommerce" 
+                className="h-8 w-auto mb-2 cursor-pointer hover:opacity-80 transition-opacity"
+              />
+            </Link>
             
             
             <div className="space-y-3">

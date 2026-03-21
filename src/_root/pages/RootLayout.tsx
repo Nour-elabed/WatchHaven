@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import { Outlet } from 'react-router-dom';
+import CookieConsent from '@/components/CookieConsent';
 
 const RootLayout = () => {
   return (
@@ -8,6 +9,7 @@ const RootLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
+      <CookieConsent />
     </div>
   )
 }
