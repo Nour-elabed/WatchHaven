@@ -1,7 +1,7 @@
 import { LucideSearch } from "lucide-react"
 import DropDown from "./ui/DropDown"
 import { useState, useRef } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { toast } from "sonner"
 import { useCart } from "@/context/useCart"
 import CartDrawer from "./CartDrawer"
@@ -12,7 +12,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register'
 
   const { toggleCart, totalItems } = useCart()
 
@@ -92,18 +95,20 @@ const Navbar = () => {
             </div>
 
             {/* Cart icon with live badge */}
-            <button
-              onClick={toggleCart}
-              className="relative p-1 cursor-pointer hover:opacity-70 transition-opacity"
-              aria-label="Open cart"
-            >
-              <img src="/assets/icons/cart.svg" alt="cart" className="h-8 w-8" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
-                  {totalItems > 99 ? "99+" : totalItems}
-                </span>
-              )}
-            </button>
+            {!isAuthPage && (
+              <button
+                onClick={toggleCart}
+                className="relative p-1 cursor-pointer hover:opacity-70 transition-opacity"
+                aria-label="Open cart"
+              >
+                <img src="/assets/icons/cart.svg" alt="cart" className="h-8 w-8" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -134,20 +139,22 @@ const Navbar = () => {
                 </div>
 
                 {/* Cart — mobile */}
-                <button
-                  onClick={() => { toggleCart(); setIsOpen(false); }}
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity w-full text-left"
-                >
-                  <div className="relative">
-                    <img src="/assets/icons/cart.svg" alt="cart" className="h-6 w-6" />
-                    {totalItems > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-0.5">
-                        {totalItems > 99 ? "99+" : totalItems}
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-sm font-medium">Cart</span>
-                </button>
+                {!isAuthPage && (
+                  <button
+                    onClick={() => { toggleCart(); setIsOpen(false); }}
+                    className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity w-full text-left"
+                  >
+                    <div className="relative">
+                      <img src="/assets/icons/cart.svg" alt="cart" className="h-6 w-6" />
+                      {totalItems > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-0.5">
+                          {totalItems > 99 ? "99+" : totalItems}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-sm font-medium">Cart</span>
+                  </button>
+                )}
 
                 {/* Auth actions */}
                 {user ? (

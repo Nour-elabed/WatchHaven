@@ -1,5 +1,6 @@
 // shared/ProductSlideCard.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Product.css";
 
 export type ProductSlideCardProps = {
@@ -28,9 +29,11 @@ export const ProductSlideCard: React.FC<ProductSlideCardProps> = ({
       
       <div className="product-card__image-container">
         <img src={image} alt={description} className="product-card__image" />
-        <button className="product-card__cart-btn">
-          <img src={cartIcon} alt="Add to cart" className="product-card__cart-icon" />
-        </button>
+        <Link to="/shop">
+          <button className="product-card__cart-btn hover:scale-105 transition-transform" aria-label="Go to shop">
+            <img src={cartIcon} alt="Add to cart" className="product-card__cart-icon" />
+          </button>
+        </Link>
       </div>
 
     

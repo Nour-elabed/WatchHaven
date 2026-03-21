@@ -3,6 +3,7 @@
 import { useCart } from "@/context/useCart"
 import { paginationProducts } from "./constants/PaginationProducts"
 import { toast } from "sonner"
+import { Link } from "react-router-dom"
 
 interface ProductProps {
   id: number
@@ -42,7 +43,9 @@ const ShopContent: React.FC = () => {
             className="product-card rounded-lg overflow-hidden hover:shadow-sm transition-shadow duration-300 w-full max-w-[380px] md:max-w-[300px]"
           >
             <div className="relative">
-              <img src={product.image} className="w-full h-48 object-cover" alt={product.description} />
+              <Link to={`/product/${product.id}`}>
+                <img src={product.image} className="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity" alt={product.description} />
+              </Link>
               {/* Cart icon overlay button */}
               <button
                 onClick={() => handleAddToCart(product)}

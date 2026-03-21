@@ -33,10 +33,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            // Token expired or invalid — clear it; React Router will redirect
-            // to /login on the next PrivateRoute check automatically.
+        // Log out on 401 Unauthorized or if the server goes completely offline (ERR_NETWORK)
+        if (error.response?.status === 401 || !error.response || error.code === 'ERR_NETWORK') {
+            // Token expired, invalid, or server unreachable — clear it
             localStorage.removeItem("token");
+            localStorage.removeItem("cart_items");
             // Dispatch a custom event so AuthContext can sync state
             window.dispatchEvent(new Event("auth:logout"));
         }

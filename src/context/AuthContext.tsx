@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // ── Logout ─────────────────────────────────────────────────────────
     const logout = useCallback(() => {
         localStorage.removeItem("token");
+        localStorage.removeItem("cart_items");
         setUser(null);
     }, []);
 

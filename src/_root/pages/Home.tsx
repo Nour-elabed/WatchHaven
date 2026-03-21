@@ -7,23 +7,16 @@ import Banner from '@/components/Banner'
 import Footer from '@/components/Footer'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
- type User = {
-  _id: string
-  username: string
-  email: string
-  token: string
-}
+import { useAuth } from '@/context/AuthContext'
 
-type HomeProps = {
-  user: User | null
-  error: string | null
-}
-const Home = ({user, error}: HomeProps) => {
-   useEffect(() => {
+const Home = () => {
+  const { user } = useAuth()
+  
+  useEffect(() => {
     if (!user) {
       toast.info("Please login or register to get the full experience!")
     }
-  }, [])
+  }, [user])
   return (
     <div>
         
@@ -33,7 +26,6 @@ const Home = ({user, error}: HomeProps) => {
         <BestSellers/>
         <Banner/>
         <Footer/>
-        {error && <p className="text-red-400 mb-4 text-center text-sm">{error}</p>}
         {user ? (
           <div>
             <h2>{user.username}</h2>
