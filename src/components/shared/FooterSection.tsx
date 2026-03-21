@@ -1,8 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
+export type FooterLink = {
+  label: string;
+  url: string;
+};
 
 export type FooterSectionProps = {
   title: string;
-  links: string[];
+  links: FooterLink[];
 };
 
 export const FooterSection: React.FC<FooterSectionProps> = ({
@@ -15,9 +21,15 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
       <ul className="space-y-2 text-gray-600">
         {links.map((link, index) => (
           <li key={index}>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              {link}
-            </a>
+            {link.url.startsWith('/') ? (
+              <Link to={link.url} className="hover:text-gray-900 transition-colors">
+                {link.label}
+              </Link>
+            ) : (
+              <a href={link.url} className="hover:text-gray-900 transition-colors">
+                {link.label}
+              </a>
+            )}
           </li>
         ))}
       </ul>

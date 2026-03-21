@@ -4,6 +4,7 @@ import User from "../models/User.js";
 import { protect } from "../middleware/auth.js";
 import validate from "../middleware/validate.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const router = express.Router();
 

@@ -1,19 +1,15 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
-type User = {
-  _id: string
-  username: string
-  email: string
-  token: string
-}
+import { useAuth } from '@/context/AuthContext'
+import axios from 'axios'
 
-const Login = ({ setUser }: { setUser: (user: User) => void }) => {
+const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" })
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -21,21 +17,21 @@ const Login = ({ setUser }: { setUser: (user: User) => void }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
+    setIsSubmitting(true)
     try {
-      const response = await axios.post("/api/users/login", formData)
-      localStorage.setItem("token", response.data.token)
-      setUser(response.data)
-      toast.success(`Welcome back, ${response.data.username}!`)
-      navigate('/shop')
+      await login(formData.email, formData.password)
+      toast.success("Logged in successfully!")
+      navigate('/')
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || "Login failed")
+        toast.error(err.response?.data?.message || err.message || "Login failed")
+      } else if (err instanceof Error) {
+        toast.error(err.message || "Login failed")
       } else {
         toast.error("Login failed")
       }
     } finally {
-      setIsLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -71,10 +67,10 @@ const Login = ({ setUser }: { setUser: (user: User) => void }) => {
             </div>
             <button
               type="submit"
-              disabled={isLoading} // Disable button while loading
+              disabled={isSubmitting} // Disable button while loading
               className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 mt-4 rounded-full shadow-xl transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
             >
-              {isLoading ? <><Spinner /> Logging in...</> : "Login"}
+              {isSubmitting ? <><Spinner /> Logging in...</> : "Login"}
             </button>
           </form>
           <p className="text-center text-sm text-gray-500 mt-4">
