@@ -16,7 +16,7 @@ const Register = () => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      const response = await axios.post("/api/users/register", formData)
+      const response = await axios.post("/users/register", formData)
       toast.success(`Account created! Please log in, ${response.data.data.username}.`)
       navigate('/login')
     } catch (err) {
