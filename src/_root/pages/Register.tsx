@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import api from '@/services/api.ts'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -16,7 +17,7 @@ const Register = () => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      const response = await axios.post("/api/users/register", formData)
+      const response = await api.post("/api/users/register", formData)
       toast.success(`Account created! Please log in, ${response.data.data.username}.`)
       navigate('/login')
     } catch (err) {
