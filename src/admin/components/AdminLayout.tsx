@@ -1,20 +1,24 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const links = [
-    { to: "/admin", label: "Overview" },
+    { to: "/admin/dashboard", label: "Dashboard" },
     { to: "/admin/products", label: "Products" },
-    { to: "/admin/users", label: "Users" },
     { to: "/admin/orders", label: "Orders" },
     { to: "/admin/checklist", label: "Checklist" },
-];
+] as const;
 
 const AdminLayout = () => {
     const location = useLocation();
+    const { user } = useAuth();
+    const navLinks = user?.role === "SUPER_ADMIN"
+        ? [...links, { to: "/admin/users", label: "Users" }]
+        : links;
 
     return (
         <main className="mx-auto min-h-screen w-full max-w-7xl px-6 pb-10 pt-24">
             <div className="mb-6 flex flex-wrap gap-2">
-                {links.map((link) => {
+                {navLinks.map((link) => {
                     const isActive = location.pathname === link.to;
                     return (
                         <Link

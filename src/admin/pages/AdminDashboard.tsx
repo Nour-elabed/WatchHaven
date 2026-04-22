@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 import { adminGetOrders, adminGetProducts, adminGetUsers } from "@/services/adminService";
 
 const AdminDashboard = () => {
+    const { user } = useAuth();
     const { data: products } = useQuery({
         queryKey: ["admin", "products", "count"],
         queryFn: async () => (await adminGetProducts()).data.data,
@@ -10,6 +12,7 @@ const AdminDashboard = () => {
     const { data: users } = useQuery({
         queryKey: ["admin", "users", "count"],
         queryFn: async () => (await adminGetUsers()).data.data,
+        enabled: user?.role === "SUPER_ADMIN",
     });
     const { data: orders } = useQuery({
         queryKey: ["admin", "orders", "count"],
@@ -26,7 +29,7 @@ const AdminDashboard = () => {
                 </div>
                 <div className="rounded-xl border p-5">
                     <p className="text-sm text-gray-500">Users</p>
-                    <p className="mt-2 text-3xl font-bold">{users?.length ?? 0}</p>
+                    <p className="mt-2 text-3xl font-bold">{user?.role === "SUPER_ADMIN" ? users?.length ?? 0 : "-"}</p>
                 </div>
                 <div className="rounded-xl border p-5">
                     <p className="text-sm text-gray-500">Orders</p>
@@ -37,9 +40,11 @@ const AdminDashboard = () => {
                 <Link to="/admin/products" className="rounded-lg border px-4 py-3 text-center text-sm font-medium hover:bg-gray-50">
                     Manage Products
                 </Link>
-                <Link to="/admin/users" className="rounded-lg border px-4 py-3 text-center text-sm font-medium hover:bg-gray-50">
-                    Manage Users
-                </Link>
+                {user?.role === "SUPER_ADMIN" && (
+                    <Link to="/admin/users" className="rounded-lg border px-4 py-3 text-center text-sm font-medium hover:bg-gray-50">
+                        Manage Users
+                    </Link>
+                )}
                 <Link to="/admin/orders" className="rounded-lg border px-4 py-3 text-center text-sm font-medium hover:bg-gray-50">
                     Manage Orders
                 </Link>

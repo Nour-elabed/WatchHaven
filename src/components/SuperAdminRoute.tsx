@@ -2,11 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Spinner } from "@/components/ui/spinner";
 
-/**
- * AdminRoute — wraps any route that requires admin privileges.
- * Regular users are redirected to the home page.
- */
-const AdminRoute = () => {
+const SuperAdminRoute = () => {
     const { user, isLoading } = useAuth();
 
     if (isLoading) {
@@ -18,9 +14,9 @@ const AdminRoute = () => {
     }
 
     if (!user) return <Navigate to="/login" replace />;
-    if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") return <Navigate to="/" replace />;
+    if (user.role !== "SUPER_ADMIN") return <Navigate to="/admin/dashboard" replace />;
 
     return <Outlet />;
 };
 
-export default AdminRoute;
+export default SuperAdminRoute;

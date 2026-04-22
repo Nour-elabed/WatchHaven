@@ -6,7 +6,11 @@ import { useAuth } from '@/context/AuthContext'
 import axios from 'axios'
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" })
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    role: "USER" as "USER" | "ADMIN" | "SUPER_ADMIN",
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
@@ -20,7 +24,7 @@ const Login = () => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await login(formData.email, formData.password)
+      await login(formData.email, formData.password, formData.role)
       toast.success("Logged in successfully!")
       const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
       navigate(from || '/')
@@ -66,6 +70,19 @@ const Login = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
                 required
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Access Role</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={(e) => setFormData({ ...formData, role: e.target.value as "USER" | "ADMIN" | "SUPER_ADMIN" })}
+                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none bg-white"
+              >
+                <option value="USER">Login as USER</option>
+                <option value="ADMIN">Login as ADMIN</option>
+                <option value="SUPER_ADMIN">Login as SUPER_ADMIN</option>
+              </select>
             </div>
             <button
               type="submit"

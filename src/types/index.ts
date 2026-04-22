@@ -3,7 +3,7 @@ export interface User {
     _id: string;
     username: string;
     email: string;
-    role: "USER" | "ADMIN";
+    role: "USER" | "ADMIN" | "SUPER_ADMIN";
     isAdmin: boolean;
     token: string;
 }

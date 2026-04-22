@@ -71,8 +71,8 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-6 ml-auto">
-            {user?.role === "ADMIN" && (
-              <Link to="/admin" className="text-sm font-medium text-black hover:underline transition-colors">
+            {(user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") && (
+              <Link to="/admin/dashboard" className="text-sm font-medium text-black hover:underline transition-colors">
                 Admin Dashboard
               </Link>
             )}
@@ -173,9 +173,9 @@ const Navbar = () => {
                 {/* Auth actions */}
                 {user ? (
                   <>
-                    {user.role === "ADMIN" && (
+                    {(user.role === "ADMIN" || user.role === "SUPER_ADMIN") && (
                       <Link
-                        to="/admin"
+                        to="/admin/dashboard"
                         onClick={() => setIsOpen(false)}
                         className="w-full text-center border border-gray-300 text-sm py-1.5 rounded-full hover:bg-gray-100 transition-colors"
                       >

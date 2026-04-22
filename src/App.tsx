@@ -7,6 +7,7 @@ import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
 import PrivateRoute from '@/components/PrivateRoute'
 import AdminRoute from '@/components/AdminRoute'
+import SuperAdminRoute from '@/components/SuperAdminRoute'
 import './index.css'
 
 // ─── Lazy-loaded pages (code splitting) ───────────────────────────
@@ -71,11 +72,14 @@ const App = () => {
                 {/* Admin-only routes */}
                 <Route element={<AdminRoute />}>
                   <Route path="/admin" element={<AdminLayout />}>
-                    <Route index element={<AdminDashboard />} />
+                    <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                    <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="products" element={<ManageProducts />} />
-                    <Route path="users" element={<ManageUsers />} />
                     <Route path="orders" element={<ManageOrders />} />
                     <Route path="checklist" element={<AdminChecklist />} />
+                    <Route element={<SuperAdminRoute />}>
+                      <Route path="users" element={<ManageUsers />} />
+                    </Route>
                   </Route>
                 </Route>
 

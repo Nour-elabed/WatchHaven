@@ -45,16 +45,18 @@ const ManageUsers = () => {
                         <button
                             type="button"
                             className="rounded bg-gray-100 px-3 py-1 text-xs"
+                            disabled={u.role === "SUPER_ADMIN"}
                             onClick={() => roleMutation.mutate({ id: u._id, role: u.role === "ADMIN" ? "USER" : "ADMIN" })}
                         >
-                            Toggle Role
+                            {u.role === "SUPER_ADMIN" ? "Protected" : "Toggle Role"}
                         </button>
                         <button
                             type="button"
                             className="rounded bg-red-100 px-3 py-1 text-xs text-red-700"
+                            disabled={u.role === "SUPER_ADMIN"}
                             onClick={() => deleteMutation.mutate(u._id)}
                         >
-                            Delete
+                            {u.role === "SUPER_ADMIN" ? "Protected" : "Delete"}
                         </button>
                     </div>
                 ),

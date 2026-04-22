@@ -46,7 +46,7 @@ const AdminChecklist = () => {
             updateCheck("token", { status: "failed", details: "No token found. Login is required." });
         }
 
-        if (user?.role === "ADMIN") {
+        if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
             updateCheck("role", { status: "passed", details: `Current user role: ${user.role}` });
         } else {
             updateCheck("role", { status: "failed", details: `Current user role: ${user?.role ?? "unknown"}` });
@@ -59,11 +59,18 @@ const AdminChecklist = () => {
             updateCheck("products", { status: "failed", details: "Failed to fetch admin products endpoint." });
         }
 
-        try {
-            const response = await adminGetUsers();
-            updateCheck("users", { status: "passed", details: `Fetched ${response.data.data.length} users.` });
-        } catch (error) {
-            updateCheck("users", { status: "failed", details: "Failed to fetch admin users endpoint." });
+        if (user?.role === "SUPER_ADMIN") {
+            try {
+                const response = await adminGetUsers();
+                updateCheck("users", { status: "passed", details: `Fetched ${response.data.data.length} users.` });
+            } catch (error) {
+                updateCheck("users", { status: "failed", details: "Failed to fetch admin users endpoint." });
+            }
+        } else {
+            updateCheck("users", {
+                status: "passed",
+                details: "Skipped: only SUPER_ADMIN can access /admin/users.",
+            });
         }
 
         try {

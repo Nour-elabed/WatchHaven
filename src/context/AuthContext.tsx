@@ -22,7 +22,7 @@ import type { User } from "@/types";
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string, role: User["role"]) => Promise<void>;
     logout: () => void;
 }
 
@@ -65,8 +65,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     // ── Login ──────────────────────────────────────────────────────────
-    const login = useCallback(async (email: string, password: string) => {
-        const { data } = await authService.login({ email, password });
+    const login = useCallback(async (email: string, password: string, role: User["role"]) => {
+        const { data } = await authService.login({ email, password, role });
         const userData = data.data;
         localStorage.setItem("token", userData.token);
         setUser({
