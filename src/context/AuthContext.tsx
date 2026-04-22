@@ -22,7 +22,7 @@ import type { User } from "@/types";
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (email: string, password: string, role: User["role"]) => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -65,14 +65,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     // ── Login ──────────────────────────────────────────────────────────
-    const login = useCallback(async (email: string, password: string, role: User["role"]) => {
-        const { data } = await authService.login({ email, password, role });
+    const login = useCallback(async (email: string, password: string) => {
+        const { data } = await authService.login({ email, password });
         const userData = data.data;
         localStorage.setItem("token", userData.token);
         setUser({
             ...userData,
             role: userData.role ?? (userData.isAdmin ? "ADMIN" : "USER"),
-            isAdmin: userData.role ? userData.role === "ADMIN" : Boolean(userData.isAdmin),
+            isAdmin: userData.role ? userData.role === "ADMIN" || userData.role === "SUPER_ADMIN" : Boolean(userData.isAdmin),
         });
     }, []);
 
