@@ -3,6 +3,7 @@ export interface User {
     _id: string;
     username: string;
     email: string;
+    role: "USER" | "ADMIN";
     isAdmin: boolean;
     token: string;
 }
@@ -10,6 +11,7 @@ export interface User {
 // ─── Product ──────────────────────────────────────────────────────────────
 export interface Product {
     _id: string;
+    title: string;
     name: string;
     description: string;
     price: number;
@@ -57,6 +59,7 @@ export interface Order {
     paidAt?: string;
     isDelivered: boolean;
     deliveredAt?: string;
+    status: "pending" | "shipped" | "delivered" | "canceled";
     createdAt: string;
 }
 

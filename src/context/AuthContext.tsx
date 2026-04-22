@@ -39,8 +39,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             if (!token) { setIsLoading(false); return; }
             try {
                 const { data } = await authService.getProfile();
-                // Attach token to user object so consumers can use it
-                setUser({ ...data.data, token });
+                const profile = data.data;
+                setUser({
+                    ...profile,
+                    role: profile.role ?? (profile.isAdmin ? "ADMIN" : "USER"),
+                    isAdmin: profile.role ? profile.role === "ADMIN" : Boolean(profile.isAdmin),
+                    token,
+                });
             } catch {
                 localStorage.removeItem("token");
             } finally {
@@ -64,7 +69,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { data } = await authService.login({ email, password });
         const userData = data.data;
         localStorage.setItem("token", userData.token);
-        setUser(userData);
+        setUser({
+            ...userData,
+            role: userData.role ?? (userData.isAdmin ? "ADMIN" : "USER"),
+            isAdmin: userData.role ? userData.role === "ADMIN" : Boolean(userData.isAdmin),
+        });
     }, []);
 
     // ── Logout ─────────────────────────────────────────────────────────

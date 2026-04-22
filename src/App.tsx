@@ -20,6 +20,12 @@ const Checkout = lazy(() => import('./_root/pages/Checkout'))
 const About = lazy(() => import('./_root/pages/About'))
 const Orders = lazy(() => import('./_root/pages/Orders'))
 const OrderConfirmation = lazy(() => import('./_root/pages/OrderConfirmation'))
+const AdminLayout = lazy(() => import('./admin/components/AdminLayout'))
+const AdminDashboard = lazy(() => import('./admin/pages/AdminDashboard'))
+const ManageProducts = lazy(() => import('./admin/pages/ManageProducts'))
+const ManageUsers = lazy(() => import('./admin/pages/ManageUsers'))
+const ManageOrders = lazy(() => import('./admin/pages/ManageOrders'))
+const AdminChecklist = lazy(() => import('./admin/pages/AdminChecklist'))
 
 // ─── React Query client ───────────────────────────────────────────
 const queryClient = new QueryClient({
@@ -64,8 +70,13 @@ const App = () => {
 
                 {/* Admin-only routes */}
                 <Route element={<AdminRoute />}>
-                  {/* Add admin pages here, e.g.: */}
-                  {/* <Route path="/admin/products" element={<AdminProducts />} /> */}
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="products" element={<ManageProducts />} />
+                    <Route path="users" element={<ManageUsers />} />
+                    <Route path="orders" element={<ManageOrders />} />
+                    <Route path="checklist" element={<AdminChecklist />} />
+                  </Route>
                 </Route>
 
                 {/* Catch-all */}

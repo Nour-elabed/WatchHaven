@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuth } from '@/context/AuthContext'
@@ -9,6 +9,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const { login } = useAuth()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +22,8 @@ const Login = () => {
     try {
       await login(formData.email, formData.password)
       toast.success("Logged in successfully!")
-      navigate('/')
+      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
+      navigate(from || '/')
     } catch (err) {
       if (axios.isAxiosError(err)) {
         toast.error(err.response?.data?.message || err.message || "Login failed")
