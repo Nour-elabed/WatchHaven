@@ -9,13 +9,14 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role: "USER",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const { login } = useAuth()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -23,10 +24,16 @@ const Login = () => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await login(formData.email, formData.password)
+      await login(formData.email, formData.password, formData.role as "USER" | "ADMIN" | "SUPER_ADMIN")
       toast.success("Logged in successfully!")
+      
+      // Role-based redirection
       const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
-      navigate(from || '/')
+      if (formData.role === "ADMIN" || formData.role === "SUPER_ADMIN") {
+        navigate(from || '/admin/dashboard')
+      } else {
+        navigate(from || '/')
+      }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         toast.error(err.response?.data?.message || err.message || "Login failed")
@@ -69,6 +76,19 @@ const Login = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
                 required
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Login As (Role)</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none bg-gray-50"
+              >
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+              </select>
             </div>
             <button
               type="submit"

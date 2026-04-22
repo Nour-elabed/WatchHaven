@@ -14,10 +14,10 @@ export interface RegisterPayload {
 }
 
 export const login = (payload: LoginPayload) =>
-    api.post<ApiResponse<User>>("/users/login", payload);
+    api.post<ApiResponse<User>>("/auth/login", payload);
 
 export const register = (payload: RegisterPayload) =>
-    api.post<ApiResponse<User>>("/users/register", payload);
+    api.post<ApiResponse<User>>("/auth/register", payload);
 
 export const getProfile = () =>
-    api.get<ApiResponse<User>>("/users/profile");
+    api.get<ApiResponse<User>>("/auth/profile");
