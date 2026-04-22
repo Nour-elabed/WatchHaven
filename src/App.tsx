@@ -8,6 +8,7 @@ import { CartProvider } from '@/context/CartContext'
 import PrivateRoute from '@/components/PrivateRoute'
 import AdminRoute from '@/components/AdminRoute'
 import SuperAdminRoute from '@/components/SuperAdminRoute'
+import RoleSelector from '@/components/RoleSelector'
 import './index.css'
 
 // ─── Lazy-loaded pages (code splitting) ───────────────────────────
@@ -51,6 +52,7 @@ const App = () => {
       <AuthProvider>
         <CartProvider>
           <Toaster position="top-right" richColors />
+          <RoleSelector />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route element={<RootLayout />}>
