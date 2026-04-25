@@ -9,12 +9,14 @@ interface ProductFormProps {
 
 const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
     const [form, setForm] = useState<AdminProductPayload>({
-        title: initialValue?.title ?? initialValue?.name ?? "",
+        name: initialValue?.name ?? "",
+        brand: initialValue?.brand ?? "",
         description: initialValue?.description ?? "",
         price: initialValue?.price ?? 0,
         stock: initialValue?.stock ?? 0,
         image: initialValue?.image ?? "",
-        category: initialValue?.category ?? "Electronics",
+        category: initialValue?.category ?? "Classic",
+        gender: initialValue?.gender ?? "UNISEX",
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -32,65 +34,113 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
         }
     };
 
+    const categories = ["Luxury", "Sport", "Classic", "Smart", "Minimalist"];
+    const genders = ["MEN", "WOMEN", "UNISEX"];
+
     return (
         <form className="space-y-4" onSubmit={handleSubmit}>
-            <input
-                className="w-full rounded border px-3 py-2"
-                value={form.title}
-                onChange={(e) => update("title", e.target.value)}
-                placeholder="Product title"
-                required
-            />
-            <textarea
-                className="w-full rounded border px-3 py-2"
-                value={form.description}
-                onChange={(e) => update("description", e.target.value)}
-                placeholder="Description"
-                required
-            />
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <input
-                    className="rounded border px-3 py-2"
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    value={form.price}
-                    onChange={(e) => update("price", Number(e.target.value))}
-                    placeholder="Price"
-                    required
-                />
-                <input
-                    className="rounded border px-3 py-2"
-                    type="number"
-                    min={0}
-                    value={form.stock}
-                    onChange={(e) => update("stock", Number(e.target.value))}
-                    placeholder="Stock"
-                    required
-                />
+            <div className="grid grid-cols-2 gap-4">
+               <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Product Name</label>
+                  <input
+                      className="w-full input-field py-2"
+                      value={form.name}
+                      onChange={(e) => update("name", e.target.value)}
+                      placeholder="e.g. Submariner"
+                      required
+                  />
+               </div>
+               <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Brand</label>
+                  <input
+                      className="w-full input-field py-2"
+                      value={form.brand}
+                      onChange={(e) => update("brand", e.target.value)}
+                      placeholder="e.g. Rolex"
+                      required
+                  />
+               </div>
             </div>
-            <input
-                className="w-full rounded border px-3 py-2"
-                value={form.image}
-                onChange={(e) => update("image", e.target.value)}
-                placeholder="Image URL"
-                required
-            />
-            <select
-                className="w-full rounded border px-3 py-2"
-                value={form.category}
-                onChange={(e) => update("category", e.target.value)}
-            >
-                {["Electronics", "Clothing", "Accessories", "Home", "Sports", "Beauty"].map((category) => (
-                    <option key={category} value={category}>
-                        {category}
-                    </option>
-                ))}
-            </select>
+
+            <div className="space-y-1">
+               <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Description</label>
+               <textarea
+                   className="w-full input-field py-2 min-h-[100px]"
+                   value={form.description}
+                   onChange={(e) => update("description", e.target.value)}
+                   placeholder="Detailed product information..."
+                   required
+               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                   <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Price ($)</label>
+                   <input
+                       className="w-full input-field py-2"
+                       type="number"
+                       min={0}
+                       step="0.01"
+                       value={form.price}
+                       onChange={(e) => update("price", Number(e.target.value))}
+                       required
+                   />
+                </div>
+                <div className="space-y-1">
+                   <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Stock</label>
+                   <input
+                       className="w-full input-field py-2"
+                       type="number"
+                       min={0}
+                       value={form.stock}
+                       onChange={(e) => update("stock", Number(e.target.value))}
+                       required
+                   />
+                </div>
+            </div>
+
+            <div className="space-y-1">
+               <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Image URL</label>
+               <input
+                   className="w-full input-field py-2"
+                   value={form.image}
+                   onChange={(e) => update("image", e.target.value)}
+                   placeholder="https://images.unsplash.com/..."
+                   required
+               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                   <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Style Category</label>
+                   <select
+                       className="w-full input-field py-2 appearance-none"
+                       value={form.category}
+                       onChange={(e) => update("category", e.target.value)}
+                   >
+                       {categories.map((cat) => (
+                           <option key={cat} value={cat}>{cat}</option>
+                       ))}
+                   </select>
+                </div>
+                <div className="space-y-1">
+                   <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Gender</label>
+                   <select
+                       className="w-full input-field py-2 appearance-none"
+                       value={form.gender}
+                       onChange={(e) => update("gender", e.target.value)}
+                   >
+                       {genders.map((g) => (
+                           <option key={g} value={g}>{g}</option>
+                       ))}
+                   </select>
+                </div>
+            </div>
+
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded bg-black px-4 py-2 text-white disabled:opacity-60"
+                className="w-full btn-primary mt-4 py-3"
             >
                 {isSubmitting ? "Saving..." : "Save Product"}
             </button>

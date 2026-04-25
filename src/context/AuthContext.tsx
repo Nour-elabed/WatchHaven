@@ -17,13 +17,15 @@ import {
     type ReactNode,
 } from "react";
 import * as authService from "@/services/authService";
-import type { User } from "@/types";
+import api from "@/services/api";
+import type { User, ApiResponse } from "@/types";
 
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (email: string, password: string, role?: "USER" | "ADMIN" | "SUPER_ADMIN") => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => void;
+    updateProfile: (data: { username?: string; email?: string; password?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,8 +44,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const profile = data.data;
                 setUser({
                     ...profile,
-                    role: profile.role ?? (profile.isAdmin ? "ADMIN" : "USER"),
-                    isAdmin: profile.role ? profile.role === "ADMIN" : Boolean(profile.isAdmin),
                     token,
                 });
             } catch {
@@ -65,15 +65,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     // ── Login ──────────────────────────────────────────────────────────
-    const login = useCallback(async (email: string, password: string, role?: "USER" | "ADMIN" | "SUPER_ADMIN") => {
-        const { data } = await authService.login({ email, password, role });
+    const login = useCallback(async (email: string, password: string) => {
+        const { data } = await authService.login({ email, password });
         const userData = data.data;
         localStorage.setItem("token", userData.token);
-        setUser({
-            ...userData,
-            role: userData.role ?? (userData.isAdmin ? "ADMIN" : "USER"),
-            isAdmin: userData.role ? userData.role === "ADMIN" || userData.role === "SUPER_ADMIN" : Boolean(userData.isAdmin),
-        });
+        setUser(userData);
     }, []);
 
     // ── Logout ─────────────────────────────────────────────────────────
@@ -83,8 +79,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
     }, []);
 
+    // ── Update Profile ─────────────────────────────────────────────────
+    const updateProfile = useCallback(async (payload: { username?: string; email?: string; password?: string }) => {
+        const { data } = await api.put<ApiResponse<User>>("/auth/profile", payload);
+        const userData = data.data;
+        if (userData.token) {
+            localStorage.setItem("token", userData.token);
+        }
+        setUser(userData);
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ user, isLoading, login, logout, updateProfile }}>
             {children}
         </AuthContext.Provider>
     );

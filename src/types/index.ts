@@ -7,16 +7,18 @@ export interface User {
     role: "USER" | "ADMIN" | "SUPER_ADMIN";
     isAdmin: boolean;
     token: string;
+    createdAt?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────────────────
 export interface Product {
     _id: string;
-    title: string;
     name: string;
+    brand: string;
     description: string;
     price: number;
-    category: "MEN" | "WOMEN";
+    category: "Luxury" | "Sport" | "Classic" | "Smart" | "Minimalist";
+    gender: "MEN" | "WOMEN" | "UNISEX";
     image: string;
     stock: number;
     rating: number;
@@ -68,5 +70,10 @@ export interface Order {
 export interface ApiResponse<T> {
     success: boolean;
     data: T;
+    pagination?: {
+        total: number;
+        page: number;
+        pages: number;
+    };
     message?: string;
 }

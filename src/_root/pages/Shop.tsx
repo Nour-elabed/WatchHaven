@@ -1,12 +1,11 @@
 import Sidebar from "@/components/Sidebar"
 import ShopContent from "@/components/ShopContent"
-import { PaginationDemo } from "@/components/ui/PaginationDemo"
 import Footer from "@/components/Footer"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 const Shop = () => {
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000])
   const [sortOrder, setSortOrder] = useState("option-one")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedGender, setSelectedGender] = useState<string>("ALL")
@@ -24,48 +23,47 @@ const Shop = () => {
 
   return (
     <>
-      {/* MAIN PAGE LAYOUT */}
-      <div className="flex flex-col md:flex-row gap-12 px-4 md:px-8 py-8">
-        
-        {/* SIDEBAR DESKTOP */}
-        <div className="hidden md:block w-80">
-          <div className="h-full bg-white p-6 rounded-lg">
-            <Sidebar 
-              priceRange={priceRange} 
-              setPriceRange={setPriceRange}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-              selectedCategories={selectedCategories}
-              onCategoryChange={handleCategoryChange}
-            />
-          </div>
-        </div>
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-12">
+        <div className="flex flex-col md:flex-row gap-12">
+          
+          {/* SIDEBAR */}
+          <aside className="w-full md:w-72 flex-shrink-0">
+            <div className="sticky top-24">
+              <Sidebar 
+                priceRange={priceRange} 
+                setPriceRange={setPriceRange}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+                selectedCategories={selectedCategories}
+                onCategoryChange={handleCategoryChange}
+                selectedGender={selectedGender}
+                setSelectedGender={setSelectedGender}
+              />
+            </div>
+          </aside>
 
+          {/* MAIN CONTENT */}
+          <main className="flex-1">
+            <div className="mb-10 flex justify-between items-end">
+              <div>
+                <h1 className="text-4xl font-bold tracking-tight mb-2">The Collection</h1>
+                <p className="text-muted-foreground">Discover our curated selection of premium timepieces</p>
+              </div>
+              {searchQuery && (
+                <div className="bg-secondary px-4 py-2 rounded-full text-sm font-medium">
+                  Search results for: <span className="text-primary">"{searchQuery}"</span>
+                </div>
+              )}
+            </div>
 
-        <div className="block md:hidden">
-          <Sidebar
-              priceRange={priceRange} 
-              setPriceRange={setPriceRange}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-              selectedCategories={selectedCategories}
-              onCategoryChange={handleCategoryChange}
-           />
-        </div>
-
-        <div className="flex-1 flex flex-col">
-          <div className="h-full bg-white md:mt-4 md:p-12 rounded-lg">
             <ShopContent 
               priceRange={priceRange}
               sortOrder={sortOrder}
               selectedCategories={selectedCategories}
+              selectedGender={selectedGender}
               searchQuery={searchQuery}
             />
-          </div>
-
-          <div className="flex justify-center md:justify-end mt-6 px-4">
-            <PaginationDemo />
-          </div>
+          </main>
         </div>
       </div>
 

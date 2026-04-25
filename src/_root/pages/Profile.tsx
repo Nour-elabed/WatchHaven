@@ -8,13 +8,14 @@ import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 
 const Profile = () => {
-  const { user } = useAuth()
+  const { user, updateProfile } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
-  const [editForm, setEditForm] = useState({
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  const [formData, setFormData] = useState({
     username: '',
     email: '',
-    currentPassword: '',
-    newPassword: '',
+    password: '',
     confirmPassword: ''
   })
 
@@ -32,69 +33,53 @@ const Profile = () => {
 
   useEffect(() => {
     if (profile?.data) {
-      setEditForm({
+      setFormData({
         username: profile.data.username,
         email: profile.data.email,
-        currentPassword: '',
-        newPassword: '',
+        password: '',
         confirmPassword: ''
       })
     }
   }, [profile])
 
-  const handleEditProfile = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!editForm.username || !editForm.email) {
-      toast.error('Username and email are required')
-      return
-    }
-
-    if (editForm.newPassword && editForm.newPassword !== editForm.confirmPassword) {
+    if (formData.password && formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match')
       return
     }
 
+    setIsSubmitting(true)
     try {
-      // TODO: Implement profile update API call
+      await updateProfile({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password || undefined
+      })
       toast.success('Profile updated successfully!')
       setIsEditing(false)
-      setEditForm({
-        ...editForm,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      })
       refetchProfile()
     } catch (error) {
       toast.error('Failed to update profile')
+    } finally {
+      setIsSubmitting(false)
     }
-  }
-
-  const handleCancelEdit = () => {
-    setIsEditing(false)
-    setEditForm({
-      username: profile?.data?.username || '',
-      email: profile?.data?.email || '',
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: ''
-    })
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'delivered': return 'text-green-600 bg-green-100'
-      case 'shipped': return 'text-blue-600 bg-blue-100'
-      case 'pending': return 'text-yellow-600 bg-yellow-100'
-      default: return 'text-gray-600 bg-gray-100'
+      case 'delivered': return 'bg-green-500/10 text-green-600'
+      case 'shipped': return 'bg-blue-500/10 text-blue-600'
+      case 'pending': return 'bg-yellow-500/10 text-yellow-600'
+      default: return 'bg-gray-500/10 text-gray-600'
     }
   }
 
   if (profileLoading || ordersLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner />
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Spinner className="w-10 h-10" />
       </div>
     )
   }
@@ -103,171 +88,155 @@ const Profile = () => {
   const userOrders = ordersData?.data || []
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-          </div>
+    <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="flex flex-col lg:flex-row gap-12">
+        {/* Profile Section */}
+        <div className="w-full lg:w-1/3 space-y-8">
+          <div className="premium-card p-8">
+            <div className="flex flex-col items-center text-center mb-8">
+              <div className="w-24 h-24 bg-accent text-white rounded-full flex items-center justify-center text-3xl font-bold mb-4 shadow-xl shadow-accent/20">
+                {userProfile?.username?.charAt(0).toUpperCase()}
+              </div>
+              <h1 className="text-2xl font-bold">{userProfile?.username}</h1>
+              <p className="text-muted-foreground text-sm">{userProfile?.email}</p>
+              <div className="mt-4 px-3 py-1 bg-secondary rounded-full text-[10px] font-bold uppercase tracking-widest">
+                {userProfile?.role}
+              </div>
+            </div>
 
-          <div className="p-6 space-y-6">
-            {/* Personal Information */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Profile Info */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h2>
-                
-                {isEditing ? (
-                  <form onSubmit={handleEditProfile} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Username</label>
-                      <input
-                        type="text"
-                        value={editForm.username}
-                        onChange={(e) => setEditForm({...editForm, username: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Email</label>
-                      <input
-                        type="email"
-                        value={editForm.email}
-                        onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">New Password (optional)</label>
-                      <input
-                        type="password"
-                        value={editForm.newPassword}
-                        onChange={(e) => setEditForm({...editForm, newPassword: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                      <input
-                        type="password"
-                        value={editForm.confirmPassword}
-                        onChange={(e) => setEditForm({...editForm, confirmPassword: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div className="flex gap-3">
-                      <button
-                        type="submit"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                      >
-                        Save Changes
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleCancelEdit}
-                        className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-500">Username</span>
-                      <span className="text-sm text-gray-900">{userProfile?.username}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-500">Email</span>
-                      <span className="text-sm text-gray-900">{userProfile?.email}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-500">Role</span>
-                      <span className="text-sm text-blue-600">{userProfile?.role}</span>
-                    </div>
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4"
-                    >
-                      Edit Profile
-                    </button>
+            {isEditing ? (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Username</label>
+                  <input
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) => setFormData({...formData, username: e.target.value})}
+                    className="input-field py-2"
+                    required
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Email</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="input-field py-2"
+                    required
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase text-muted-foreground ml-1">New Password</label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="input-field py-2"
+                    placeholder="Leave blank to keep current"
+                  />
+                </div>
+                {formData.password && (
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Confirm Password</label>
+                    <input
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                      className="input-field py-2"
+                    />
                   </div>
                 )}
-              </div>
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 btn-primary py-2 text-sm"
+                  >
+                    {isSubmitting ? <Spinner className="w-4 h-4" /> : "Save"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(false)}
+                    className="flex-1 btn-secondary py-2 text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="w-full btn-primary py-3"
+              >
+                Edit Profile
+              </button>
+            )}
+          </div>
 
-              {/* Role Information */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Role Access</h2>
-                <div className="space-y-3">
-                  <div className="flex items-center">
-                    <div className={`w-3 h-3 rounded-full mr-3 ${
-                      profile?.data?.role === 'USER' ? 'bg-gray-400' :
-                      profile?.data?.role === 'ADMIN' ? 'bg-blue-600' : 'bg-purple-600'
-                    }`}></div>
-                    <div>
-                      <p className="font-medium text-gray-900">Current Role: <span className="text-blue-600">{userProfile?.role}</span></p>
-                      <div className="text-sm text-gray-600 mt-2">
-                        {userProfile?.role === 'USER' && 'You can browse products and place orders'}
-                        {userProfile?.role === 'ADMIN' && 'You can manage products and orders'}
-                        {userProfile?.role === 'SUPER_ADMIN' && 'You have full administrative access'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          <div className="premium-card p-8 bg-black text-white">
+            <h3 className="text-lg font-bold mb-4">Account Security</h3>
+            <p className="text-sm text-gray-400 mb-6">Keep your account secure by using a strong password and monitoring active sessions.</p>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span>Account is active</span>
               </div>
-            </div>
-
-            {/* Order History */}
-            <div className="mt-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Order History</h2>
-              {userOrders && userOrders.length > 0 ? (
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {userOrders.slice(0, 10).map((order: Order) => (
-                          <tr key={order._id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              #{order._id.slice(-8)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {new Date(order.createdAt).toLocaleDateString()}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              ${order.totalPrice.toFixed(2)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}>
-                                {order.status}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  {userOrders.length > 10 && (
-                    <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
-                      <p className="text-sm text-gray-600">Showing 10 of {userOrders.length} orders</p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="text-center py-12 bg-gray-50 rounded-lg">
-                  <p className="text-gray-500">No orders found</p>
-                </div>
-              )}
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <span>Verified email address</span>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Orders Section */}
+        <div className="flex-1 space-y-8">
+          <div className="flex justify-between items-end mb-2">
+            <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
+            <span className="text-sm text-muted-foreground font-medium">{userOrders.length} total orders</span>
+          </div>
+
+          {userOrders && userOrders.length > 0 ? (
+            <div className="space-y-4">
+              {userOrders.map((order: Order) => (
+                <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-bold text-muted-foreground">
+                      #{order._id.slice(-4).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-muted-foreground tracking-widest mb-1">
+                        {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </p>
+                      <p className="font-bold">{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2">
+                    <span className="text-xl font-bold">${order.totalPrice.toLocaleString()}</span>
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getStatusColor(order.status)}`}>
+                      {order.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="premium-card p-20 flex flex-col items-center justify-center text-center">
+              <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">No orders yet</h3>
+              <p className="text-muted-foreground max-w-xs mb-8">Start your collection today and discover exceptional timepieces.</p>
+              <button 
+                onClick={() => window.location.href = '/shop'} 
+                className="btn-primary"
+              >
+                Go to Shop
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

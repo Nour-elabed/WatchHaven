@@ -2,12 +2,14 @@ import api from "./api";
 import type { ApiResponse, Order, Product, User } from "@/types";
 
 export interface AdminProductPayload {
-    title: string;
+    name: string;
+    brand: string;
     description: string;
     price: number;
     stock: number;
     image: string;
     category: string;
+    gender: string;
 }
 
 export const adminGetProducts = () => api.get<ApiResponse<Product[]>>("/admin/products");

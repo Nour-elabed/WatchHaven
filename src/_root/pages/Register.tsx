@@ -4,8 +4,13 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
+
 const Register = () => {
-  const [formData, setFormData] = useState({ username: "", email: "", password: "" })
+  const [formData, setFormData] = useState({ 
+    username: "", 
+    email: "", 
+    password: "" 
+  })
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -18,7 +23,7 @@ const Register = () => {
     setIsLoading(true)
     try {
       const response = await api.post("/auth/register", formData)
-      toast.success(`Account created! Please log in, ${response.data.data.username}.`)
+      toast.success(`Welcome aboard, ${response.data.data.username}! Please sign in.`)
       navigate('/login')
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -32,62 +37,70 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-lg shadow-sm w-full max-w-md border border-gray-50">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Register</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Username</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
-                placeholder="johndoe"
-                autoComplete='off'
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
-                placeholder="example@example.com"
-                autoComplete='off'
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange} // Note: The onChange handler is necessary to update the formData state as the user types.
-                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 mt-4 rounded-full shadow-xl transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
-            >
-              {isLoading ? <><Spinner /> Registering...</> : "Register"} 
-            </button>
-          </form>
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Already have an account?{' '}  
-            <span onClick={() => navigate('/login')} className="text-black font-medium cursor-pointer hover:underline"> 
-              Login here
-            </span>
-          </p>
+    <div className="min-h-[80vh] flex items-center justify-center p-6">
+      <div className="premium-card p-8 w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">Create Account</h1>
+          <p className="text-muted-foreground mt-2">Join our premium watch community</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+           <div className="space-y-2">
+            <label className="text-sm font-medium px-1">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className="input-field"
+              placeholder="johndoe"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium px-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="input-field"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium px-1">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="input-field"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full btn-primary mt-4 py-3 flex items-center justify-center gap-2"
+          >
+            {isLoading ? <Spinner className="w-5 h-5" /> : "Sign Up"}
+          </button>
+        </form>
+        
+        <div className="mt-8 text-center text-sm">
+          <span className="text-muted-foreground">Already have an account?</span>{' '}
+          <button 
+            onClick={() => navigate('/login')} 
+            className="text-primary font-semibold hover:underline"
+          >
+            Sign in
+          </button>
         </div>
       </div>
     </div>

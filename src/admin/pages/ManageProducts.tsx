@@ -56,26 +56,43 @@ const ManageProducts = () => {
 
     const columns = useMemo<Column<Product>[]>(
         () => [
-            { key: "title", header: "Title", render: (p) => p.title ?? p.name },
-            { key: "price", header: "Price", render: (p) => `$${p.price.toFixed(2)}` },
+            { 
+                key: "name", 
+                header: "Product", 
+                render: (p) => (
+                    <div className="flex items-center gap-3">
+                        <img src={p.image} className="w-10 h-10 object-cover rounded-lg" alt={p.name} />
+                        <div>
+                            <p className="font-bold text-sm">{p.name}</p>
+                            <p className="text-[10px] uppercase font-bold text-muted-foreground">{p.brand}</p>
+                        </div>
+                    </div>
+                ) 
+            },
+            { key: "price", header: "Price", render: (p) => `$${p.price.toLocaleString()}` },
             { key: "stock", header: "Stock", render: (p) => p.stock },
             { key: "category", header: "Category", render: (p) => p.category },
+            { key: "gender", header: "Gender", render: (p) => p.gender },
             {
                 key: "actions",
                 header: "Actions",
                 render: (p) => (
                     <div className="flex gap-2">
                         <button
-                            className="rounded bg-gray-100 px-3 py-1 text-xs"
+                            className="bg-secondary text-secondary-foreground px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-border transition-colors"
                             type="button"
                             onClick={() => setEditingProduct(p)}
                         >
                             Edit
                         </button>
                         <button
-                            className="rounded bg-red-100 px-3 py-1 text-xs text-red-700"
+                            className="bg-destructive/10 text-destructive px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-destructive hover:text-white transition-all"
                             type="button"
-                            onClick={() => deleteMutation.mutate(p._id)}
+                            onClick={() => {
+                                if(window.confirm(`Are you sure you want to delete ${p.name}?`)) {
+                                    deleteMutation.mutate(p._id)
+                                }
+                            }}
                         >
                             Delete
                         </button>
@@ -87,16 +104,26 @@ const ManageProducts = () => {
     );
 
     return (
-        <section className="space-y-4">
+        <section className="space-y-8">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Manage Products</h1>
-                <button type="button" className="rounded bg-black px-4 py-2 text-sm text-white" onClick={() => setIsCreateOpen(true)}>
-                    Add Product
+                <div>
+                   <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
+                   <p className="text-muted-foreground text-sm">Add, remove, and update products in your store</p>
+                </div>
+                <button 
+                  type="button" 
+                  className="btn-primary" 
+                  onClick={() => setIsCreateOpen(true)}
+                >
+                    Add New Product
                 </button>
             </div>
-            <DataTable columns={columns} rows={products} emptyText="No products found." />
+            
+            <div className="premium-card overflow-hidden">
+                <DataTable columns={columns} rows={products} emptyText="No products found." />
+            </div>
 
-            <AdminModal title="Create Product" isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)}>
+            <AdminModal title="Create New Product" isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)}>
                 <ProductForm
                     onSubmit={async (payload) => {
                         await createMutation.mutateAsync(payload);
@@ -104,7 +131,7 @@ const ManageProducts = () => {
                 />
             </AdminModal>
 
-            <AdminModal title="Edit Product" isOpen={Boolean(editingProduct)} onClose={() => setEditingProduct(null)}>
+            <AdminModal title={`Edit ${editingProduct?.name}`} isOpen={Boolean(editingProduct)} onClose={() => setEditingProduct(null)}>
                 <ProductForm
                     initialValue={editingProduct}
                     onSubmit={async (payload) => {

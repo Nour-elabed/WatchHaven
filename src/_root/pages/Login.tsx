@@ -9,14 +9,13 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "USER",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const { login } = useAuth()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -24,23 +23,16 @@ const Login = () => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await login(formData.email, formData.password, formData.role as "USER" | "ADMIN" | "SUPER_ADMIN")
+      await login(formData.email, formData.password)
       toast.success("Logged in successfully!")
       
-      // Role-based redirection
-      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
-      if (formData.role === "ADMIN" || formData.role === "SUPER_ADMIN") {
-        navigate(from || '/admin/dashboard')
-      } else {
-        navigate(from || '/')
-      }
+      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/'
+      navigate(from, { replace: true })
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || err.message || "Login failed")
-      } else if (err instanceof Error) {
-        toast.error(err.message || "Login failed")
+        toast.error(err.response?.data?.message || err.message || "Invalid credentials")
       } else {
-        toast.error("Login failed")
+        toast.error("An error occurred during login")
       }
     } finally {
       setIsSubmitting(false)
@@ -48,62 +40,60 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-lg shadow-sm w-full max-w-md border border-gray-50">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
-                placeholder="example@example.com"
-                autoComplete='off'
-                required
-              />
+    <div className="min-h-[80vh] flex items-center justify-center p-6">
+      <div className="premium-card p-8 w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">Welcome Back</h1>
+          <p className="text-muted-foreground mt-2">Enter your credentials to access your account</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-sm font-medium px-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="input-field"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex justify-between items-center px-1">
+              <label className="text-sm font-medium">Password</label>
+              <button type="button" className="text-sm text-accent hover:underline">Forgot?</button>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Login As (Role)</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm p-2 focus:ring-2 focus:ring-black outline-none bg-gray-50"
-              >
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
-                <option value="SUPER_ADMIN">SUPER_ADMIN</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting} // Disable button while loading
-              className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 mt-4 rounded-full shadow-xl transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
-            >
-              {isSubmitting ? <><Spinner /> Logging in...</> : "Login"}
-            </button>
-          </form>
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Don't have an account?{' '}
-            <span onClick={() => navigate('/register')} className="text-black font-medium cursor-pointer hover:underline">
-              Register here
-            </span>
-          </p>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="input-field"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full btn-primary mt-4 py-3 flex items-center justify-center gap-2"
+          >
+            {isSubmitting ? <Spinner className="w-5 h-5" /> : "Sign In"}
+          </button>
+        </form>
+        
+        <div className="mt-8 text-center text-sm">
+          <span className="text-muted-foreground">Don't have an account?</span>{' '}
+          <button 
+            onClick={() => navigate('/register')} 
+            className="text-primary font-semibold hover:underline"
+          >
+            Create account
+          </button>
         </div>
       </div>
     </div>
