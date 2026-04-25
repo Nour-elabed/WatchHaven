@@ -24,9 +24,9 @@ const Profile = () => {
     enabled: !!user,
   })
 
-  const { data: orders = [], isLoading: ordersLoading } = useQuery({
+  const { data: ordersData, isLoading: ordersLoading } = useQuery({
     queryKey: ['user-orders'],
-    queryFn: getOrders,
+    queryFn: getUserOrders,
     enabled: !!user,
   })
 
@@ -218,7 +218,7 @@ const Profile = () => {
             {/* Order History */}
             <div className="mt-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Order History</h2>
-              {orders && orders.length > 0 ? (
+              {ordersData && ordersData.length > 0 ? (
                 <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
