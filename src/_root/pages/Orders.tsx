@@ -7,10 +7,7 @@ import type { Order } from '@/types'
 const Orders = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['orders'],
-    queryFn: async () => {
-      const res = await getUserOrders()
-      return res.data.data as Order[]
-    },
+    queryFn: getUserOrders,
   })
 
   if (isLoading) {

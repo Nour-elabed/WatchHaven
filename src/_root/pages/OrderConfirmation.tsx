@@ -9,10 +9,7 @@ const OrderConfirmation = () => {
 
   const { data: order, isLoading, isError } = useQuery({
     queryKey: ['order', id],
-    queryFn: async () => {
-      const res = await getOrderById(id!)
-      return res.data.data as Order
-    },
+    queryFn: () => getOrderById(id!),
     enabled: Boolean(id),
   })
 

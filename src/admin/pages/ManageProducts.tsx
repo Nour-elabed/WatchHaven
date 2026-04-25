@@ -18,9 +18,9 @@ const ManageProducts = () => {
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-    const { data: products = [] } = useQuery({
+    const { data: products = [] } = useQuery<Product[]>({
         queryKey: ["admin", "products"],
-        queryFn: async () => (await adminGetProducts()).data.data,
+        queryFn: adminGetProducts,
     });
 
     const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin", "products"] });

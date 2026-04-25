@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import api from '@/services/api.ts'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
+import { register } from '@/services/authService'
 
 const Register = () => {
   const [formData, setFormData] = useState({ 
@@ -42,8 +42,8 @@ const Register = () => {
 
     setIsLoading(true)
     try {
-      const response = await api.post("/auth/register", formData)
-      toast.success(`Welcome to the collection, ${response.data.data.username}!`)
+      const userData = await register(formData)
+      toast.success(`Welcome to the collection, ${userData.username}!`)
       navigate('/login')
     } catch (err) {
       if (axios.isAxiosError(err)) {

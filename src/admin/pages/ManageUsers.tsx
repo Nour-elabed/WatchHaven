@@ -7,9 +7,9 @@ import DataTable, { type Column } from "@/admin/components/DataTable";
 
 const ManageUsers = () => {
     const queryClient = useQueryClient();
-    const { data: users = [] } = useQuery({
+    const { data: users = [] } = useQuery<User[]>({
         queryKey: ["admin", "users"],
-        queryFn: async () => (await adminGetUsers()).data.data,
+        queryFn: adminGetUsers,
     });
 
     const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin", "users"] });

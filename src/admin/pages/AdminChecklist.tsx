@@ -53,16 +53,16 @@ const AdminChecklist = () => {
         }
 
         try {
-            const response = await adminGetProducts();
-            updateCheck("products", { status: "passed", details: `Fetched ${response.data.data.length} products.` });
+            const products = await adminGetProducts();
+            updateCheck("products", { status: "passed", details: `Fetched ${products.length} products.` });
         } catch (error) {
             updateCheck("products", { status: "failed", details: "Failed to fetch admin products endpoint." });
         }
 
         if (user?.role === "SUPER_ADMIN") {
             try {
-                const response = await adminGetUsers();
-                updateCheck("users", { status: "passed", details: `Fetched ${response.data.data.length} users.` });
+                const users = await adminGetUsers();
+                updateCheck("users", { status: "passed", details: `Fetched ${users.length} users.` });
             } catch (error) {
                 updateCheck("users", { status: "failed", details: "Failed to fetch admin users endpoint." });
             }
@@ -74,8 +74,8 @@ const AdminChecklist = () => {
         }
 
         try {
-            const response = await adminGetOrders();
-            updateCheck("orders", { status: "passed", details: `Fetched ${response.data.data.length} orders.` });
+            const orders = await adminGetOrders();
+            updateCheck("orders", { status: "passed", details: `Fetched ${orders.length} orders.` });
         } catch (error) {
             updateCheck("orders", { status: "failed", details: "Failed to fetch admin orders endpoint." });
         }

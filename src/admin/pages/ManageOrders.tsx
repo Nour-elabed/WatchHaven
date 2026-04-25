@@ -9,9 +9,9 @@ const orderStatuses: Order["status"][] = ["pending", "shipped", "delivered", "ca
 
 const ManageOrders = () => {
     const queryClient = useQueryClient();
-    const { data: orders = [] } = useQuery({
+    const { data: orders = [] } = useQuery<Order[]>({
         queryKey: ["admin", "orders"],
-        queryFn: async () => (await adminGetOrders()).data.data,
+        queryFn: adminGetOrders,
     });
 
     const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });

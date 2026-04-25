@@ -46,7 +46,7 @@ const Checkout = () => {
         quantity: item.quantity,
       }))
 
-      const { data } = await createOrder({
+      const order = await createOrder({
         orderItems,
         shippingAddress: form,
         paymentMethod,
@@ -55,7 +55,7 @@ const Checkout = () => {
 
       await clearCart()
       toast.success('Order placed successfully!')
-      navigate(`/orders/${data.data._id}`)
+      navigate(`/orders/${order._id}`)
     } catch (err: any) {
       toast.error(err?.response?.data?.message ?? 'Failed to place order.')
     } finally {
