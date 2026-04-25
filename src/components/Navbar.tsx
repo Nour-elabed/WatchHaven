@@ -88,14 +88,18 @@ const Navbar = () => {
             )}
 
             <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-              <div className="flex flex-col items-center cursor-pointer">
-                <img src="/assets/icons/user-btn.svg" alt="user" className="h-6 w-6" />
-                {user && (
+              {user ? (
+                <Link to="/profile" className="flex flex-col items-center cursor-pointer">
+                  <img src="/assets/icons/user-btn.svg" alt="user" className="h-6 w-6" />
                   <span className="text-[10px] text-gray-500 mt-0.5 leading-none">
                     Hi, {user.username}
                   </span>
-                )}
-              </div>
+                </Link>
+              ) : (
+                <div className="flex flex-col items-center cursor-pointer">
+                  <img src="/assets/icons/user-btn.svg" alt="user" className="h-6 w-6" />
+                </div>
+              )}
               {showPopup && !user && (
                 <div
                   onMouseEnter={handleMouseEnter}
@@ -178,6 +182,13 @@ const Navbar = () => {
                 {/* Auth actions */}
                 {user ? (
                   <>
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsOpen(false)}
+                      className="w-full text-center border border-gray-300 text-sm py-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                    >
+                      Profile
+                    </Link>
                     {(user.role === "ADMIN" || user.role === "SUPER_ADMIN") && (
                       <Link
                         to="/admin/dashboard"
