@@ -77,9 +77,14 @@ const Navbar = () => {
               </Link>
             )}
             {user && (
-              <button onClick={handleLogout} className="text-sm font-medium text-black hover:underline transition-colors">
-                Logout
-              </button>
+              <>
+                <Link to="/profile" className="text-sm font-medium text-black hover:underline transition-colors">
+                  Profile
+                </Link>
+                <button onClick={handleLogout} className="text-sm font-medium text-black hover:underline transition-colors">
+                  Logout
+                </button>
+              </>
             )}
 
             <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

@@ -9,6 +9,7 @@ const Shop = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
   const [sortOrder, setSortOrder] = useState("option-one")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedGender, setSelectedGender] = useState<string>("ALL")
   
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get("q") || ""
