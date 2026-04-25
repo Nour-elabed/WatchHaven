@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@/context/AuthContext'
 import { getProfile } from '@/services/authService'
 import { getUserOrders } from '@/services/orderService'
-import type { Order, User, ApiResponse } from '@/types'
+import type { Order, User } from '@/types'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 
@@ -19,23 +19,19 @@ const Profile = () => {
     confirmPassword: ''
   })
 
-  // 1. Fetch Profile Data
-  const { data: profileResponse, isLoading: profileLoading, refetch: refetchProfile } = useQuery<ApiResponse<User>>({
+  // 1. Fetch Profile Data - QueryFn now returns User directly
+  const { data: userData, isLoading: profileLoading, refetch: refetchProfile } = useQuery<User>({
     queryKey: ['profile'],
     queryFn: getProfile,
     enabled: !!user,
   })
 
-  // 2. Fetch Orders Data
-  const { data: ordersResponse, isLoading: ordersLoading } = useQuery<ApiResponse<Order[]>>({
+  // 2. Fetch Orders Data - QueryFn now returns Order[] directly
+  const { data: ordersData, isLoading: ordersLoading } = useQuery<Order[]>({
     queryKey: ['user-orders'],
     queryFn: getUserOrders,
     enabled: !!user,
   })
-
-  // Memoized data extraction for safety and readability
-  const userData = profileResponse?.data
-  const ordersData = ordersResponse?.data || []
 
   useEffect(() => {
     if (userData) {
@@ -89,6 +85,8 @@ const Profile = () => {
       </div>
     )
   }
+
+  const ordersList = ordersData || []
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
@@ -197,12 +195,12 @@ const Profile = () => {
         <div className="flex-1 space-y-8">
           <div className="flex justify-between items-end mb-2">
             <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
-            <span className="text-sm text-muted-foreground font-medium">{ordersData.length} total orders</span>
+            <span className="text-sm text-muted-foreground font-medium">{ordersList.length} total orders</span>
           </div>
 
-          {ordersData && ordersData.length > 0 ? (
+          {ordersList && ordersList.length > 0 ? (
             <div className="space-y-4">
-              {ordersData.map((order: Order) => (
+              {ordersList.map((order: Order) => (
                 <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="flex items-center gap-6">
                     <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-bold text-muted-foreground">

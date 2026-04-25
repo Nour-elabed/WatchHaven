@@ -4,9 +4,6 @@
  * Provides: user, isLoading, login(), logout()
  * Listens for the custom "auth:logout" event dispatched by the Axios interceptor
  * so that a 401 response automatically clears state without a full page reload.
- *
- * NOTE: Token stored in localStorage for simplicity.
- * In production, prefer httpOnly cookies to mitigate XSS risks.
  */
 import {
     createContext,
@@ -40,8 +37,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const token = localStorage.getItem("token");
             if (!token) { setIsLoading(false); return; }
             try {
-                const { data } = await authService.getProfile();
-                const profile = data.data;
+                // authService calls now return .data directly
+                const profile = await authService.getProfile();
                 setUser({
                     ...profile,
                     token,
@@ -66,8 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // ── Login ──────────────────────────────────────────────────────────
     const login = useCallback(async (email: string, password: string) => {
-        const { data } = await authService.login({ email, password });
-        const userData = data.data;
+        const userData = await authService.login({ email, password });
         localStorage.setItem("token", userData.token);
         setUser(userData);
     }, []);
@@ -81,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // ── Update Profile ─────────────────────────────────────────────────
     const updateProfile = useCallback(async (payload: { username?: string; email?: string; password?: string }) => {
+        // Here we use api directly, so we still get Axios response wrapper
         const { data } = await api.put<ApiResponse<User>>("/auth/profile", payload);
         const userData = data.data;
         if (userData.token) {

@@ -3,7 +3,7 @@ import { useCart } from "@/context/useCart"
 import { toast } from "sonner"
 import { Link } from "react-router-dom"
 import { getProducts } from "@/services/productService"
-import type { Product } from "@/types"
+import type { Product, ApiResponse } from "@/types"
 import { Spinner } from "./ui/spinner"
 
 interface ShopContentProps {
@@ -17,10 +17,10 @@ interface ShopContentProps {
 const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender, searchQuery }: ShopContentProps) => {
   const { addToCart } = useCart()
 
-  const { data, isLoading, isError } = useQuery({
+  const { data: response, isLoading, isError } = useQuery<ApiResponse<Product[]>>({
     queryKey: ["products", priceRange, sortOrder, selectedCategories, selectedGender, searchQuery],
     queryFn: async () => {
-      const response = await getProducts({
+      return await getProducts({
         minPrice: priceRange[0],
         maxPrice: priceRange[1],
         sort: sortOrder === "option-four" ? "price-asc" : sortOrder === "option-five" ? "price-desc" : undefined,
@@ -28,7 +28,6 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
         gender: selectedGender !== "ALL" ? selectedGender : undefined,
         search: searchQuery || undefined,
       })
-      return response.data
     },
   })
 
@@ -58,7 +57,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
     )
   }
 
-  const products = data?.data || []
+  const products = response?.data || []
 
   if (products.length === 0) {
     return (
@@ -71,7 +70,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
 
   return (
     <section className="w-full">
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 text-gray-900">
         {products.map((product) => (
           <div
             key={product._id}
@@ -86,7 +85,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                 />
               </Link>
               <div className="absolute top-3 left-3">
-                 <span className="glass px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                 <span className="glass px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-black">
                    {product.brand}
                  </span>
               </div>

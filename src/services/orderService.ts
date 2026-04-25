@@ -9,10 +9,10 @@ export interface CreateOrderPayload {
 }
 
 export const createOrder = (payload: CreateOrderPayload) =>
-    api.post<ApiResponse<Order>>("/orders", payload);
+    api.post<ApiResponse<Order>>("/orders", payload).then(res => res.data.data);
 
 export const getUserOrders = () =>
-    api.get<ApiResponse<Order[]>>("/orders/my");
+    api.get<ApiResponse<Order[]>>("/orders/my").then(res => res.data.data);
 
 export const getOrderById = (id: string) =>
-    api.get<ApiResponse<Order>>(`/orders/${id}`);
+    api.get<ApiResponse<Order>>(`/orders/${id}`).then(res => res.data.data);
