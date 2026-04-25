@@ -1,3 +1,4 @@
+
 // ─── User ─────────────────────────────────────────────────────────────────
 export interface User {
     _id: string;
@@ -67,5 +68,5 @@ export interface Order {
 export interface ApiResponse<T> {
     success: boolean;
     data: T;
-    message: string;
+    message?: string;
 }
