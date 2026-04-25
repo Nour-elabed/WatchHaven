@@ -1,16 +1,11 @@
-/**
- * Centralized Axios instance — the ONLY place we configure HTTP calls.
- *
- * Request interceptor:  auto-attaches Authorization header from localStorage.
- * Response interceptor: on 401, clears the stale token so the user is
- *                       effectively logged out on the next navigation.
- *
- * NOTE: For production, prefer httpOnly cookies over localStorage JWT
- * to mitigate XSS attacks. Using localStorage here for simplicity.
- */
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+/**
+ * BASE_URL Configuration:
+ * In development (Vite), it will use the proxy if VITE_API_URL is undefined.
+ * In production (Vercel), VITE_API_URL MUST be set in the dashboard.
+ */
+const BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -33,12 +28,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Log out on 401 Unauthorized or if the server goes completely offline (ERR_NETWORK)
         if (error.response?.status === 401 || !error.response || error.code === 'ERR_NETWORK') {
-            // Token expired, invalid, or server unreachable — clear it
             localStorage.removeItem("token");
             localStorage.removeItem("cart_items");
-            // Dispatch a custom event so AuthContext can sync state
             window.dispatchEvent(new Event("auth:logout"));
         }
         return Promise.reject(error);
