@@ -23,6 +23,7 @@ const Login = () => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
+      // Explicitly send only email and password
       await login(formData.email, formData.password)
       toast.success("Logged in successfully!")
       
