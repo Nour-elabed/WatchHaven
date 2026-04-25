@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@/context/AuthContext'
 import { getProfile } from '@/services/authService'
 import { getUserOrders } from '@/services/orderService'
-import type { Order } from '@/types'
+import type { Order, User, ApiResponse } from '@/types'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 
@@ -19,28 +19,34 @@ const Profile = () => {
     confirmPassword: ''
   })
 
-  const { data: profile, isLoading: profileLoading, refetch: refetchProfile } = useQuery({
+  // 1. Fetch Profile Data
+  const { data: profileResponse, isLoading: profileLoading, refetch: refetchProfile } = useQuery<ApiResponse<User>>({
     queryKey: ['profile'],
     queryFn: getProfile,
     enabled: !!user,
   })
 
-  const { data: ordersData, isLoading: ordersLoading } = useQuery({
+  // 2. Fetch Orders Data
+  const { data: ordersResponse, isLoading: ordersLoading } = useQuery<ApiResponse<Order[]>>({
     queryKey: ['user-orders'],
     queryFn: getUserOrders,
     enabled: !!user,
   })
 
+  // Memoized data extraction for safety and readability
+  const userData = profileResponse?.data
+  const ordersData = ordersResponse?.data || []
+
   useEffect(() => {
-    if (profile?.data) {
+    if (userData) {
       setFormData({
-        username: profile.data.username,
-        email: profile.data.email,
+        username: userData.username,
+        email: userData.email,
         password: '',
         confirmPassword: ''
       })
     }
-  }, [profile])
+  }, [userData])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,23 +90,20 @@ const Profile = () => {
     )
   }
 
-  const userProfile = profile?.data
-  const userOrders = ordersData?.data || []
-
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-12 text-gray-900">
         {/* Profile Section */}
         <div className="w-full lg:w-1/3 space-y-8">
           <div className="premium-card p-8">
             <div className="flex flex-col items-center text-center mb-8">
               <div className="w-24 h-24 bg-accent text-white rounded-full flex items-center justify-center text-3xl font-bold mb-4 shadow-xl shadow-accent/20">
-                {userProfile?.username?.charAt(0).toUpperCase()}
+                {userData?.username?.charAt(0).toUpperCase() || 'U'}
               </div>
-              <h1 className="text-2xl font-bold">{userProfile?.username}</h1>
-              <p className="text-muted-foreground text-sm">{userProfile?.email}</p>
-              <div className="mt-4 px-3 py-1 bg-secondary rounded-full text-[10px] font-bold uppercase tracking-widest">
-                {userProfile?.role}
+              <h1 className="text-2xl font-bold">{userData?.username || 'User'}</h1>
+              <p className="text-muted-foreground text-sm">{userData?.email || 'No email provided'}</p>
+              <div className="mt-4 px-3 py-1 bg-secondary rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">
+                {userData?.role || 'Guest'}
               </div>
             </div>
 
@@ -153,7 +156,7 @@ const Profile = () => {
                     disabled={isSubmitting}
                     className="flex-1 btn-primary py-2 text-sm"
                   >
-                    {isSubmitting ? <Spinner className="w-4 h-4" /> : "Save"}
+                    {isSubmitting ? <Spinner className="w-4 h-4 border-white/60" /> : "Save"}
                   </button>
                   <button
                     type="button"
@@ -194,12 +197,12 @@ const Profile = () => {
         <div className="flex-1 space-y-8">
           <div className="flex justify-between items-end mb-2">
             <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
-            <span className="text-sm text-muted-foreground font-medium">{userOrders.length} total orders</span>
+            <span className="text-sm text-muted-foreground font-medium">{ordersData.length} total orders</span>
           </div>
 
-          {userOrders && userOrders.length > 0 ? (
+          {ordersData && ordersData.length > 0 ? (
             <div className="space-y-4">
-              {userOrders.map((order: Order) => (
+              {ordersData.map((order: Order) => (
                 <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="flex items-center gap-6">
                     <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-bold text-muted-foreground">
