@@ -173,15 +173,15 @@ const Profile = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-gray-500">Username</span>
-                      <span className="text-sm text-gray-900">{profile.data.username}</span>
+                      <span className="text-sm text-gray-900">{profile?.data?.username}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-gray-500">Email</span>
-                      <span className="text-sm text-gray-900">{profile.data.email}</span>
+                      <span className="text-sm text-gray-900">{profile?.data?.email}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-gray-500">Role</span>
-                      <span className="text-sm font-medium text-blue-600">{profile.data.role}</span>
+                      <span className="text-sm text-blue-600">{profile?.data?.role}</span>
                     </div>
                     <button
                       onClick={() => setIsEditing(true)}
@@ -231,7 +231,7 @@ const Profile = () => {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {orders.slice(0, 10).map((order: Order) => (
+                        {ordersData?.slice(0, 10).map((order: Order) => (
                           <tr key={order._id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               #{order._id.slice(-8)}
