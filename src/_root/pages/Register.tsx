@@ -17,7 +17,7 @@ const Register = () => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      const response = await api.post("/users/register", formData)
+      const response = await api.post("/auth/register", formData)
       toast.success(`Account created! Please log in, ${response.data.data.username}.`)
       navigate('/login')
     } catch (err) {
