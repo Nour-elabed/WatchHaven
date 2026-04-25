@@ -15,7 +15,7 @@ export interface Product {
     name: string;
     description: string;
     price: number;
-    category: string;
+    category: "MEN" | "WOMEN";
     image: string;
     stock: number;
     rating: number;
