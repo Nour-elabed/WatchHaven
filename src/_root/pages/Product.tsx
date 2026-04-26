@@ -9,6 +9,7 @@ const Product = () => {
   const product = paginationProducts.find((p) => String(p.id) === id) || paginationProducts[0]
 
   return (
+    
     <div>
       <ProductContent product={product}/>
       <ProductDetails/>
