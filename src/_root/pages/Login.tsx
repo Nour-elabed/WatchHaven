@@ -9,6 +9,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role: "AUTO" as "AUTO" | "USER" | "ADMIN" | "SUPER_ADMIN",
   })
   const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -44,7 +45,7 @@ const Login = () => {
 
     setIsSubmitting(true)
     try {
-      await login(formData.email, formData.password)
+      await login(formData.email, formData.password, formData.role)
       toast.success("Welcome back!")
       
       const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/'
@@ -116,6 +117,26 @@ const Login = () => {
                 )}
               </button>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Access Role</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  role: e.target.value as "AUTO" | "USER" | "ADMIN" | "SUPER_ADMIN",
+                })
+              }
+              className="input-field bg-white"
+            >
+              <option value="AUTO">Auto (recommended)</option>
+              <option value="USER">Login as USER</option>
+              <option value="ADMIN">Login as ADMIN</option>
+              <option value="SUPER_ADMIN">Login as SUPER_ADMIN</option>
+            </select>
           </div>
           
           <button

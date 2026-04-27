@@ -20,7 +20,7 @@ import type { User, ApiResponse } from "@/types";
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string, role?: "AUTO" | User["role"]) => Promise<void>;
     logout: () => void;
     updateProfile: (data: { username?: string; email?: string; password?: string }) => Promise<void>;
 }
@@ -62,8 +62,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     // ── Login ──────────────────────────────────────────────────────────
-    const login = useCallback(async (email: string, password: string) => {
-        const userData = await authService.login({ email, password });
+    const login = useCallback(async (email: string, password: string, role: "AUTO" | User["role"] = "AUTO") => {
+        const userData = await authService.login({ email, password, role });
         localStorage.setItem("token", userData.token);
         setUser(userData);
     }, []);
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // ── Update Profile ─────────────────────────────────────────────────
     const updateProfile = useCallback(async (payload: { username?: string; email?: string; password?: string }) => {
         // Here we use api directly, so we still get Axios response wrapper
-        const { data } = await api.put<ApiResponse<User>>("/auth/profile", payload);
+        const { data } = await api.put<ApiResponse<User>>("/users/profile", payload);
         const userData = data.data;
         if (userData.token) {
             localStorage.setItem("token", userData.token);
