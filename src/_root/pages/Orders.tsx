@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getUserOrders } from '@/services/orderService'
 import { Spinner } from '@/components/ui/spinner'
-import type { Order } from '@/types'
 
 const Orders = () => {
   const { data, isLoading, isError } = useQuery({

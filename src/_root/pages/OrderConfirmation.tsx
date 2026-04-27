@@ -2,7 +2,6 @@ import { useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getOrderById } from '@/services/orderService'
 import { Spinner } from '@/components/ui/spinner'
-import type { Order } from '@/types'
 
 const OrderConfirmation = () => {
   const { id } = useParams<{ id: string }>()
