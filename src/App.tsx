@@ -19,6 +19,7 @@ const Login = lazy(() => import('./_root/pages/Login'))
 const Register = lazy(() => import('./_root/pages/Register'))
 const Checkout = lazy(() => import('./_root/pages/Checkout'))
 const About = lazy(() => import('./_root/pages/About'))
+const Contact = lazy(() => import('./_root/pages/Contact'))
 const Orders = lazy(() => import('./_root/pages/Orders'))
 const OrderConfirmation = lazy(() => import('./_root/pages/OrderConfirmation'))
 const Profile = lazy(() => import('./_root/pages/Profile'))
@@ -51,7 +52,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
-          <Toaster position="bottom-center" richColors />
+          <Toaster position="top-right" richColors />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route element={<RootLayout />}>
@@ -62,6 +63,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
 
                 {/* Protected routes — must be logged in */}
                 <Route element={<PrivateRoute />}>

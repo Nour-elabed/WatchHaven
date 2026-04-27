@@ -70,50 +70,57 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
 
   return (
     <section className="w-full">
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 text-gray-900">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 text-gray-900">
         {products.map((product) => (
           <div
             key={product._id}
-            className="premium-card group overflow-hidden"
+            className="premium-card group overflow-hidden bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <div className="relative aspect-[4/5] overflow-hidden">
               <Link to={`/product/${product._id}`}>
                 <img 
                   src={product.image} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   alt={product.name} 
                 />
               </Link>
-              <div className="absolute top-3 left-3">
-                 <span className="glass px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-black">
+              <div className="absolute top-4 left-4">
+                 <span className="glass px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-black bg-white/90">
                    {product.brand}
                  </span>
               </div>
-              <button
-                onClick={() => handleAddToCart(product)}
-                className="absolute bottom-4 right-4 bg-white text-black p-3 rounded-full shadow-lg opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-black hover:text-white"
-                aria-label={`Add ${product.name} to cart`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              </button>
             </div>
 
-            <div className="p-5 space-y-3">
+            <div className="p-6 space-y-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest mb-1">{product.gender}</p>
-                  <h3 className="font-bold text-gray-900 group-hover:text-accent transition-colors">{product.name}</h3>
+                <div className="flex-1">
+                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">{product.gender}</p>
+                  <h3 className="font-bold text-lg text-gray-900 group-hover:text-accent transition-colors mb-2">{product.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <span className="text-sm font-semibold">{product.rating}</span>
+                    <span className="text-xs text-muted-foreground">({product.numReviews})</span>
+                  </div>
                 </div>
-                <span className="font-bold text-lg">${product.price.toLocaleString()}</span>
+                <div className="text-right">
+                  <span className="font-bold text-xl text-gray-900">${product.price.toLocaleString()}</span>
+                  <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                  <span className="text-sm font-semibold">{product.rating}</span>
-                </div>
-                <span className="text-xs text-muted-foreground">{product.category}</span>
-              </div>
+              {/* Full-width black Add to Cart bar */}
+              <button
+                onClick={() => handleAddToCart(product)}
+                className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center gap-2"
+                aria-label={`Add ${product.name} to cart`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="8" cy="21" r="1"/>
+                  <circle cx="19" cy="21" r="1"/>
+                  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                </svg>
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}

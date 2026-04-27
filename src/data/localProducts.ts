@@ -1,7 +1,7 @@
 import type { Product } from "@/types"
 
 export const localProducts: Product[] = [
-  // MEN'S PRODUCTS - Replace with your actual watch photos
+  // MEN'S PRODUCTS - Using actual image files from women's folder (since men's folder is empty)
   {
     _id: "1",
     name: "Classic Men's Chronograph",
@@ -10,7 +10,7 @@ export const localProducts: Product[] = [
     price: 1299.99,
     category: "Luxury",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch1.jpg", // Replace with your photo
+    image: "/assets/watches/women/0995062ae308ad6a0a8d16cd5e60be41.jpg",
     stock: 15,
     rating: 4.8,
     numReviews: 124,
@@ -23,7 +23,7 @@ export const localProducts: Product[] = [
     price: 899.99,
     category: "Sport",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch2.jpg", // Replace with your photo
+    image: "/assets/watches/women/190ac9969e58d866bb76a67a7de63831.jpg",
     stock: 22,
     rating: 4.6,
     numReviews: 89,
@@ -36,7 +36,7 @@ export const localProducts: Product[] = [
     price: 699.99,
     category: "Classic",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch3.jpg", // Replace with your photo
+    image: "/assets/watches/women/1a0c8d86e2d71a32f69ab43cf9560215.jpg",
     stock: 18,
     rating: 4.7,
     numReviews: 156,
@@ -49,7 +49,7 @@ export const localProducts: Product[] = [
     price: 449.99,
     category: "Smart",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch4.jpg", // Replace with your photo
+    image: "/assets/watches/women/1c49b82796b4ac83adb568bc273a8b74.jpg",
     stock: 31,
     rating: 4.5,
     numReviews: 203,
@@ -62,7 +62,7 @@ export const localProducts: Product[] = [
     price: 299.99,
     category: "Minimalist",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch5.jpg", // Replace with your photo
+    image: "/assets/watches/women/4d25fa27625ff4eb7a9f87670818f6a2.jpg",
     stock: 45,
     rating: 4.4,
     numReviews: 178,
@@ -75,7 +75,7 @@ export const localProducts: Product[] = [
     price: 1599.99,
     category: "Luxury",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch6.jpg", // Replace with your photo
+    image: "/assets/watches/women/693a569cf0375b1ee53536faf7cd7b6c.jpg",
     stock: 8,
     rating: 4.9,
     numReviews: 67,
@@ -88,7 +88,7 @@ export const localProducts: Product[] = [
     price: 1199.99,
     category: "Sport",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch7.jpg", // Replace with your photo
+    image: "/assets/watches/women/6f26c45e0f88f044877b1fdd39647ffc.jpg",
     stock: 12,
     rating: 4.7,
     numReviews: 94,
@@ -101,13 +101,13 @@ export const localProducts: Product[] = [
     price: 1899.99,
     category: "Classic",
     gender: "MEN",
-    image: "/assets/watches/men/men-watch8.jpg", // Replace with your photo
+    image: "/assets/watches/women/76ac800ae3340e4f18bbd6d1e80187ff.jpg",
     stock: 5,
     rating: 4.8,
     numReviews: 45,
   },
 
-  // WOMEN'S PRODUCTS - Replace with your actual watch photos
+  // WOMEN'S PRODUCTS - Using actual image files
   {
     _id: "9",
     name: "Elegant Women's Rose Gold",
@@ -116,7 +116,7 @@ export const localProducts: Product[] = [
     price: 1399.99,
     category: "Luxury",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch1.jpg", // Replace with your photo
+    image: "/assets/watches/women/a8bed5c073ca767aead0fbb3a057838a.jpg",
     stock: 18,
     rating: 4.9,
     numReviews: 203,
@@ -129,7 +129,7 @@ export const localProducts: Product[] = [
     price: 999.99,
     category: "Sport",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch2.jpg", // Replace with your photo
+    image: "/assets/watches/women/b54fc63d4ee979dceff3e19795a62079.jpg",
     stock: 25,
     rating: 4.6,
     numReviews: 142,
@@ -142,7 +142,7 @@ export const localProducts: Product[] = [
     price: 799.99,
     category: "Classic",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch3.jpg", // Replace with your photo
+    image: "/assets/watches/women/d55ec4a42064147784ea92c788d39b66.jpg",
     stock: 20,
     rating: 4.7,
     numReviews: 167,
@@ -155,7 +155,7 @@ export const localProducts: Product[] = [
     price: 549.99,
     category: "Smart",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch4.jpg", // Replace with your photo
+    image: "/assets/watches/women/d894f4b5863c0c27ca5de987a41742d.jpg",
     stock: 28,
     rating: 4.5,
     numReviews: 189,
@@ -168,7 +168,7 @@ export const localProducts: Product[] = [
     price: 349.99,
     category: "Minimalist",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch5.jpg", // Replace with your photo
+    image: "/assets/watches/women/dc5c5f70154b4803ac5fcdd6c133601b.jpg",
     stock: 35,
     rating: 4.4,
     numReviews: 234,
@@ -181,7 +181,7 @@ export const localProducts: Product[] = [
     price: 449.99,
     category: "Luxury",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch6.jpg", // Replace with your photo
+    image: "/assets/watches/women/ef591d42a5a3bcc6fd1d400dea3399c8.jpg",
     stock: 15,
     rating: 4.6,
     numReviews: 123,
@@ -194,7 +194,7 @@ export const localProducts: Product[] = [
     price: 749.99,
     category: "Sport",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch7.jpg", // Replace with your photo
+    image: "/assets/watches/women/f5d4665e751165879505719ae54c98cd.jpg",
     stock: 22,
     rating: 4.7,
     numReviews: 98,
@@ -207,13 +207,13 @@ export const localProducts: Product[] = [
     price: 1099.99,
     category: "Classic",
     gender: "WOMEN",
-    image: "/assets/watches/women/women-watch8.jpg", // Replace with your photo
+    image: "/assets/watches/women/fd0891993142cb179a8ced76f39c8206.jpg",
     stock: 10,
     rating: 4.8,
     numReviews: 76,
   },
 
-  // UNISEX PRODUCTS - Replace with your actual watch photos
+  // UNISEX PRODUCTS - Using actual image files
   {
     _id: "17",
     name: "Unisex Luxury Watch",
@@ -222,7 +222,7 @@ export const localProducts: Product[] = [
     price: 999.99,
     category: "Luxury",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch1.jpg", // Replace with your photo
+    image: "/assets/watches/unisex/12ad0bb13579970e7ef004581f1258a0.jpg",
     stock: 30,
     rating: 4.5,
     numReviews: 145,
@@ -235,7 +235,7 @@ export const localProducts: Product[] = [
     price: 1299.99,
     category: "Sport",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch2.jpg", // Replace with your photo
+    image: "/assets/watches/unisex/538c59a7a6e0262fa60962ef63cd3fd2.jpg",
     stock: 18,
     rating: 4.7,
     numReviews: 176,
@@ -248,7 +248,7 @@ export const localProducts: Product[] = [
     price: 1599.99,
     category: "Classic",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch3.jpg", // Replace with your photo
+    image: "/assets/watches/unisex/76ac800ae3340e4f18bbd6d1e80187ff.jpg",
     stock: 12,
     rating: 4.8,
     numReviews: 89,
@@ -261,7 +261,7 @@ export const localProducts: Product[] = [
     price: 899.99,
     category: "Smart",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch4.jpg", // Replace with your photo
+    image: "/assets/watches/unisex/c49fbbb0b5d744f48b7d90f7d2633226.jpg",
     stock: 25,
     rating: 4.4,
     numReviews: 267,
@@ -274,7 +274,7 @@ export const localProducts: Product[] = [
     price: 599.99,
     category: "Minimalist",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch5.jpg", // Replace with your photo
+    image: "/assets/watches/unisex/c653ebee41d9413909e3225d39cdb635.jpg",
     stock: 40,
     rating: 4.3,
     numReviews: 134,
@@ -287,7 +287,7 @@ export const localProducts: Product[] = [
     price: 1199.99,
     category: "Classic",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch6.jpg", // Replace with your photo
+    image: "/assets/watches/unisex/da29169512f89118cf539ddbd5331b29.jpg",
     stock: 16,
     rating: 4.6,
     numReviews: 198,
@@ -300,7 +300,7 @@ export const localProducts: Product[] = [
     price: 699.99,
     category: "Sport",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch7.jpg", // Replace with your photo
+    image: "/assets/watches/women/1a0c8d86e2d71a32f69ab43cf9560215.jpg",
     stock: 28,
     rating: 4.7,
     numReviews: 156,
@@ -313,7 +313,7 @@ export const localProducts: Product[] = [
     price: 399.99,
     category: "Minimalist",
     gender: "UNISEX",
-    image: "/assets/watches/unisex/unisex-watch8.jpg", // Replace with your photo
+    image: "/assets/watches/women/1c49b82796b4ac83adb568bc273a8b74.jpg",
     stock: 35,
     rating: 4.5,
     numReviews: 223,
