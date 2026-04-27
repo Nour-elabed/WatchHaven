@@ -14,7 +14,7 @@ import './index.css'
 const RootLayout = lazy(() => import('./_root/pages/RootLayout'))
 const Home = lazy(() => import('./_root/pages/Home'))
 const Shop = lazy(() => import('./_root/pages/Shop'))
-const Product = lazy(() => import('./_root/pages/Product'))
+const ProductDetail = lazy(() => import('./_root/pages/ProductDetail'))
 const Login = lazy(() => import('./_root/pages/Login'))
 const Register = lazy(() => import('./_root/pages/Register'))
 const Checkout = lazy(() => import('./_root/pages/Checkout'))
@@ -51,14 +51,14 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
-          <Toaster position="top-right" richColors />
+          <Toaster position="bottom-center" richColors />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route element={<RootLayout />}>
                 {/* Public routes */}
                 <Route index element={<Home />} />
                 <Route path="/shop" element={<Shop />} />
-                <Route path="/product/:id" element={<Product />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/about" element={<About />} />

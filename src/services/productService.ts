@@ -1,4 +1,4 @@
-import api from "./api";
+import { getMockProducts, getMockProductById } from "@/data/mockProducts";
 import type { Product, ApiResponse } from "@/types";
 
 export interface GetProductsParams {
@@ -13,10 +13,16 @@ export interface GetProductsParams {
     limit?: number;
 }
 
-// NOTE: Products API returns { success, data: Product[], pagination }
-// We return the raw ApiResponse here because components might need pagination info
-export const getProducts = (params?: GetProductsParams) =>
-    api.get<ApiResponse<Product[]>>("/products", { params }).then(res => res.data);
+// Using mock data for development - replace with API calls when backend is ready
+export const getProducts = async (params?: GetProductsParams): Promise<ApiResponse<Product[]>> => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return getMockProducts(params);
+};
 
-export const getProductById = (id: string) =>
-    api.get<ApiResponse<Product>>(`/products/${id}`).then(res => res.data.data);
+export const getProductById = async (id: string): Promise<Product> => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const response = getMockProductById(id);
+    return response.data;
+};
