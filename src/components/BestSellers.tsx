@@ -1,10 +1,18 @@
-// sections/Recommendations.tsx
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import type { Product } from "@/types";
+import { getProducts } from "@/services/productService";
 import ScrollCarousel from "./ui/ScrollCarousel"; // Your existing untouched carousel
-import ProductSlideCard from "./shared/ProductSlideCard";
-import { productSlides } from "./constants/ProductData";
+import { Link } from "react-router-dom";
 
 const BestSellers: React.FC = () => {
+  const { data } = useQuery({
+    queryKey: ["home", "best-sellers"],
+    queryFn: async () => (await getProducts({ sort: "rating", limit: 12 })).data,
+  });
+
+  const products = (data as Product[] | undefined) ?? [];
+
   return (
     <section className="w-full py-16 px-4 md:px-8 mt-4">
       <div className="max-w-7xl mx-auto w-full">
@@ -21,9 +29,21 @@ const BestSellers: React.FC = () => {
           </h2>
         </div>
         <ScrollCarousel
-          slides={productSlides.map((product) => (
-            <div key={product.id} className="scroll-carousel__slide">
-              <ProductSlideCard {...product} />
+          slides={products.map((product) => (
+            <div key={product._id} className="scroll-carousel__slide">
+              <div className="premium-card overflow-hidden w-[260px]">
+                <Link to={`/product/${product._id}`}>
+                  <img src={product.image} alt={product.name} className="h-44 w-full object-cover" />
+                </Link>
+                <div className="p-4 space-y-2">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{product.gender}</p>
+                  <p className="font-bold line-clamp-1">{product.name}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold">${product.price.toFixed(2)}</span>
+                    <span className="text-xs text-muted-foreground">{product.rating.toFixed(1)}★</span>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
           options={{ 

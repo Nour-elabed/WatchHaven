@@ -1,72 +1,37 @@
-import Footer from "./Footer";
-import Recommendations from "./Recommendations";
-import { KeywordSection } from "./ui/Keywords";
+import type { Product } from "@/types"
+import Footer from "./Footer"
+import Recommendations from "./Recommendations"
 
-const ProductDetails = () => {
+const ProductDetails = ({ product }: { product: Product }) => {
   return (
-    <div className="flex flex-col gap-2 p-4 w-full max-w-full overflow-visible">
-      
-      <div className="py-2 mt-4 px-2 w-full">
-        <span className="text-xl font-bold block py-2">
-          Black Automatic Watch
-        </span>
-        <span className="text-l block">
-          The St. Louis Meramec Canoe Company was founded by Alfred Wickett in 1922.
-                  <span className="text-l block">
-          Wickett had previously worked for the Old Town Canoe Co from 1900 to 1914.</span>
-                  <span className="text-l block">
+    <div className="flex flex-col gap-8 p-4 lg:px-16 w-full max-w-full overflow-visible text-gray-900">
+      <section className="w-full">
+        <h2 className="text-2xl font-bold mb-2">About this product</h2>
+        <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+      </section>
 
-          Manufacturing of the classic wooden canoes in Valley Park, Missouri ceased
-          in 1978.</span>
-        </span>
-      </div>
-
-      <div className="py-2 mt-4 px-2 w-full">
-        <span className="text-xl font-bold block py-4">
-          Fabric + Care
-        </span>
-        <span className="text-l block">
-          Material: Soft wool blend
-        </span>
-        <span className="text-l block py-2">
-          Color: Various
-        </span>
-      </div>
-
-      <div className="py-2 mt-4 px-2 w-full">
-        <span className="text-xl font-bold block py-4">
-          Sale performance
-        </span>
-        <span className="text-l block">
-          Sales: 0
-        </span>
-        <span className="text-l block py-2">
-          Review Count: -
-        </span>
-        <span className="text-l block py-2">
-          Review Average: -
-        </span>
-      </div>
-
-      <div className="py-2 mt-4 px-2 w-full">
-        <span className="text-xl font-bold block py-4">
-          Keywords
-        </span>
-
-        <div className="w-full overflow-visible">
-          <KeywordSection />
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-xl border p-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Category</p>
+          <p className="font-semibold">{product.gender}</p>
         </div>
+        <div className="rounded-xl border p-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Style</p>
+          <p className="font-semibold">{product.category}</p>
+        </div>
+        <div className="rounded-xl border p-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Stock</p>
+          <p className="font-semibold">{product.stock > 0 ? `${product.stock} available` : "Out of stock"}</p>
+        </div>
+      </section>
 
-        <div className="w-full overflow-visible">
-          <Recommendations />
-        </div>
-        <div>
-            <Footer/>
-        </div>
+      <div className="w-full overflow-visible">
+        <Recommendations />
       </div>
 
+      <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default ProductDetails;
+export default ProductDetails

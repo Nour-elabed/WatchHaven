@@ -14,7 +14,11 @@ const Home = () => {
   
   useEffect(() => {
     if (!user) {
-      toast.info("Please login or register to get the full experience!")
+      const key = "guest_toast_shown";
+      if (!sessionStorage.getItem(key)) {
+        toast.info("Login or register for full experience", { position: "bottom-center" });
+        sessionStorage.setItem(key, "1");
+      }
     }
   }, [user])
   return (

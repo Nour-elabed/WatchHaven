@@ -45,8 +45,8 @@ const Login = () => {
 
     setIsSubmitting(true)
     try {
-      await login(formData.email, formData.password, formData.role)
-      toast.success("Welcome back!")
+      const user = await login(formData.email, formData.password, formData.role)
+      toast.success(`Welcome, ${user.username}`)
       
       const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/'
       navigate(from, { replace: true })

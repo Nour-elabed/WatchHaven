@@ -1,6 +1,8 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
+import { useRef } from "react";
 
 /**
  * PrivateRoute — wraps any route that requires the user to be logged in.
@@ -10,6 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 const PrivateRoute = () => {
     const { user, isLoading } = useAuth();
     const location = useLocation();
+    const warnedRef = useRef(false);
 
     if (isLoading) {
         return (
@@ -17,6 +20,11 @@ const PrivateRoute = () => {
                 <Spinner />
             </div>
         );
+    }
+
+    if (!user && !warnedRef.current) {
+        warnedRef.current = true;
+        toast.info("Login or register for full experience", { position: "bottom-center" });
     }
 
     return user ? (

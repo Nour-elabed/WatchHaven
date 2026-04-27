@@ -20,7 +20,7 @@ import type { User, ApiResponse } from "@/types";
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (email: string, password: string, role?: "AUTO" | User["role"]) => Promise<void>;
+    login: (email: string, password: string, role?: "AUTO" | User["role"]) => Promise<User>;
     logout: () => void;
     updateProfile: (data: { username?: string; email?: string; password?: string }) => Promise<void>;
 }
@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const userData = await authService.login({ email, password, role });
         localStorage.setItem("token", userData.token);
         setUser(userData);
+        return userData;
     }, []);
 
     // ── Logout ─────────────────────────────────────────────────────────

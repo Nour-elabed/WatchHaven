@@ -42,8 +42,8 @@ const Register = () => {
 
     setIsLoading(true)
     try {
-      const userData = await register(formData)
-      toast.success(`Welcome to the collection, ${userData.username}!`)
+      await register(formData)
+      toast.success("Registration successful")
       navigate('/login')
     } catch (err) {
       if (axios.isAxiosError(err)) {
