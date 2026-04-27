@@ -360,8 +360,29 @@ export const getLocalProducts = (filters?: {
     )
   }
 
-  // Sort
-  if (filters?.sort === 'price-asc') {
+  // RANDOM SELECTION FOR CATEGORY FILTERING
+  // When categories are selected, show random combination of products
+  if (filters?.category && filtered.length > 0) {
+    // Create a truly random seed based on current time (changes every millisecond)
+    const randomSeed = Date.now() + Math.random() * 1000
+    const random = new Random(randomSeed)
+    
+    // Shuffle the filtered products using the random seed
+    for (let i = filtered.length - 1; i > 0; i--) {
+      const j = Math.floor(random.next() * (i + 1));
+      [filtered[i], filtered[j]] = [filtered[j], filtered[i]]
+    }
+    
+    // If there are many products, randomly select a subset to show variety
+    if (filtered.length > 12) {
+      filtered = filtered.slice(0, 12) // Show max 12 random products
+    }
+  }
+
+  // Sort (but don't override random shuffling for category filters)
+  if (filters?.category) {
+    // Keep random order for category filters
+  } else if (filters?.sort === 'price-asc') {
     filtered.sort((a, b) => a.price - b.price)
   } else if (filters?.sort === 'price-desc') {
     filtered.sort((a, b) => b.price - a.price)
@@ -373,6 +394,20 @@ export const getLocalProducts = (filters?: {
     success: true,
     data: filtered,
     message: "Products fetched successfully"
+  }
+}
+
+// Simple seeded random number generator
+class Random {
+  private seed: number
+  
+  constructor(seed: number) {
+    this.seed = seed
+  }
+  
+  next(): number {
+    this.seed = (this.seed * 9301 + 49297) % 233280
+    return this.seed / 233280
   }
 }
 

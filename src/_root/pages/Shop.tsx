@@ -3,6 +3,7 @@ import ShopContent from "@/components/ShopContent"
 import Footer from "@/components/Footer"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
+import { useQueryClient } from "@tanstack/react-query"
 
 const Shop = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000])
@@ -12,6 +13,7 @@ const Shop = () => {
   
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get("q") || ""
+  const queryClient = useQueryClient()
 
   const handleCategoryChange = (category: string, checked: boolean) => {
     if (checked) {
@@ -19,6 +21,11 @@ const Shop = () => {
     } else {
       setSelectedCategories(prev => prev.filter(c => c !== category))
     }
+  }
+
+  const handleRefreshProducts = () => {
+    // Invalidate the products query to trigger a refetch with new random combinations
+    queryClient.invalidateQueries({ queryKey: ["products"] })
   }
 
   return (
@@ -49,11 +56,24 @@ const Shop = () => {
                 <h1 className="text-4xl font-bold tracking-tight mb-2">The Collection</h1>
                 <p className="text-muted-foreground">Discover our curated selection of premium timepieces</p>
               </div>
-              {searchQuery && (
-                <div className="bg-secondary px-4 py-2 rounded-full text-sm font-medium">
-                  Search results for: <span className="text-primary">"{searchQuery}"</span>
-                </div>
-              )}
+              <div className="flex items-center gap-3">
+                {selectedCategories.length > 0 && (
+                  <button
+                    onClick={handleRefreshProducts}
+                    className="flex items-center gap-2 bg-white text-black border border-gray-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                    </svg>
+                    Shuffle Products
+                  </button>
+                )}
+                {searchQuery && (
+                  <div className="bg-secondary px-4 py-2 rounded-full text-sm font-medium">
+                    Search results for: <span className="text-primary">"{searchQuery}"</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <ShopContent 
