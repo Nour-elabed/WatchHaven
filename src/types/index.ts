@@ -1,13 +1,22 @@
 
+// ─── Roles ────────────────────────────────────────────────────────────────
+export const ROLES = {
+    USER: "USER",
+    ADMIN: "ADMIN",
+    SUPER_ADMIN: "SUPER_ADMIN",
+} as const;
+
+export type Role = (typeof ROLES)[keyof typeof ROLES];
+
 // ─── User ─────────────────────────────────────────────────────────────────
 export interface User {
-    _id: string;
+    id: string;
     username: string;
     email: string;
-    role: "USER" | "ADMIN" | "SUPER_ADMIN";
+    role: Role;
     isAdmin: boolean;
-    token: string;
     createdAt?: string;
+    token?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────────────────

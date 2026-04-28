@@ -59,7 +59,16 @@ const saveToLocalStorage = (items: CartItem[]) => {
   localStorage.setItem(LS_KEY, JSON.stringify(items));
 };
 
-const isLoggedIn = () => Boolean(localStorage.getItem("token"));
+const isLoggedIn = (): boolean => {
+  try {
+    const raw = localStorage.getItem("user");
+    if (!raw) return false;
+    const parsed = JSON.parse(raw) as { token?: string };
+    return Boolean(parsed?.token);
+  } catch {
+    return false;
+  }
+};
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 

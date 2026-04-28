@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Spinner } from "@/components/ui/spinner";
+import { ROLES } from "@/types";
 
-const SuperAdminRoute = () => {
+const AdminRoute = () => {
     const { user, isLoading } = useAuth();
 
     if (isLoading) {
@@ -14,9 +15,10 @@ const SuperAdminRoute = () => {
     }
 
     if (!user) return <Navigate to="/login" replace />;
-    if (user.role !== "SUPER_ADMIN") return <Navigate to="/admin/dashboard" replace />;
-
+    if (user.role !== ROLES.ADMIN && user.role !== ROLES.SUPER_ADMIN) {
+        return <Navigate to="/" replace />;
+    }
     return <Outlet />;
 };
 
-export default SuperAdminRoute;
+export default AdminRoute;

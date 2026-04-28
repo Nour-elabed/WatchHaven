@@ -5,9 +5,9 @@ import { Toaster } from '@/components/ui/sonner'
 import { Spinner } from '@/components/ui/spinner'
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
-import PrivateRoute from '@/components/PrivateRoute'
-import AdminRoute from '@/components/AdminRoute'
-import SuperAdminRoute from '@/components/SuperAdminRoute'
+import PrivateRoute from '@/routes/PrivateRoute'
+import AdminRoute from '@/routes/AdminRoute'
+import SuperAdminRoute from '@/routes/SuperAdminRoute'
 import './index.css'
 
 // ─── Lazy-loaded pages (code splitting) ───────────────────────────

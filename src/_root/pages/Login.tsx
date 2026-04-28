@@ -3,13 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuth } from '@/context/AuthContext'
-import axios from 'axios'
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "AUTO" as "AUTO" | "USER" | "ADMIN" | "SUPER_ADMIN",
   })
   const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -45,17 +43,13 @@ const Login = () => {
 
     setIsSubmitting(true)
     try {
-      const user = await login(formData.email, formData.password, formData.role)
+      const user = await login(formData.email, formData.password)
       toast.success(`Welcome, ${user.username}`)
-      
+
       const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/'
       navigate(from, { replace: true })
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || err.message || "Invalid credentials")
-      } else {
-        toast.error("An error occurred during login")
-      }
+      toast.error(err instanceof Error ? err.message : "Invalid credentials")
     } finally {
       setIsSubmitting(false)
     }
@@ -119,26 +113,6 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Access Role</label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  role: e.target.value as "AUTO" | "USER" | "ADMIN" | "SUPER_ADMIN",
-                })
-              }
-              className="input-field bg-white"
-            >
-              <option value="AUTO">Auto (recommended)</option>
-              <option value="USER">Login as USER</option>
-              <option value="ADMIN">Login as ADMIN</option>
-              <option value="SUPER_ADMIN">Login as SUPER_ADMIN</option>
-            </select>
-          </div>
-          
           <button
             type="submit"
             disabled={isSubmitting}

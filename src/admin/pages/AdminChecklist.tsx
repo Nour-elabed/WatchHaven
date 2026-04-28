@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { adminGetOrders, adminGetProducts, adminGetUsers } from "@/services/adminService";
+import { adminGetOrders, adminGetProducts, getAllUsers } from "@/services/adminService";
+import { ROLES } from "@/types";
 
 type CheckStatus = "idle" | "running" | "passed" | "failed";
 
@@ -39,14 +40,13 @@ const AdminChecklist = () => {
         setIsRunning(true);
         setChecks((prev) => prev.map((check) => ({ ...check, status: "running", details: "Running..." })));
 
-        const token = localStorage.getItem("token");
-        if (token) {
-            updateCheck("token", { status: "passed", details: "Token found in localStorage." });
+        if (user?.token) {
+            updateCheck("token", { status: "passed", details: "Token found in stored user." });
         } else {
             updateCheck("token", { status: "failed", details: "No token found. Login is required." });
         }
 
-        if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
+        if (user?.role === ROLES.ADMIN || user?.role === ROLES.SUPER_ADMIN) {
             updateCheck("role", { status: "passed", details: `Current user role: ${user.role}` });
         } else {
             updateCheck("role", { status: "failed", details: `Current user role: ${user?.role ?? "unknown"}` });
@@ -55,15 +55,15 @@ const AdminChecklist = () => {
         try {
             const products = await adminGetProducts();
             updateCheck("products", { status: "passed", details: `Fetched ${products.length} products.` });
-        } catch (error) {
+        } catch {
             updateCheck("products", { status: "failed", details: "Failed to fetch admin products endpoint." });
         }
 
-        if (user?.role === "SUPER_ADMIN") {
+        if (user?.role === ROLES.SUPER_ADMIN) {
             try {
-                const users = await adminGetUsers();
+                const users = await getAllUsers();
                 updateCheck("users", { status: "passed", details: `Fetched ${users.length} users.` });
-            } catch (error) {
+            } catch {
                 updateCheck("users", { status: "failed", details: "Failed to fetch admin users endpoint." });
             }
         } else {
@@ -76,7 +76,7 @@ const AdminChecklist = () => {
         try {
             const orders = await adminGetOrders();
             updateCheck("orders", { status: "passed", details: `Fetched ${orders.length} orders.` });
-        } catch (error) {
+        } catch {
             updateCheck("orders", { status: "failed", details: "Failed to fetch admin orders endpoint." });
         }
 

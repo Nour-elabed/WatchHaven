@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
@@ -46,11 +45,7 @@ const Register = () => {
       toast.success("Registration successful")
       navigate('/login')
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || "Registration failed. Check your data.")
-      } else {
-        toast.error("Something went wrong. Please try again.")
-      }
+      toast.error(err instanceof Error ? err.message : "Registration failed. Please try again.")
     } finally {
       setIsLoading(false)
     }

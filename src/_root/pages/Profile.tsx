@@ -78,6 +78,9 @@ const Profile = () => {
     }
   }
 
+
+
+  
   if (profileLoading || ordersLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -85,6 +88,7 @@ const Profile = () => {
       </div>
     )
   }
+
 
   const ordersList = ordersData || []
 

@@ -1,10 +1,3 @@
-/**
- * AuthContext — global authentication state.
- *
- * Provides: user, isLoading, login(), logout()
- * Listens for the custom "auth:logout" event dispatched by the Axios interceptor
- * so that a 401 response automatically clears state without a full page reload.
- */
 import {
     createContext,
     useContext,
@@ -14,78 +7,71 @@ import {
     type ReactNode,
 } from "react";
 import * as authService from "@/services/authService";
-import api from "@/services/api";
-import type { User, ApiResponse } from "@/types";
+import { ROLES, type User } from "@/types";
 
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (email: string, password: string, role?: "AUTO" | User["role"]) => Promise<User>;
+    login: (email: string, password: string) => Promise<User>;
     logout: () => void;
     updateProfile: (data: { username?: string; email?: string; password?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const STORAGE_KEY = "user";
+
+const readStoredUser = (): User | null => {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? (JSON.parse(raw) as User) : null;
+    } catch {
+        return null;
+    }
+};
+
+const writeStoredUser = (user: User) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    // ── Hydrate on mount ─────────────────────────────────────────────
     useEffect(() => {
-        const hydrate = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) { setIsLoading(false); return; }
-            try {
-                // authService calls now return .data directly
-                const profile = await authService.getProfile();
-                setUser({
-                    ...profile,
-                    token,
-                });
-            } catch {
-                localStorage.removeItem("token");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        hydrate();
+        setUser(readStoredUser());
+        setIsLoading(false);
     }, []);
 
-    // ── Listen for 401-triggered logouts from Axios interceptor ──────
     useEffect(() => {
         const handleForceLogout = () => {
             setUser(null);
+            localStorage.removeItem(STORAGE_KEY);
         };
         window.addEventListener("auth:logout", handleForceLogout);
         return () => window.removeEventListener("auth:logout", handleForceLogout);
     }, []);
 
-    // ── Login ──────────────────────────────────────────────────────────
-    const login = useCallback(async (email: string, password: string, role: "AUTO" | User["role"] = "AUTO") => {
-        const userData = await authService.login({ email, password, role });
-        localStorage.setItem("token", userData.token);
+    const login = useCallback(async (email: string, password: string): Promise<User> => {
+        const userData = await authService.login({ email, password });
+        writeStoredUser(userData);
         setUser(userData);
         return userData;
     }, []);
 
-    // ── Logout ─────────────────────────────────────────────────────────
     const logout = useCallback(() => {
-        localStorage.removeItem("token");
+        localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem("cart_items");
         setUser(null);
     }, []);
 
-    // ── Update Profile ─────────────────────────────────────────────────
     const updateProfile = useCallback(async (payload: { username?: string; email?: string; password?: string }) => {
-        // Here we use api directly, so we still get Axios response wrapper
-        const { data } = await api.put<ApiResponse<User>>("/users/profile", payload);
-        const userData = data.data;
-        if (userData.token) {
-            localStorage.setItem("token", userData.token);
-        }
-        setUser(userData);
-    }, []);
+        const updated = await authService.updateProfile(payload);
+        // Preserve token if backend didn't return a fresh one.
+        const merged: User = { ...updated, token: updated.token ?? user?.token };
+        writeStoredUser(merged);
+        setUser(merged);
+    }, [user?.token]);
 
     return (
         <AuthContext.Provider value={{ user, isLoading, login, logout, updateProfile }}>
@@ -94,10 +80,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
     const ctx = useContext(AuthContext);
     if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
     return ctx;
+};
+
+export const useIsAdmin = (): boolean => {
+    const { user } = useAuth();
+    return user?.role === ROLES.ADMIN || user?.role === ROLES.SUPER_ADMIN;
+};
+
+export const useIsSuperAdmin = (): boolean => {
+    const { user } = useAuth();
+    return user?.role === ROLES.SUPER_ADMIN;
 };
 
 export default AuthContext;

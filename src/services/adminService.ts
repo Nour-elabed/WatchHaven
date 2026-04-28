@@ -1,5 +1,5 @@
 import api from "./api";
-import type { ApiResponse, Order, Product, User } from "@/types";
+import type { ApiResponse, Order, Product, Role, User } from "@/types";
 
 export interface AdminProductPayload {
     name: string;
@@ -12,19 +12,29 @@ export interface AdminProductPayload {
     gender: string;
 }
 
-// Map Axios response to return Payload directly
-export const adminGetProducts = () => api.get<ApiResponse<Product[]>>("/admin/products").then(res => res.data.data);
-export const adminCreateProduct = (payload: AdminProductPayload) =>
-    api.post<ApiResponse<Product>>("/admin/products", payload).then(res => res.data.data);
-export const adminUpdateProduct = (id: string, payload: AdminProductPayload) =>
-    api.put<ApiResponse<Product>>(`/admin/products/${id}`, payload).then(res => res.data.data);
-export const adminDeleteProduct = (id: string) => api.delete<ApiResponse<null>>(`/admin/products/${id}`).then(res => res.data);
+// Products
+export const adminGetProducts = (): Promise<Product[]> =>
+    api.get<ApiResponse<Product[]>>("/admin/products").then((res) => res.data.data);
+export const adminCreateProduct = (payload: AdminProductPayload): Promise<Product> =>
+    api.post<ApiResponse<Product>>("/admin/products", payload).then((res) => res.data.data);
+export const adminUpdateProduct = (id: string, payload: AdminProductPayload): Promise<Product> =>
+    api.put<ApiResponse<Product>>(`/admin/products/${id}`, payload).then((res) => res.data.data);
+export const adminDeleteProduct = (id: string): Promise<void> =>
+    api.delete(`/admin/products/${id}`).then(() => undefined);
 
-export const adminGetUsers = () => api.get<ApiResponse<User[]>>("/admin/users").then(res => res.data.data);
-export const adminDeleteUser = (id: string) => api.delete<ApiResponse<null>>(`/admin/users/${id}`).then(res => res.data);
-export const adminUpdateUserRole = (id: string, role: string) =>
-    api.patch<ApiResponse<User>>(`/admin/users/${id}/role`, { role }).then(res => res.data.data);
+// Users (super-admin only)
+export const getAllUsers = (): Promise<User[]> =>
+    api.get<ApiResponse<User[]>>("/admin/users").then((res) => res.data.data);
+export const getUserById = (id: string): Promise<User> =>
+    api.get<ApiResponse<User>>(`/admin/users/${id}`).then((res) => res.data.data);
+export const updateUserRole = (id: string, role: Role): Promise<User> =>
+    api.put<ApiResponse<User>>(`/admin/users/${id}/role`, { role }).then((res) => res.data.data);
+export const deleteUser = (id: string): Promise<void> =>
+    api.delete(`/admin/users/${id}`).then(() => undefined);
 
-export const adminGetOrders = () => api.get<ApiResponse<Order[]>>("/admin/orders").then(res => res.data.data);
-export const adminUpdateOrderStatus = (id: string, status: Order["status"]) =>
-    api.patch<ApiResponse<Order>>(`/admin/orders/${id}/status`, { status }).then(res => res.data.data);
+// Orders
+export const adminGetOrders = (): Promise<Order[]> =>
+    api.get<ApiResponse<Order[]>>("/admin/orders").then((res) => res.data.data);
+export const adminUpdateOrderStatus = (id: string, status: Order["status"]): Promise<Order> =>
+    api.patch<ApiResponse<Order>>(`/admin/orders/${id}/status`, { status }).then((res) => res.data.data);
+

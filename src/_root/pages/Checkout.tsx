@@ -36,6 +36,7 @@ const Checkout = () => {
       return
     }
 
+    
     setLoading(true)
     try {
       const orderItems = items.map((item) => ({
