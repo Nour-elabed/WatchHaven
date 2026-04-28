@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { adminGetOrders, adminGetProducts, adminGetUsers } from "@/services/adminService";
+import { adminGetOrders, adminGetProducts, getAllUsers } from "@/services/adminService";
 import { Package, Users, ShoppingCart, DollarSign, Activity } from "lucide-react";
-import type { User, Product, Order } from "@/types";
+import { ROLES, type User, type Product, type Order } from "@/types";
 
 const AdminDashboard = () => {
     const { user } = useAuth();
@@ -15,8 +15,8 @@ const AdminDashboard = () => {
     
     const { data: users } = useQuery<User[]>({
         queryKey: ["admin", "users"],
-        queryFn: adminGetUsers,
-        enabled: user?.role === "SUPER_ADMIN",
+        queryFn: getAllUsers,
+        enabled: user?.role === ROLES.SUPER_ADMIN,
     });
     
     const { data: orders } = useQuery<Order[]>({
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
         },
     ];
 
-    if (user?.role === "SUPER_ADMIN") {
+    if (user?.role === ROLES.SUPER_ADMIN) {
         stats.splice(3, 0, {
             title: "Total Users",
             value: users?.length || 0,
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
                         <ShoppingCart className="w-5 h-5 text-green-600 mr-3" />
                         <span className="font-bold text-green-900 text-sm">Manage Orders</span>
                     </Link>
-                    {user?.role === "SUPER_ADMIN" && (
+                    {user?.role === ROLES.SUPER_ADMIN && (
                         <Link
                             to="/admin/users"
                             className="flex items-center p-4 bg-red-50/50 rounded-xl hover:bg-red-50 transition-all border border-red-100/50"
