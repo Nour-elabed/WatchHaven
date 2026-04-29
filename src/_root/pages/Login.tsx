@@ -46,8 +46,15 @@ const Login = () => {
       const user = await login(formData.email, formData.password)
       toast.success(`Welcome, ${user.username}`)
 
-      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/'
-      navigate(from, { replace: true })
+      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
+
+      if (from && from !== '/login') {
+        navigate(from, { replace: true })
+      } else if (user.role === 'SUPER_ADMIN' || user.role === 'ADMIN') {
+        navigate('/admin/dashboard', { replace: true })
+      } else {
+        navigate('/', { replace: true })
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Invalid credentials")
     } finally {
