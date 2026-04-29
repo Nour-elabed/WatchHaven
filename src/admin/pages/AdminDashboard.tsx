@@ -1,71 +1,95 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { adminGetOrders, adminGetProducts, getAllUsers } from "@/services/adminService";
+import { getStats } from "@/services/adminService";
+import { Spinner } from "@/components/ui/spinner";
 import { Package, Users, ShoppingCart, DollarSign, Activity } from "lucide-react";
-import { ROLES, type User, type Product, type Order } from "@/types";
+import { ROLES, type DashboardStats } from "@/types";
+
+const statusBadgeClass: Record<string, string> = {
+    pending: "bg-yellow-100 text-yellow-800",
+    processing: "bg-blue-100 text-blue-800",
+    shipped: "bg-purple-100 text-purple-800",
+    delivered: "bg-green-100 text-green-800",
+    cancelled: "bg-red-100 text-red-800",
+};
 
 const AdminDashboard = () => {
     const { user } = useAuth();
-    
-    const { data: products } = useQuery<Product[]>({
-        queryKey: ["admin", "products"],
-        queryFn: adminGetProducts,
-    });
-    
-    const { data: users } = useQuery<User[]>({
-        queryKey: ["admin", "users"],
-        queryFn: getAllUsers,
-        enabled: user?.role === ROLES.SUPER_ADMIN,
-    });
-    
-    const { data: orders } = useQuery<Order[]>({
-        queryKey: ["admin", "orders"],
-        queryFn: adminGetOrders,
+
+    const {
+        data: dashboardStats,
+        isLoading,
+        isError,
+        error,
+    } = useQuery<DashboardStats>({
+        queryKey: ["admin-stats"],
+        queryFn: getStats,
     });
 
-    // Calculate stats
-    const totalRevenue = orders?.reduce((sum, order) => sum + (order.totalPrice || 0), 0) || 0;
-    const pendingOrders = orders?.filter(order => order.status === 'pending').length || 0;
-    const recentOrders = orders?.slice(0, 5) || [];
+    if (isLoading) {
+        return (
+            <div className="min-h-[400px] flex items-center justify-center">
+                <Spinner />
+            </div>
+        );
+    }
 
-    const stats = [
+    if (isError) {
+        return (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                Failed to load stats: {error instanceof Error ? error.message : "Unknown error"}
+            </div>
+        );
+    }
+
+    const totalRevenue = dashboardStats?.totalRevenue ?? 0;
+    const recentOrders = dashboardStats?.recentOrders ?? [];
+    const ordersByStatus = dashboardStats?.ordersByStatus;
+
+    const stats: Array<{
+        title: string;
+        value: number | string;
+        icon: typeof Package;
+        color: string;
+        link?: string;
+    }> = [
         {
             title: "Total Products",
-            value: products?.length || 0,
+            value: dashboardStats?.totalProducts ?? 0,
             icon: Package,
             color: "bg-blue-500",
-            link: "/admin/products"
+            link: "/admin/products",
         },
         {
             title: "Total Orders",
-            value: orders?.length || 0,
+            value: dashboardStats?.totalOrders ?? 0,
             icon: ShoppingCart,
             color: "bg-green-500",
-            link: "/admin/orders"
+            link: "/admin/orders",
         },
         {
             title: "Pending Orders",
-            value: pendingOrders,
+            value: ordersByStatus?.pending ?? 0,
             icon: Activity,
             color: "bg-yellow-500",
-            link: "/admin/orders"
+            link: "/admin/orders",
         },
         {
             title: "Total Revenue",
             value: `$${totalRevenue.toFixed(2)}`,
             icon: DollarSign,
-            color: "bg-purple-500"
+            color: "bg-purple-500",
         },
     ];
 
     if (user?.role === ROLES.SUPER_ADMIN) {
         stats.splice(3, 0, {
             title: "Total Users",
-            value: users?.length || 0,
+            value: dashboardStats?.totalUsers ?? 0,
             icon: Users,
             color: "bg-red-500",
-            link: "/admin/users"
+            link: "/admin/users",
         });
     }
 
@@ -118,19 +142,18 @@ const AdminDashboard = () => {
                         {recentOrders.map((order) => (
                             <div key={order._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100/50">
                                 <div>
-                                    <p className="font-bold text-gray-900 uppercase text-xs tracking-widest">Order #{order._id.slice(-8)}</p>
+                                    <p className="font-bold text-gray-900 uppercase text-xs tracking-widest">Order #{order._id.slice(-6).toUpperCase()}</p>
                                     <p className="text-sm text-gray-600 font-medium mt-1">
-                                        {typeof order.user === 'object' ? order.user.username : 'Unknown User'}
+                                        {order.user?.username ?? "Unknown User"}
+                                    </p>
+                                    <p className="text-xs text-gray-400 mt-0.5">
+                                        {new Date(order.createdAt).toLocaleDateString()}
                                     </p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-bold text-gray-900">${order.totalPrice?.toFixed(2) || '0.00'}</p>
-                                    <span className={`inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full mt-2 ${
-                                        order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                                        order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
-                                        'bg-yellow-100 text-yellow-800'
-                                    }`}>
-                                        {order.status || 'pending'}
+                                    <p className="font-bold text-gray-900">${order.totalPrice?.toFixed(2) || "0.00"}</p>
+                                    <span className={`inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full mt-2 ${statusBadgeClass[order.status] ?? "bg-gray-100 text-gray-800"}`}>
+                                        {order.status || "pending"}
                                     </span>
                                 </div>
                             </div>
@@ -140,6 +163,24 @@ const AdminDashboard = () => {
                     <p className="text-gray-500 text-center py-8 font-medium">No orders yet</p>
                 )}
             </div>
+
+            {/* Orders by Status */}
+            {ordersByStatus && (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-tight">Orders by Status</h2>
+                    <div className="flex flex-wrap gap-3">
+                        {(Object.entries(ordersByStatus) as Array<[keyof typeof ordersByStatus, number]>).map(([status, count]) => (
+                            <div
+                                key={status}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest ${statusBadgeClass[status] ?? "bg-gray-100 text-gray-800"}`}
+                            >
+                                <span>{status}</span>
+                                <span className="bg-white/70 rounded-full px-2 py-0.5 text-[11px]">{count}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Quick Actions */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
