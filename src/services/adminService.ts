@@ -1,5 +1,9 @@
 import api from "./api";
-import type { ApiResponse, Order, Product, Role, User } from "@/types";
+import type { ApiResponse, DashboardStats, Order, Product, Role, User } from "@/types";
+
+// Dashboard
+export const getStats = (): Promise<DashboardStats> =>
+    api.get<ApiResponse<DashboardStats>>("/admin/stats").then((res) => res.data.data);
 
 export interface AdminProductPayload {
     name: string;

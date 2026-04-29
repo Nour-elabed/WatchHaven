@@ -71,8 +71,43 @@ export interface Order {
     paidAt?: string;
     isDelivered: boolean;
     deliveredAt?: string;
-    status: "pending" | "shipped" | "delivered" | "canceled";
+    status: OrderStatus;
     createdAt: string;
+}
+
+// ─── Order Status ─────────────────────────────────────────────────────────
+// Canonical statuses per spec. "canceled" (US spelling) is also accepted at
+// runtime to remain compatible with documents written by older code.
+export type OrderStatus =
+    | "pending"
+    | "processing"
+    | "shipped"
+    | "delivered"
+    | "cancelled"
+    | "canceled";
+
+// ─── Dashboard ────────────────────────────────────────────────────────────
+export interface RecentOrder {
+    _id: string;
+    user: { username: string };
+    totalPrice: number;
+    status: string;
+    createdAt: string;
+}
+
+export interface DashboardStats {
+    totalUsers: number;
+    totalProducts: number;
+    totalOrders: number;
+    totalRevenue: number;
+    recentOrders: RecentOrder[];
+    ordersByStatus: {
+        pending: number;
+        processing: number;
+        shipped: number;
+        delivered: number;
+        cancelled: number;
+    };
 }
 
 // ─── API Response Wrapper ─────────────────────────────────────────────────
