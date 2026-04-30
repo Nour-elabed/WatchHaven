@@ -17,6 +17,7 @@ const Shop = lazy(() => import('./_root/pages/Shop'))
 const ProductDetail = lazy(() => import('./_root/pages/ProductDetail'))
 const Login = lazy(() => import('./_root/pages/Login'))
 const Register = lazy(() => import('./_root/pages/Register'))
+const Setup = lazy(() => import('./_root/pages/Setup'))
 const Checkout = lazy(() => import('./_root/pages/Checkout'))
 const About = lazy(() => import('./_root/pages/About'))
 const Contact = lazy(() => import('./_root/pages/Contact'))
@@ -55,6 +56,9 @@ const App = () => {
           <Toaster position="top-right" richColors />
           <Suspense fallback={<PageLoader />}>
             <Routes>
+              {/* Public dev-only setup page (no navbar/footer, no auth) */}
+              <Route path="/setup" element={<Setup />} />
+
               <Route element={<RootLayout />}>
                 {/* Public routes */}
                 <Route index element={<Home />} />
