@@ -99,7 +99,20 @@ const ProductDetail = () => {
 
             {/* Product Title */}
             <div className="space-y-2">
-              <div className="flex items-center gap-3">
+              {/* Seller info */}
+              {product.seller && (
+                <div className="flex items-center gap-3 py-4 border-y border-gray-100 mb-6">
+                  <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-sm font-bold uppercase">
+                    {product.seller.username.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">Authorized Seller</p>
+                    <p className="text-sm font-bold">{product.seller.username}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center gap-4 mb-8">
                 <span className="px-3 py-1 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-full">
                   {product.brand}
                 </span>
