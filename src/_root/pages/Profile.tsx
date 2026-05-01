@@ -203,23 +203,28 @@ const Profile = () => {
           <div className="flex gap-8 border-b border-gray-100">
             <button 
               onClick={() => setActiveTab('orders')}
-              className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all ${activeTab === 'orders' ? 'border-b-2 border-black text-black' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'orders' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
             >
               Order History
+              {activeTab === 'orders' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black animate-in slide-in-from-left duration-300"></div>}
             </button>
             <button 
               onClick={() => setActiveTab('seller')}
-              className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all ${activeTab === 'seller' ? 'border-b-2 border-black text-black' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'seller' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
             >
               Seller Dashboard
+              {activeTab === 'seller' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black animate-in slide-in-from-left duration-300"></div>}
             </button>
           </div>
 
           {activeTab === 'orders' ? (
             <div className="space-y-8 animate-in fade-in duration-500">
-              <div className="flex justify-between items-end mb-2">
-                <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
-                <span className="text-sm text-muted-foreground font-medium">{ordersList.length} total orders</span>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
+                  <p className="text-muted-foreground text-sm mt-1">Manage and track your recent timepiece acquisitions</p>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest bg-secondary px-3 py-1 rounded-full">{ordersList.length} total orders</span>
               </div>
 
           {ordersList && ordersList.length > 0 ? (
