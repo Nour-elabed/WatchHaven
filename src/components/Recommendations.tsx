@@ -11,29 +11,62 @@ import { toast } from "sonner";
 const HomeCarouselCard = ({ product }: { product: Product }) => {
   const { addToCart } = useCart();
   return (
-    <div className="scroll-carousel__slide">
-      <div className="premium-card overflow-hidden w-[300px] md:w-[320px] lg:w-[340px]">
-        <Link to={`/product/${product._id}`}>
-          <img src={product.image} alt={product.name} className="h-60 md:h-64 w-full object-cover" />
-        </Link>
-        <div className="p-5 space-y-3">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{product.gender}</p>
-          <p className="font-bold line-clamp-1">{product.name}</p>
-          {product.seller && (
-            <p className="text-[9px] text-muted-foreground font-bold uppercase">Sold by: {product.seller.username}</p>
+    <div className="scroll-carousel__slide px-2">
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group w-[320px] md:w-[360px] lg:w-[400px]">
+        {/* Image Container */}
+        <div className="relative h-72 md:h-80 overflow-hidden">
+          <Link to={`/product/${product._id}`}>
+            <img 
+              src={product.image || '/assets/images/placeholder.svg'} 
+              alt={product.name} 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              onError={(e) => { e.currentTarget.src = '/assets/images/placeholder.svg'; }}
+            />
+          </Link>
+          {/* Stock Badge */}
+          {product.stock === 0 && (
+            <span className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+              Sold Out
+            </span>
           )}
-          <div className="flex items-center justify-between">
-            <span className="font-bold">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+          {/* Quick Add Button (appears on hover) */}
+          <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               type="button"
+              disabled={product.stock === 0}
               onClick={async () => {
                 await addToCart({ productId: product._id, name: product.name, price: product.price, image: product.image });
                 toast.success(`${product.name} added to cart!`);
               }}
-              className="rounded-full border px-3 py-1 text-xs font-semibold hover:bg-black hover:text-white transition-colors"
+              className="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors disabled:bg-gray-400 flex items-center justify-center gap-2"
             >
-              Add
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="p-6 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-widest text-gray-500">{product.gender}</span>
+            <div className="flex items-center gap-1">
+              <svg className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <span className="text-sm font-semibold">{product.rating}</span>
+            </div>
+          </div>
+          
+          <Link to={`/product/${product._id}`}>
+            <h3 className="font-bold text-lg text-gray-900 hover:text-black transition-colors line-clamp-1">{product.name}</h3>
+          </Link>
+          
+          {product.seller && (
+            <p className="text-xs text-gray-500 font-medium">Sold by: <span className="text-gray-900">{product.seller.username}</span></p>
+          )}
+          
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-2xl font-bold text-gray-900">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+            <span className="text-xs text-gray-500 uppercase tracking-wider">{product.category}</span>
           </div>
         </div>
       </div>
@@ -70,11 +103,11 @@ const Recommendations: React.FC = () => {
             <HomeCarouselCard key={product._id} product={product} />
           ))}
           options={{ 
-            loop: true, 
+            loop: products.length > 3, 
             align: "start",
-            dragFree: true ,
+            dragFree: true,
             slidesToScroll: 1,
-             containScroll: "trimSnaps"
+            containScroll: false
           }}
         />
       </div>
