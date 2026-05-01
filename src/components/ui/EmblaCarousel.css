@@ -13,7 +13,7 @@
 
 .scroll-carousel__container {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   padding: 12px 0;
   align-items: stretch;
   user-select: none;
@@ -147,14 +147,14 @@
   }
   
   .scroll-carousel__container {
-    gap: 20px;
+    gap: 24px;
   }
 }
 
 /* Larger Tablet: Show 3 slides with proper spacing */
 @media (min-width: 769px) and (max-width: 1024px) {
   .scroll-carousel__slide {
-    min-width: calc(33.333% - 27px); /* 3 slides with gap and padding */
+    min-width: calc(33.333% - 32px); /* 3 slides with larger gap */
     padding: 0 8px;
   }
   
@@ -167,14 +167,14 @@
   }
   
   .scroll-carousel__container {
-    gap: 20px;
+    gap: 24px;
   }
 }
 
 /* Desktop: Show 4 slides with proper spacing */
 @media (min-width: 1025px) {
   .scroll-carousel__slide {
-    min-width: calc(25% - 30px); /* 4 slides with gap and padding */
+    min-width: calc(25% - 36px); /* 4 slides with larger gap */
     padding: 0 8px;
   }
   

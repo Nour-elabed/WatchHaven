@@ -265,6 +265,7 @@ const Profile = () => {
               >
                 Go to Shop
               </button>
+              </div>
             </div>
           ) : (
             <div className="animate-in fade-in duration-500">

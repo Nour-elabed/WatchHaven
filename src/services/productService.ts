@@ -1,5 +1,6 @@
 import api from "./api";
 import type { Product, ApiResponse } from "@/types";
+import { getLocalProducts, getLocalProductById } from "@/data/localProducts";
 
 export interface GetProductsParams {
     category?: string;
@@ -14,11 +15,29 @@ export interface GetProductsParams {
 }
 
 export const getProducts = async (params?: GetProductsParams): Promise<ApiResponse<Product[]>> => {
-    const { data } = await api.get<ApiResponse<Product[]>>("/products", { params });
-    return data;
+    try {
+        const { data } = await api.get<ApiResponse<Product[]>>("/products", { params });
+        
+        // If API succeeds but returns empty data, fallback to seed products
+        if (data.success && (!data.data || data.data.length === 0)) {
+            console.warn("API returned empty products, falling back to seed data");
+            return getLocalProducts(params);
+        }
+        
+        return data;
+    } catch (error) {
+        console.error("API fetch failed, falling back to seed data:", error);
+        return getLocalProducts(params);
+    }
 };
 
 export const getProductById = async (id: string): Promise<Product> => {
-    const { data } = await api.get<ApiResponse<Product>>(`/products/${id}`);
-    return data.data;
+    try {
+        const { data } = await api.get<ApiResponse<Product>>(`/products/${id}`);
+        return data.data;
+    } catch (error) {
+        console.error(`API fetch for product ${id} failed, falling back to seed data:`, error);
+        const local = getLocalProductById(id);
+        return local.data;
+    }
 };

@@ -55,7 +55,7 @@ export interface OrderItem {
     image: string;
     price: number;
     quantity: number;
-    seller: string;
+    seller?: string;
 }
 
 export interface ShippingAddress {

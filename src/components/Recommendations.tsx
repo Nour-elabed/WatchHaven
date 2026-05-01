@@ -12,11 +12,11 @@ const HomeCarouselCard = ({ product }: { product: Product }) => {
   const { addToCart } = useCart();
   return (
     <div className="scroll-carousel__slide">
-      <div className="premium-card overflow-hidden w-[260px]">
+      <div className="premium-card overflow-hidden w-[300px] md:w-[320px] lg:w-[340px]">
         <Link to={`/product/${product._id}`}>
-          <img src={product.image} alt={product.name} className="h-44 w-full object-cover" />
+          <img src={product.image} alt={product.name} className="h-60 md:h-64 w-full object-cover" />
         </Link>
-        <div className="p-4 space-y-2">
+        <div className="p-5 space-y-3">
           <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{product.gender}</p>
           <p className="font-bold line-clamp-1">{product.name}</p>
           {product.seller && (
