@@ -30,11 +30,11 @@ const Shop = () => {
 
   return (
     <>
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-12">
-        <div className="flex flex-col md:flex-row gap-12">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-16">
+        <div className="flex flex-col lg:flex-row gap-16">
           
           {/* SIDEBAR */}
-          <aside className="w-full md:w-72 flex-shrink-0">
+          <aside className="w-full lg:w-72 flex-shrink-0">
             <div className="sticky top-24">
               <Sidebar 
                 priceRange={priceRange} 
