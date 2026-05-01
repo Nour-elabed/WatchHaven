@@ -50,11 +50,11 @@ const Shop = () => {
           </aside>
 
           {/* MAIN CONTENT */}
-          <main className="flex-1">
-            <div className="mb-10 flex justify-between items-end">
+          <main className="flex-1 space-y-12">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
               <div>
-                <h1 className="text-4xl font-bold tracking-tight mb-2">The Collection</h1>
-                <p className="text-muted-foreground">Discover our curated selection of premium timepieces</p>
+                <h1 className="text-4xl font-extrabold tracking-tight mb-3">The Collection</h1>
+                <p className="text-muted-foreground text-lg">Discover our curated selection of premium timepieces</p>
               </div>
               <div className="flex items-center gap-3">
                 {selectedCategories.length > 0 && (

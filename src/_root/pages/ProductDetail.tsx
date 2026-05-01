@@ -109,8 +109,13 @@ const ProductDetail = () => {
                 <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium uppercase tracking-wider rounded-full">
                   {product.gender}
                 </span>
+                {product.seller && (
+                  <span className="px-3 py-1 bg-accent/10 text-accent text-xs font-bold uppercase tracking-wider rounded-full">
+                    Sold by: {product.seller.username}
+                  </span>
+                )}
               </div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">
+              <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
                 {product.name}
               </h1>
             </div>

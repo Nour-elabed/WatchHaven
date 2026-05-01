@@ -32,6 +32,11 @@ export interface Product {
     stock: number;
     rating: number;
     numReviews: number;
+    seller?: {
+        _id: string;
+        username: string;
+        email: string;
+    };
 }
 
 // ─── Cart ─────────────────────────────────────────────────────────────────
@@ -50,6 +55,7 @@ export interface OrderItem {
     image: string;
     price: number;
     quantity: number;
+    seller: string;
 }
 
 export interface ShippingAddress {
