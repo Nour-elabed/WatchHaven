@@ -1,4 +1,4 @@
-import { getLocalProducts, getLocalProductById } from "@/data/localProducts";
+import api from "./api";
 import type { Product, ApiResponse } from "@/types";
 
 export interface GetProductsParams {
@@ -13,16 +13,12 @@ export interface GetProductsParams {
     limit?: number;
 }
 
-// Using local products with your watch photos - replace with API calls when backend is ready
 export const getProducts = async (params?: GetProductsParams): Promise<ApiResponse<Product[]>> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return getLocalProducts(params);
+    const { data } = await api.get<ApiResponse<Product[]>>("/products", { params });
+    return data;
 };
 
 export const getProductById = async (id: string): Promise<Product> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const response = getLocalProductById(id);
-    return response.data;
+    const { data } = await api.get<ApiResponse<Product>>(`/products/${id}`);
+    return data.data;
 };

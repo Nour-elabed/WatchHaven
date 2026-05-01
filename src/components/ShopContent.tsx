@@ -23,10 +23,10 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
       let finalGender = selectedGender;
       let finalSearch = searchQuery;
 
-      if (searchQuery?.toLowerCase() === "feminine") {
+      if (searchQuery?.toLowerCase().includes("feminin")) {
         finalGender = "WOMEN";
         finalSearch = undefined;
-      } else if (searchQuery?.toLowerCase() === "masculine") {
+      } else if (searchQuery?.toLowerCase().includes("masculin")) {
         finalGender = "MEN";
         finalSearch = undefined;
       }
@@ -105,7 +105,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                    {product.brand}
                  </span>
                  {product.stock === 0 && (
-                   <span className="bg-red-500 text-white px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider">
+                   <span className="bg-red-500/90 text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider absolute top-4 right-4 animate-in fade-in zoom-in duration-300">
                      Sold Out
                    </span>
                  )}
@@ -120,7 +120,8 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                     {product.name}
                   </h3>
                   {product.seller && (
-                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mt-1">
+                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mt-1.5 flex items-center gap-1.5">
+                      <span className="w-1 h-1 rounded-full bg-accent"></span>
                       Sold by: <span className="text-black">{product.seller.username}</span>
                     </p>
                   )}

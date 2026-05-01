@@ -41,13 +41,13 @@ const Chatbot: React.FC = () => {
       } else if (lower.includes('feminine') || lower.includes('women')) {
         botResponse = "Showing our exquisite collection of feminine watches.";
         setTimeout(() => {
-          navigate('/shop?q=feminine');
+          navigate('/shop?gender=WOMEN');
           setIsOpen(false);
         }, 1500);
       } else if (lower.includes('masculine') || lower.includes('men')) {
         botResponse = "Showing our premium masculine timepieces.";
         setTimeout(() => {
-          navigate('/shop?q=masculine');
+          navigate('/shop?gender=MEN');
           setIsOpen(false);
         }, 1500);
       } else if (lower.includes('sport')) {
