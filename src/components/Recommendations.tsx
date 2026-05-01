@@ -83,33 +83,39 @@ const Recommendations: React.FC = () => {
 
   const products = (data as Product[] | undefined) ?? [];
 
+  if (products.length === 0) return null;
+
   return (
-    <section className="w-full py-12 px-4 md:px-8 bg-gray-50/50 mt-4">
+    <section className="w-full py-12 px-4 md:px-8 bg-white mt-4 overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         {/* Mobile Heading */}
-        <h2 className="md:hidden flex flex-col items-start text-3xl font-extrabold text-gray-900 mb-8 pt-4">
-          <span>Recommendations.</span>
-        </h2>
+        <div className="md:hidden mb-8">
+            <h2 className="text-3xl font-black text-gray-900 tracking-tighter">Recommendations.</h2>
+            <p className="text-sm text-gray-400 font-medium mt-1">Best matching for you</p>
+        </div>
         
         {/* Desktop Heading */}
-        <div className="hidden md:flex flex-col items-start w-full mb-10">
-          <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-            <span>Recommendations. </span>
-            <span className="text-gray-400 font-medium ml-2">Best matching products for you</span>
+        <div className="hidden md:flex flex-col items-start w-full mb-12">
+          <h2 className="text-5xl font-black text-gray-900 tracking-tighter leading-none">
+            Recommendations.
           </h2>
+          <p className="text-lg text-gray-400 font-medium mt-3">Curated timepieces based on your unique style</p>
         </div>
-        <ScrollCarousel
-          slides={products.map((product) => (
-            <HomeCarouselCard key={product._id} product={product} />
-          ))}
-          options={{ 
-            loop: products.length > 3, 
-            align: "start",
-            dragFree: true,
-            slidesToScroll: 1,
-            containScroll: false
-          }}
-        />
+
+        <div className="relative -mx-4 md:-mx-8">
+            <ScrollCarousel
+                slides={products.map((product) => (
+                    <HomeCarouselCard key={product._id} product={product} />
+                ))}
+                options={{ 
+                    loop: products.length > 3, 
+                    align: "start",
+                    dragFree: true,
+                    slidesToScroll: 1,
+                    containScroll: "trimSnaps"
+                }}
+            />
+        </div>
       </div>
     </section>
   );

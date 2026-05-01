@@ -5,7 +5,7 @@ import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: 'Welcome to NEXTON. How can I assist you today? Try searching "under $500" or "feminine watches".' }
+    { role: 'bot', text: 'Welcome to WatchHaven. How can I assist you today? Try searching "under $500" or "feminine watches".' }
   ]);
   const [input, setInput] = useState('');
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ const Chatbot: React.FC = () => {
                 <Bot size={20} />
               </div>
               <div>
-                <p className="text-sm font-bold leading-none">NEXTON Assistant</p>
+                <p className="text-sm font-bold leading-none">WatchHaven Assistant</p>
                 <p className="text-[10px] text-white/60 mt-1 uppercase tracking-widest font-bold">Online</p>
               </div>
             </div>

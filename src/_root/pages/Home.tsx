@@ -22,9 +22,9 @@ const Home = () => {
     }
   }, [user])
   return (
-    <div className="space-y-16 md:space-y-20">
+    <div className="space-y-8 md:space-y-12">
         <Hero/>
-        <div className="space-y-16 md:space-y-20">
+        <div className="space-y-8 md:space-y-12">
           <Collections/>
           <Recommendations/>
           <BestSellers/>

@@ -65,28 +65,49 @@ const SellerDashboard = () => {
             </div>
 
             {activeTab === 'products' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {products.length > 0 ? products.map(product => (
-                        <div key={product._id} className="premium-card p-4 flex gap-4 items-center">
-                            <img 
-                                src={product.image} 
-                                alt={product.name} 
-                                className="w-20 h-20 object-cover rounded-lg bg-secondary"
-                                onError={(e) => { e.currentTarget.src = "/assets/images/placeholder.svg" }}
-                            />
-                            <div className="flex-1 min-w-0">
-                                <p className="font-bold truncate">{product.name}</p>
-                                <p className="text-xs text-muted-foreground uppercase font-bold tracking-tighter">{product.brand}</p>
-                                <div className="flex items-center gap-2 mt-2">
-                                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${product.stock > 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-                                        {product.stock > 0 ? 'Available' : 'Sold Out'}
+                        <div key={product._id} className="bg-white border border-gray-100 rounded-3xl p-5 flex gap-6 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300 group relative">
+                            <div className="relative w-28 h-28 shrink-0 overflow-hidden rounded-2xl bg-gray-50 border border-gray-100">
+                                <img 
+                                    src={product.image} 
+                                    alt={product.name} 
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    onError={(e) => { e.currentTarget.src = "/assets/images/placeholder.svg" }}
+                                />
+                                <div className="absolute top-2 left-2">
+                                    <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-tighter ${product.stock > 0 ? 'bg-black text-white' : 'bg-red-500 text-white'}`}>
+                                        {product.stock > 0 ? `${product.stock} IN STOCK` : 'OUT OF STOCK'}
                                     </span>
-                                    <span className="text-sm font-bold">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <button onClick={() => setEditingProduct(product)} className="text-[10px] font-bold uppercase text-blue-600 hover:underline">Edit</button>
-                                <button onClick={() => { if(window.confirm('Delete this listing?')) deleteMutation.mutate(product._id) }} className="text-[10px] font-bold uppercase text-red-600 hover:underline">Delete</button>
+                            
+                            <div className="flex-1 flex flex-col justify-between py-1">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{product.brand}</p>
+                                    <h3 className="font-extrabold text-gray-900 text-lg leading-tight group-hover:text-blue-600 transition-colors">{product.name}</h3>
+                                    <p className="text-xs text-gray-400 font-medium line-clamp-1 italic">{product.category} Collection</p>
+                                </div>
+                                
+                                <div className="flex items-center justify-between mt-4">
+                                    <p className="text-2xl font-black text-gray-900">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                                    <div className="flex gap-3">
+                                        <button 
+                                            onClick={() => setEditingProduct(product)} 
+                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-600 hover:bg-black hover:text-white transition-all shadow-sm"
+                                            title="Edit"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                        </button>
+                                        <button 
+                                            onClick={() => { if(window.confirm('Delete this listing?')) deleteMutation.mutate(product._id) }} 
+                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm"
+                                            title="Delete"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )) : (

@@ -126,7 +126,7 @@ const About = () => {
       {/* Final CTA */}
       <section className="py-24 px-6 bg-gray-900 text-white text-center">
         <div className="max-w-3xl mx-auto space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold">Join the Nexton Family</h2>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">Join the WatchHaven Family</h2>
           <p className="text-xl text-gray-400">Experience the difference of true quality and dedicated service. Sign up today and enjoy exclusive benefits.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link to="/register" className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-gray-100 transition-colors">
