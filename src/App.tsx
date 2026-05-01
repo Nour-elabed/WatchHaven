@@ -34,7 +34,7 @@ const ManageOrders = lazy(() => import('./admin/pages/ManageOrders'))
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes cache
+      staleTime: 0, // Ensure fresh data for multi-vendor sync
       retry: 1,
     },
   },

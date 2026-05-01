@@ -47,11 +47,23 @@ const Chatbot: React.FC = () => {
       } else if (lower.includes('masculine') || lower.includes('men')) {
         botResponse = "Showing our premium masculine timepieces.";
         setTimeout(() => {
-          navigate('/shop?gender=MEN');
+          navigate('/shop?q=masculine');
+          setIsOpen(false);
+        }, 1500);
+      } else if (lower.includes('sport')) {
+        botResponse = "Opening our high-performance Sport collection.";
+        setTimeout(() => {
+          navigate('/shop?category=Sport');
+          setIsOpen(false);
+        }, 1500);
+      } else if (lower.includes('luxury')) {
+        botResponse = "Opening our exclusive Luxury collection.";
+        setTimeout(() => {
+          navigate('/shop?category=Luxury');
           setIsOpen(false);
         }, 1500);
       } else if (lower.includes('hello') || lower.includes('hi')) {
-        botResponse = "Hello! Looking for a specific watch today?";
+        botResponse = "Hello! Looking for a specific watch today? You can ask for 'sport watches', 'luxury items', or 'feminine styles'.";
       }
 
       setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
