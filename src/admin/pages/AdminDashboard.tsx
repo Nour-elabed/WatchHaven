@@ -209,13 +209,6 @@ const AdminDashboard = () => {
                             <span className="font-bold text-red-900 text-sm">Manage Users</span>
                         </Link>
                     )}
-                    <Link
-                        to="/admin/checklist"
-                        className="flex items-center p-4 bg-purple-50/50 rounded-xl hover:bg-purple-50 transition-all border border-purple-100/50"
-                    >
-                        <Activity className="w-5 h-5 text-purple-600 mr-3" />
-                        <span className="font-bold text-purple-900 text-sm">System Check</span>
-                    </Link>
                 </div>
             </div>
         </div>

@@ -23,7 +23,10 @@ const ManageProducts = () => {
         queryFn: adminGetProducts,
     });
 
-    const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+    const refresh = () => {
+        queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+        queryClient.invalidateQueries({ queryKey: ["products"] });
+    };
 
     const createMutation = useMutation({
         mutationFn: (payload: AdminProductPayload) => adminCreateProduct(payload),
@@ -61,7 +64,16 @@ const ManageProducts = () => {
                 header: "Product", 
                 render: (p) => (
                     <div className="flex items-center gap-3">
-                        <img src={p.image} className="w-10 h-10 object-cover rounded-lg" alt={p.name} />
+                        <img 
+                          src={p.image} 
+                          className="w-10 h-10 object-cover rounded-lg" 
+                          alt={p.name} 
+                          onError={(e) => {
+                            const img = e.currentTarget;
+                            img.src = "/assets/images/placeholder.svg";
+                            img.onerror = null;
+                          }}
+                        />
                         <div>
                             <p className="font-bold text-sm">{p.name}</p>
                             <p className="text-[10px] uppercase font-bold text-muted-foreground">{p.brand}</p>

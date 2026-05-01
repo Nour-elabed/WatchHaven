@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Product } from "@/types";
 import type { AdminProductPayload } from "@/services/adminService";
+import { Upload, X, Image as ImageIcon } from "lucide-react";
 
 interface ProductFormProps {
     initialValue?: Product | null;
@@ -19,9 +20,28 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
         gender: initialValue?.gender ?? "UNISEX",
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [preview, setPreview] = useState<string | null>(initialValue?.image || null);
 
     const update = (key: keyof AdminProductPayload, value: string | number) => {
         setForm((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setPreview(base64String);
+                update("image", base64String);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const removeImage = () => {
+        setPreview(null);
+        update("image", "");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -100,14 +120,46 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
             </div>
 
             <div className="space-y-1">
-               <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Image URL</label>
-               <input
-                   className="w-full input-field py-2"
-                   value={form.image}
-                   onChange={(e) => update("image", e.target.value)}
-                   placeholder="https://images.unsplash.com/..."
-                   required
-               />
+               <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Product Image</label>
+               <div className="flex gap-4 items-start">
+                  <div 
+                    className="flex-1 relative group cursor-pointer border-2 border-dashed border-gray-200 rounded-xl hover:border-accent transition-all bg-gray-50 overflow-hidden min-h-[120px] flex flex-col items-center justify-center p-4"
+                    onClick={() => document.getElementById('image-upload')?.click()}
+                  >
+                    {preview ? (
+                        <div className="w-full h-full absolute inset-0">
+                            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <p className="text-white text-xs font-bold uppercase">Change Image</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <Upload className="text-gray-400 mb-2" size={24} />
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Click to upload</p>
+                            <p className="text-[10px] text-gray-400 mt-1">SVG, PNG, JPG (max 2MB)</p>
+                        </>
+                    )}
+                    <input
+                        id="image-upload"
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                    />
+                  </div>
+                  {preview && (
+                      <button 
+                        type="button" 
+                        onClick={removeImage}
+                        className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"
+                      >
+                        <X size={18} />
+                      </button>
+                  )}
+               </div>
+               {/* Hidden fallback input for form requirement */}
+               <input type="hidden" value={form.image} required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">

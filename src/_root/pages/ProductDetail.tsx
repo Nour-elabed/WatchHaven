@@ -72,6 +72,11 @@ const ProductDetail = () => {
                 src={product.image}
                 alt={product.name}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const img = e.currentTarget;
+                  img.src = "/assets/images/placeholder.svg";
+                  img.onerror = null;
+                }}
               />
             </div>
           </div>

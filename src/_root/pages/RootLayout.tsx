@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import { Outlet } from 'react-router-dom';
 import CookieConsent from '@/components/CookieConsent';
+import Chatbot from '@/components/Chatbot';
 
 const RootLayout = () => {
   return (
@@ -11,6 +12,7 @@ const RootLayout = () => {
         <Outlet />
       </main>
       <CookieConsent />
+      <Chatbot />
     </div>
   )
 }

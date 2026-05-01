@@ -45,10 +45,10 @@ const Navbar = () => {
         <div className="w-full flex items-center justify-between max-w-7xl mx-auto">
 
           {/* Logo */}
-          <Link to="/about" className="hidden md:block">
+          <Link to="/" className="hidden md:block">
             <img src="/assets/images/logo.svg" alt="Logo" className="h-8 cursor-pointer hover:opacity-80 transition-opacity" />
           </Link>
-          <Link to="/about" className="md:hidden">
+          <Link to="/" className="md:hidden">
             <img src="/assets/icons/logo.svg" alt="mobile_logo" className="w-10 h-10 cursor-pointer hover:opacity-80 transition-opacity" />
           </Link>
 

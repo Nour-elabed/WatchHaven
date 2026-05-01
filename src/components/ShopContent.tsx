@@ -20,13 +20,24 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
   const { data: response, isLoading, isError } = useQuery<ApiResponse<Product[]>>({
     queryKey: ["products", priceRange, sortOrder, selectedCategories, selectedGender, searchQuery],
     queryFn: async () => {
+      let finalGender = selectedGender;
+      let finalSearch = searchQuery;
+
+      if (searchQuery?.toLowerCase() === "feminine") {
+        finalGender = "WOMEN";
+        finalSearch = undefined;
+      } else if (searchQuery?.toLowerCase() === "masculine") {
+        finalGender = "MEN";
+        finalSearch = undefined;
+      }
+
       return await getProducts({
         minPrice: priceRange[0],
         maxPrice: priceRange[1],
         sort: sortOrder === "option-four" ? "price-asc" : sortOrder === "option-five" ? "price-desc" : undefined,
         category: selectedCategories.length > 0 ? selectedCategories.join(",") : undefined,
-        gender: selectedGender !== "ALL" ? selectedGender : undefined,
-        search: searchQuery || undefined,
+        gender: finalGender !== "ALL" ? finalGender : undefined,
+        search: finalSearch || undefined,
       })
     },
   })
@@ -82,6 +93,11 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                   src={product.image} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   alt={product.name} 
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    img.src = "/assets/images/placeholder.svg";
+                    img.onerror = null;
+                  }}
                 />
               </Link>
               <div className="absolute top-4 left-4">

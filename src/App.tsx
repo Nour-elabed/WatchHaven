@@ -29,7 +29,6 @@ const AdminDashboard = lazy(() => import('./admin/pages/AdminDashboard'))
 const ManageProducts = lazy(() => import('./admin/pages/ManageProducts'))
 const ManageUsers = lazy(() => import('./admin/pages/ManageUsers'))
 const ManageOrders = lazy(() => import('./admin/pages/ManageOrders'))
-const AdminChecklist = lazy(() => import('./admin/pages/AdminChecklist'))
 
 // ─── React Query client ───────────────────────────────────────────
 const queryClient = new QueryClient({
@@ -84,7 +83,6 @@ const App = () => {
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="products" element={<ManageProducts />} />
                     <Route path="orders" element={<ManageOrders />} />
-                    <Route path="checklist" element={<AdminChecklist />} />
                     <Route element={<SuperAdminRoute />}>
                       <Route path="users" element={<ManageUsers />} />
                     </Route>

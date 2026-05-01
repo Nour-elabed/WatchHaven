@@ -33,7 +33,16 @@ const BestSellers: React.FC = () => {
             <div key={product._id} className="scroll-carousel__slide">
               <div className="premium-card overflow-hidden w-[260px]">
                 <Link to={`/product/${product._id}`}>
-                  <img src={product.image} alt={product.name} className="h-44 w-full object-cover" />
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="h-44 w-full object-cover" 
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      img.src = "/assets/images/placeholder.svg";
+                      img.onerror = null;
+                    }}
+                  />
                 </Link>
                 <div className="p-4 space-y-2">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{product.gender}</p>
