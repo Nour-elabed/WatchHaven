@@ -18,6 +18,8 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
         image: initialValue?.image ?? "",
         category: initialValue?.category ?? "Classic",
         gender: initialValue?.gender ?? "UNISEX",
+        style: initialValue?.style ?? "",
+        tags: initialValue?.tags ?? [],
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [preview, setPreview] = useState<string | null>(initialValue?.image || null);
@@ -186,6 +188,25 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
                            <option key={g} value={g}>{g}</option>
                        ))}
                    </select>
+                </div>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                   <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Style Description</label>
+                   <input
+                       className="w-full input-field py-2"
+                       value={form.style}
+                       onChange={(e) => update("style", e.target.value)}
+                       placeholder="e.g. Vintage, Modern"
+                   />
+                </div>
+                <div className="space-y-1">
+                   <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Tags (comma separated)</label>
+                   <input
+                       className="w-full input-field py-2"
+                       value={form.tags?.join(", ")}
+                       onChange={(e) => update("tags", e.target.value.split(",").map(t => t.trim()))}
+                       placeholder="e.g. rolex, dive, steel"
+                   />
                 </div>
             </div>
 

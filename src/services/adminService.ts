@@ -14,6 +14,8 @@ export interface AdminProductPayload {
     image: string;
     category: string;
     gender: string;
+    style?: string;
+    tags?: string[];
 }
 
 // Products
