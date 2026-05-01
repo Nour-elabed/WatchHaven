@@ -7,7 +7,8 @@ import {
     Users, 
     LogOut,
     Menu,
-    X
+    X,
+    Home
 } from "lucide-react";
 import { useState } from "react";
 
@@ -15,7 +16,6 @@ const links = [
     { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/admin/products", label: "Manage Products", icon: Package },
     { to: "/admin/orders", label: "Manage Orders", icon: ShoppingCart },
-    { to: "/admin/checklist", label: "Checklist", icon: LayoutDashboard },
 ] as const;
 
 const AdminLayout = () => {
@@ -52,6 +52,10 @@ const AdminLayout = () => {
                 <div className="flex flex-col h-full">
                     {/* Header */}
                     <div className="p-6 border-b">
+                        <Link to="/" className="flex items-center gap-2 mb-2 text-gray-500 hover:text-black text-sm transition-colors">
+                            <Home size={16} />
+                            <span>Back to Store</span>
+                        </Link>
                         <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
                         <p className="text-sm text-gray-600 mt-1">
                             {user?.username} ({user?.role})

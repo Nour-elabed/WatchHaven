@@ -16,11 +16,13 @@ const SellerDashboard = () => {
 
     const { data: products = [], isLoading: productsLoading } = useQuery<Product[]>({
         queryKey: ['seller-products'],
+        staleTime: 0,
         queryFn: async () => (await sellerGetProducts()).data,
     });
 
     const { data: orders = [], isLoading: ordersLoading } = useQuery<SellerOrder[]>({
         queryKey: ['seller-orders'],
+        staleTime: 0,
         queryFn: async () => (await sellerGetOrders()).data,
     });
 

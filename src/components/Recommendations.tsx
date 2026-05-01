@@ -44,6 +44,7 @@ const HomeCarouselCard = ({ product }: { product: Product }) => {
 const Recommendations: React.FC = () => {
   const { data } = useQuery({
     queryKey: ["home", "recommendations"],
+    staleTime: 0,
     queryFn: async () => (await getProducts({ limit: 12 })).data,
   });
 

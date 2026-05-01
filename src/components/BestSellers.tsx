@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const BestSellers: React.FC = () => {
   const { data } = useQuery({
     queryKey: ["home", "best-sellers"],
+    staleTime: 0,
     queryFn: async () => (await getProducts({ sort: "rating", limit: 12 })).data,
   });
 

@@ -12,13 +12,15 @@ interface ShopContentProps {
   selectedCategories: string[]
   selectedGender: string
   searchQuery?: string
+  onClearFilters?: () => void
 }
 
-const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender, searchQuery }: ShopContentProps) => {
+const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender, searchQuery, onClearFilters }: ShopContentProps) => {
   const { addToCart } = useCart()
 
   const { data: response, isLoading, isError } = useQuery<ApiResponse<Product[]>>({
     queryKey: ["products", priceRange, sortOrder, selectedCategories, selectedGender, searchQuery],
+    staleTime: 0,
     queryFn: async () => {
       let finalGender = selectedGender;
       let finalSearch = searchQuery;
@@ -73,21 +75,29 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
   if (products.length === 0) {
     return (
       <div className="w-full flex flex-col items-center justify-center py-20 text-muted-foreground">
-        <p className="text-lg font-medium">No products found</p>
-        <p className="text-sm">Try adjusting your filters or search query</p>
+        <p className="text-lg font-medium mb-1">No products found</p>
+        <p className="text-sm mb-4">Try adjusting your filters or search query</p>
+        {onClearFilters && (
+          <button 
+            onClick={onClearFilters}
+            className="px-6 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+          >
+            Clear All Filters
+          </button>
+        )}
       </div>
     )
   }
 
   return (
     <section className="w-full">
-      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 text-gray-900">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 text-gray-900">
         {products.map((product) => (
           <div
             key={product._id}
-            className="premium-card group overflow-hidden bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            className="premium-card group overflow-hidden bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-[340px] mx-auto"
           >
-            <div className="relative aspect-[4/5] overflow-hidden">
+            <div className="relative h-60 md:h-64 overflow-hidden">
               <Link to={`/product/${product._id}`}>
                 <img 
                   src={product.image} 
@@ -101,22 +111,22 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                 />
               </Link>
               <div className="absolute top-4 left-4 flex flex-col gap-2">
-                 <span className="glass px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-black bg-white/90">
-                   {product.brand}
-                 </span>
-                 {product.stock === 0 && (
-                   <span className="bg-red-500/90 text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider absolute top-4 right-4 animate-in fade-in zoom-in duration-300">
-                     Sold Out
-                   </span>
-                 )}
+                <span className="glass px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-black bg-white/90">
+                  {product.brand}
+                </span>
+                {product.stock === 0 && (
+                  <span className="bg-red-500/90 text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider absolute top-4 right-4 animate-in fade-in zoom-in duration-300">
+                    Sold Out
+                  </span>
+                )}
               </div>
             </div>
 
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-start">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">{product.gender}</p>
-                  <h3 className="font-bold text-lg leading-tight group-hover:text-accent transition-colors truncate">
+                  <h3 className="font-bold text-lg leading-tight group-hover:text-accent transition-colors line-clamp-1">
                     {product.name}
                   </h3>
                   {product.seller && (
