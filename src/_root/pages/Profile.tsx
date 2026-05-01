@@ -13,7 +13,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [activeTab, setActiveTab] = useState<'orders' | 'seller'>('orders')
-  
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -48,7 +48,7 @@ const Profile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (formData.password && formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match')
       return
@@ -82,7 +82,7 @@ const Profile = () => {
 
 
 
-  
+
   if (profileLoading || ordersLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -118,7 +118,7 @@ const Profile = () => {
                   <input
                     type="text"
                     value={formData.username}
-                    onChange={(e) => setFormData({...formData, username: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     className="input-field py-2"
                     required
                   />
@@ -128,7 +128,7 @@ const Profile = () => {
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="input-field py-2"
                     required
                   />
@@ -138,7 +138,7 @@ const Profile = () => {
                   <input
                     type="password"
                     value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="input-field py-2"
                     placeholder="Leave blank to keep current"
                   />
@@ -149,7 +149,7 @@ const Profile = () => {
                     <input
                       type="password"
                       value={formData.confirmPassword}
-                      onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                       className="input-field py-2"
                     />
                   </div>
@@ -201,14 +201,14 @@ const Profile = () => {
         <div className="flex-1 space-y-12">
           {/* Tabs */}
           <div className="flex gap-8 border-b border-gray-100">
-            <button 
+            <button
               onClick={() => setActiveTab('orders')}
               className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'orders' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
             >
               Order History
               {activeTab === 'orders' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black animate-in slide-in-from-left duration-300"></div>}
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('seller')}
               className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'seller' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
             >
@@ -227,45 +227,46 @@ const Profile = () => {
                 <span className="text-[10px] font-bold uppercase tracking-widest bg-secondary px-3 py-1 rounded-full">{ordersList.length} total orders</span>
               </div>
 
-          {ordersList && ordersList.length > 0 ? (
-            <div className="space-y-4">
-              {ordersList.map((order: Order) => (
-                <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div className="flex items-center gap-6">
-                    <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-bold text-muted-foreground">
-                      #{order._id.slice(-4).toUpperCase()}
+              {ordersList && ordersList.length > 0 ? (
+                <div className="space-y-4">
+                  {ordersList.map((order: Order) => (
+                    <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-bold text-muted-foreground">
+                          #{order._id.slice(-4).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase text-muted-foreground tracking-widest mb-1">
+                            {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                          </p>
+                          <p className="font-bold">{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2">
+                        <span className="text-xl font-bold">${order.totalPrice.toLocaleString()}</span>
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getStatusColor(order.status)}`}>
+                          {order.status}
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold uppercase text-muted-foreground tracking-widest mb-1">
-                        {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                      </p>
-                      <p className="font-bold">{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2">
-                    <span className="text-xl font-bold">${order.totalPrice.toLocaleString()}</span>
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getStatusColor(order.status)}`}>
-                      {order.status}
-                    </span>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="premium-card p-20 flex flex-col items-center justify-center text-center">
-              <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">No orders yet</h3>
-              <p className="text-muted-foreground max-w-xs mb-8">Start your collection today and discover exceptional timepieces.</p>
-              <button 
-                onClick={() => window.location.href = '/shop'} 
-                className="btn-primary"
-              >
-                Go to Shop
-              </button>
-              </div>
+              ) : (
+                <div className="premium-card p-20 flex flex-col items-center justify-center text-center">
+                  <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"><circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" /><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" /></svg>
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">No orders yet</h3>
+                  <p className="text-muted-foreground max-w-xs mb-8">Start your collection today and discover exceptional timepieces.</p>
+                  <button
+                    onClick={() => window.location.href = '/shop'}
+                    className="btn-primary"
+                  >
+                    Go to Shop
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="animate-in fade-in duration-500">

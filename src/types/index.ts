@@ -32,6 +32,8 @@ export interface Product {
     stock: number;
     rating: number;
     numReviews: number;
+    tags?: string[];
+    style?: string;
     seller?: {
         _id: string;
         username: string;

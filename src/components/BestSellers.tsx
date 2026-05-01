@@ -51,7 +51,7 @@ const BestSellers: React.FC = () => {
                     <p className="text-[9px] text-muted-foreground font-bold uppercase">Sold by: {product.seller.username}</p>
                   )}
                   <div className="flex items-center justify-between">
-                    <span className="font-bold">${product.price.toFixed(2)}</span>
+                    <span className="font-bold">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                     <span className="text-xs text-muted-foreground">{product.rating.toFixed(1)}★</span>
                   </div>
                 </div>

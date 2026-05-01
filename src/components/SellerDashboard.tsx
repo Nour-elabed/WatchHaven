@@ -79,7 +79,7 @@ const SellerDashboard = () => {
                                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${product.stock > 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
                                         {product.stock > 0 ? 'Available' : 'Sold Out'}
                                     </span>
-                                    <span className="text-sm font-bold">${product.price.toLocaleString()}</span>
+                                    <span className="text-sm font-bold">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -103,7 +103,7 @@ const SellerDashboard = () => {
                                     <p className="text-sm font-bold mt-1">Buyer: {order.user.username}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-lg font-bold text-green-600">+${order.totalEarned.toLocaleString()}</p>
+                                    <p className="text-lg font-bold text-green-600">+${order.totalEarned.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
                                     <span className="text-[10px] font-bold uppercase text-muted-foreground">{order.status}</span>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@ const SellerDashboard = () => {
                                             <span className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-[10px] font-bold">{item.quantity}x</span>
                                             <span className="font-medium">{item.name}</span>
                                         </div>
-                                        <span className="font-bold">${(item.price * item.quantity).toLocaleString()}</span>
+                                        <span className="font-bold">${(item.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                                     </div>
                                 ))}
                             </div>

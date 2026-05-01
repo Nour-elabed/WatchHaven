@@ -153,7 +153,7 @@ const ProductDetail = () => {
             {/* Price */}
             <div className="space-y-1">
               <div className="text-3xl font-bold text-gray-900">
-                ${product.price.toLocaleString()}
+                ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </div>
               {product.stock > 0 ? (
                 <p className="text-sm text-green-600 font-medium">In Stock ({product.stock} available)</p>

@@ -24,7 +24,7 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [preview, setPreview] = useState<string | null>(initialValue?.image || null);
 
-    const update = (key: keyof AdminProductPayload, value: string | number) => {
+    const update = (key: keyof AdminProductPayload, value: string | number | string[]) => {
         setForm((prev) => ({ ...prev, [key]: value }));
     };
 
@@ -189,6 +189,8 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
                        ))}
                    </select>
                 </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                    <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Style Description</label>

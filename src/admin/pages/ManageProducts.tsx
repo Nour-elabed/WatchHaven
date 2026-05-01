@@ -81,7 +81,7 @@ const ManageProducts = () => {
                     </div>
                 ) 
             },
-            { key: "price", header: "Price", render: (p) => `$${p.price.toLocaleString()}` },
+            { key: "price", header: "Price", render: (p) => `$${p.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}` },
             { key: "stock", header: "Stock", render: (p) => p.stock },
             { key: "category", header: "Category", render: (p) => p.category },
             { key: "gender", header: "Gender", render: (p) => p.gender },

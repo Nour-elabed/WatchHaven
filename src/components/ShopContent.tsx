@@ -132,7 +132,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="font-bold text-xl text-gray-900">${product.price.toLocaleString()}</span>
+                  <span className="font-bold text-xl text-gray-900">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                   <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
                 </div>
               </div>
