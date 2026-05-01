@@ -22,8 +22,7 @@ const Home = () => {
     }
   }, [user])
   return (
-    <div>
-        
+    <div className="space-y-24 mb-24">
         <Hero/>
         <Collections/>
         <Recommendations/>

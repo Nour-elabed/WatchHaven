@@ -6,11 +6,13 @@ import { getUserOrders } from '@/services/orderService'
 import type { Order, User } from '@/types'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
+import SellerDashboard from '@/components/SellerDashboard'
 
 const Profile = () => {
   const { user, updateProfile } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [activeTab, setActiveTab] = useState<'orders' | 'seller'>('orders')
   
   const [formData, setFormData] = useState({
     username: '',
@@ -195,12 +197,30 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Orders Section */}
-        <div className="flex-1 space-y-8">
-          <div className="flex justify-between items-end mb-2">
-            <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
-            <span className="text-sm text-muted-foreground font-medium">{ordersList.length} total orders</span>
+        {/* Content Section */}
+        <div className="flex-1 space-y-12">
+          {/* Tabs */}
+          <div className="flex gap-8 border-b border-gray-100">
+            <button 
+              onClick={() => setActiveTab('orders')}
+              className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all ${activeTab === 'orders' ? 'border-b-2 border-black text-black' : 'text-gray-400 hover:text-gray-600'}`}
+            >
+              Order History
+            </button>
+            <button 
+              onClick={() => setActiveTab('seller')}
+              className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all ${activeTab === 'seller' ? 'border-b-2 border-black text-black' : 'text-gray-400 hover:text-gray-600'}`}
+            >
+              Seller Dashboard
+            </button>
           </div>
+
+          {activeTab === 'orders' ? (
+            <div className="space-y-8 animate-in fade-in duration-500">
+              <div className="flex justify-between items-end mb-2">
+                <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
+                <span className="text-sm text-muted-foreground font-medium">{ordersList.length} total orders</span>
+              </div>
 
           {ordersList && ordersList.length > 0 ? (
             <div className="space-y-4">
@@ -240,6 +260,10 @@ const Profile = () => {
               >
                 Go to Shop
               </button>
+            </div>
+          ) : (
+            <div className="animate-in fade-in duration-500">
+              <SellerDashboard />
             </div>
           )}
         </div>
