@@ -19,6 +19,9 @@ const HomeCarouselCard = ({ product }: { product: Product }) => {
         <div className="p-4 space-y-2">
           <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{product.gender}</p>
           <p className="font-bold line-clamp-1">{product.name}</p>
+          {product.seller && (
+            <p className="text-[9px] text-muted-foreground font-bold uppercase">Sold by: {product.seller.username}</p>
+          )}
           <div className="flex items-center justify-between">
             <span className="font-bold">${product.price.toFixed(2)}</span>
             <button
