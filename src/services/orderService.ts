@@ -2,9 +2,12 @@ import api from "./api";
 import type { Order, ApiResponse, ShippingAddress, OrderItem } from "@/types";
 
 export interface CreateOrderPayload {
-    orderItems: OrderItem[];
+    orderItems: any[];
     shippingAddress: ShippingAddress;
     paymentMethod: string;
+    itemsPrice: number;
+    taxPrice: number;
+    shippingPrice: number;
     totalPrice: number;
 }
 

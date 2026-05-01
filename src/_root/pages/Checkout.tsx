@@ -47,12 +47,25 @@ const Checkout = () => {
         quantity: item.quantity,
       }))
 
-      const order = await createOrder({
+      // Standard e-commerce logic for tax and shipping
+      const itemsPrice = cartTotal;
+      const shippingPrice = cartTotal > 1000 ? 0 : 50; // Free shipping over $1000
+      const taxPrice = Number((0.15 * itemsPrice).toFixed(2)); // 15% tax
+      const totalPrice = itemsPrice + shippingPrice + taxPrice;
+
+      const payload = {
         orderItems,
         shippingAddress: form,
         paymentMethod,
-        totalPrice: cartTotal,
-      })
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      };
+
+      console.log('Sending Order Payload:', payload);
+
+      const order = await createOrder(payload)
 
       await clearCart()
       toast.success('Order placed successfully!')
@@ -158,9 +171,23 @@ const Checkout = () => {
                 </div>
               ))}
 
-              <div className="border-t pt-4 flex justify-between items-center font-bold text-lg">
-                <span>Total</span>
-                <span>${cartTotal.toFixed(2)}</span>
+              <div className="border-t pt-4 space-y-2">
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Items</span>
+                  <span>${cartTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Shipping</span>
+                  <span>${(cartTotal > 1000 ? 0 : 50).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Tax (15%)</span>
+                  <span>${(0.15 * cartTotal).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center font-bold text-lg pt-2 border-t">
+                  <span>Total</span>
+                  <span>${(cartTotal + (cartTotal > 1000 ? 0 : 50) + (0.15 * cartTotal)).toFixed(2)}</span>
+                </div>
               </div>
             </div>
           )}

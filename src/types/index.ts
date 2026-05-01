@@ -74,6 +74,9 @@ export interface Order {
     orderItems: OrderItem[];
     shippingAddress: ShippingAddress;
     paymentMethod: "Cash on Delivery" | "Card" | "PayPal";
+    itemsPrice: number;
+    taxPrice: number;
+    shippingPrice: number;
     totalPrice: number;
     isPaid: boolean;
     paidAt?: string;

@@ -102,10 +102,24 @@ const OrderConfirmation = () => {
         </div>
       </div>
 
-      {/* Total */}
-      <div className="flex justify-between items-center text-xl font-bold border-t pt-4">
-        <span>Total</span>
-        <span>${order.totalPrice.toFixed(2)}</span>
+      {/* Totals */}
+      <div className="border rounded-xl p-6 mb-6 space-y-3">
+        <div className="flex justify-between text-sm text-gray-500">
+          <span>Items Total</span>
+          <span>${(order.itemsPrice || 0).toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-sm text-gray-500">
+          <span>Shipping</span>
+          <span>${(order.shippingPrice || 0).toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-sm text-gray-500">
+          <span>Tax</span>
+          <span>${(order.taxPrice || 0).toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between items-center text-xl font-bold border-t pt-3 mt-2">
+          <span>Total Paid</span>
+          <span>${(order.totalPrice || 0).toFixed(2)}</span>
+        </div>
       </div>
 
       <div className="mt-8 text-center">
