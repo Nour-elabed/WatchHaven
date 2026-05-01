@@ -19,8 +19,8 @@ const Hero = () => {
   ]
 
   return (
-    <section className="w-full relative bg-gray-50/20 pb-8">
-      <div className="w-full h-[550px] md:h-[700px]">
+    <section className="w-full relative bg-gray-50/20 pb-12">
+      <div className="w-full h-[600px] md:h-[85vh]">
         <EmblaCarousel>
         {slides.map((img: string, index: number) => (
           <div className="embla__slide" key={index}>
