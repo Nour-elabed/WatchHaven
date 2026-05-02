@@ -9,6 +9,7 @@ const Cart = ({ product }: { product: any }) => {
   const [selected, setSelected] = useState(sizes[0]);
   const [count, setCount] = useState(1);
 
+  
   const numericPrice = parseFloat(product.price.replace(/[^0-9.]/g, ""));
   const subtotal = numericPrice * count;
   const taxRate = 0.08;
