@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext'
 const Home = () => {
   const { user } = useAuth()
   
+  
   useEffect(() => {
     if (!user) {
       const key = "guest_toast_shown";
