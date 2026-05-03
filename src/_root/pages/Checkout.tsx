@@ -10,6 +10,7 @@ type PaymentMethod = 'Cash on Delivery' | 'Card' | 'PayPal'
 const PAYMENT_METHODS: PaymentMethod[] = ['Cash on Delivery', 'Card', 'PayPal']
 
 const Checkout = () => {
+  
   const { items, cartTotal, clearCart } = useCart()
   const navigate = useNavigate()
 
