@@ -111,7 +111,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
         {products.map((product) => (
           <div
             key={product._id}
-            className="premium-card group overflow-hidden bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-[340px] mx-auto"
+            className="premium-card group overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 w-full border border-gray-100"
           >
             <div className="relative h-60 md:h-64 overflow-hidden">
               <Link to={`/product/${product._id}`}>
