@@ -1,12 +1,12 @@
-import { LucideSearch } from "lucide-react"
+import { LucideSearch, Sun, Moon } from "lucide-react"
 import DropDown from "./ui/DropDown"
 import { useState, useRef } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { toast } from "sonner"
 import { useCart } from "@/context/useCart"
 import CartDrawer from "./CartDrawer"
-
 import { useAuth } from "@/context/AuthContext"
+import { useTheme } from "@/context/ThemeContext"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,6 +20,7 @@ const Navbar = () => {
   const { toggleCart, totalItems } = useCart()
 
   const { user, logout } = useAuth()
+  const { theme, toggleTheme } = useTheme()
 
   const handleMouseEnter = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
@@ -41,7 +42,7 @@ const Navbar = () => {
       {/* CartDrawer lives here — always in the DOM, toggled by isOpen */}
       <CartDrawer />
 
-      <div className="border-1 w-full fixed top-0 left-0 h-16 flex items-center bg-white z-50 px-6">
+      <div className="border-b border-border w-full fixed top-0 left-0 h-16 flex items-center bg-white dark:bg-gray-950 z-50 px-6 transition-colors duration-300">
         <div className="w-full flex items-center justify-between max-w-7xl mx-auto">
 
           {/* Logo */}
@@ -140,6 +141,15 @@ const Navbar = () => {
               )}
             </div>
 
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {theme === 'dark' ? <Sun size={18} className="text-yellow-500" /> : <Moon size={18} className="text-gray-600" />}
+            </button>
+
             {/* Cart icon with live badge */}
             {!isAuthPage && (
               <button
@@ -214,6 +224,15 @@ const Navbar = () => {
                     <span className="text-sm font-bold">Shopping Cart</span>
                   </button>
                 )}
+
+                {/* Dark Mode Toggle — Mobile */}
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-3 px-1 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all"
+                >
+                  {theme === 'dark' ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} className="text-gray-600" />}
+                  <span className="text-sm font-bold">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
 
                 {/* Auth actions */}
                 {user ? (
