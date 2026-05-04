@@ -117,9 +117,9 @@ const ManageProducts = () => {
 
     return (
         <section className="space-y-8">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
-                   <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
+                   <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Inventory Management</h1>
                    <p className="text-muted-foreground text-sm">Add, remove, and update products in your store</p>
                 </div>
                 <button 

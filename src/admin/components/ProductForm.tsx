@@ -160,8 +160,8 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
             <div className="space-y-1">
                <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Product Image</label>
                <div className="flex gap-4 items-start">
-                  <div 
-                    className="flex-1 relative group cursor-pointer border-2 border-dashed border-gray-200 rounded-xl hover:border-accent transition-all bg-gray-50 overflow-hidden min-h-[120px] flex flex-col items-center justify-center p-4"
+                  <div
+                    className="flex-1 relative group cursor-pointer border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl hover:border-accent transition-all bg-gray-50 dark:bg-gray-800/50 overflow-hidden min-h-[120px] flex flex-col items-center justify-center p-4"
                     onClick={() => document.getElementById('image-upload')?.click()}
                   >
                     {preview ? (
@@ -173,9 +173,9 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
                         </div>
                     ) : (
                         <>
-                            <Upload className="text-gray-400 mb-2" size={24} />
-                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Click to upload</p>
-                            <p className="text-[10px] text-gray-400 mt-1">SVG, PNG, JPG (max 2MB)</p>
+                            <Upload className="text-gray-400 dark:text-gray-500 mb-2" size={24} />
+                            <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Click to upload</p>
+                            <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">SVG, PNG, JPG (max 2MB)</p>
                         </>
                     )}
                     <input
@@ -187,10 +187,10 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
                     />
                   </div>
                   {preview && (
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={removeImage}
-                        className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"
+                        className="p-2 bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 rounded-lg hover:bg-red-500 dark:hover:bg-red-600 hover:text-white transition-all"
                       >
                         <X size={18} />
                       </button>

@@ -42,7 +42,7 @@ const ManageOrders = () => {
                 header: "Status",
                 render: (o) => (
                     <select
-                        className="rounded border px-2 py-1 text-xs"
+                        className="rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 px-2 py-1 text-xs"
                         value={o.status}
                         onChange={(e) =>
                             updateStatusMutation.mutate({ id: o._id, status: e.target.value as Order["status"] })
@@ -62,7 +62,7 @@ const ManageOrders = () => {
 
     return (
         <section className="space-y-4">
-            <h1 className="text-2xl font-bold">Manage Orders</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Manage Orders</h1>
             <DataTable columns={columns} rows={orders} emptyText="No orders found." />
         </section>
     );

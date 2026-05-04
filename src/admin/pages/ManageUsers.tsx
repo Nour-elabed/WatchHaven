@@ -46,7 +46,7 @@ const ManageUsers = () => {
 
     if (isError) {
         return (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <div className="rounded-lg border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/20 p-4 text-sm text-red-700 dark:text-red-300">
                 Failed to load users: {error instanceof Error ? error.message : "Unknown error"}
             </div>
         );
@@ -65,21 +65,21 @@ const ManageUsers = () => {
     const formatDate = (iso?: string) => (iso ? new Date(iso).toLocaleDateString() : "—");
 
     const roleBadgeClass = (role: Role) => {
-        if (role === ROLES.SUPER_ADMIN) return "bg-purple-100 text-purple-700";
-        if (role === ROLES.ADMIN) return "bg-blue-100 text-blue-700";
-        return "bg-gray-100 text-gray-700";
+        if (role === ROLES.SUPER_ADMIN) return "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300";
+        if (role === ROLES.ADMIN) return "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300";
+        return "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300";
     };
 
     return (
         <section className="space-y-4">
-            <header className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Manage Users</h1>
-                <span className="text-sm text-gray-500">{users?.length ?? 0} total</span>
+            <header className="flex items-center justify-between flex-wrap gap-2">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Manage Users</h1>
+                <span className="text-sm text-gray-500 dark:text-gray-400">{users?.length ?? 0} total</span>
             </header>
 
-            <div className="overflow-x-auto rounded-lg border">
-                <table className="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead className="bg-gray-50 text-left text-xs uppercase tracking-wider text-gray-500">
+            <div className="overflow-x-auto rounded-lg border dark:border-gray-800">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800 text-sm">
+                    <thead className="bg-gray-50 dark:bg-gray-800/50 text-left text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400">
                         <tr>
                             <th className="px-4 py-3">User</th>
                             <th className="px-4 py-3">Email</th>
@@ -88,28 +88,28 @@ const ManageUsers = () => {
                             <th className="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 bg-white">
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800 bg-white dark:bg-card">
                         {users?.map((u) => {
                             const isCurrent = u.id === currentUser?.id;
                             const isSuper = u.role === ROLES.SUPER_ADMIN;
                             const isProtected = isCurrent || isSuper;
 
                             return (
-                                <tr key={u.id}>
+                                <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-3">
-                                            <div className="h-8 w-8 rounded-full bg-gray-200 text-center text-xs font-bold leading-8 uppercase text-gray-700">
+                                            <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 text-center text-xs font-bold leading-8 uppercase text-gray-700 dark:text-gray-300">
                                                 {u.username?.charAt(0) ?? "?"}
                                             </div>
-                                            <span className="font-medium">{u.username}</span>
+                                            <span className="font-medium text-gray-900 dark:text-gray-100">{u.username}</span>
                                             {isCurrent && (
-                                                <span className="rounded bg-yellow-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-yellow-800">
+                                                <span className="rounded bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-yellow-800 dark:text-yellow-300">
                                                     you
                                                 </span>
                                             )}
                                         </div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600">{u.email}</td>
+                                    <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{u.email}</td>
                                     <td className="px-4 py-3">
                                         {isProtected ? (
                                             <span className={`rounded-full px-2 py-1 text-xs font-medium ${roleBadgeClass(u.role)}`}>
@@ -120,20 +120,20 @@ const ManageUsers = () => {
                                                 value={u.role}
                                                 onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
                                                 disabled={roleMutation.isPending}
-                                                className="rounded border px-2 py-1 text-xs"
+                                                className="rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 px-2 py-1 text-xs"
                                             >
                                                 <option value={ROLES.USER}>USER</option>
                                                 <option value={ROLES.ADMIN}>ADMIN</option>
                                             </select>
                                         )}
                                     </td>
-                                    <td className="px-4 py-3 text-gray-500">{formatDate(u.createdAt)}</td>
+                                    <td className="px-4 py-3 text-gray-500 dark:text-gray-400">{formatDate(u.createdAt)}</td>
                                     <td className="px-4 py-3 text-right">
                                         <button
                                             type="button"
                                             disabled={isProtected || deleteMutation.isPending}
                                             onClick={() => handleDelete(u)}
-                                            className="rounded bg-red-50 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-40"
+                                            className="rounded bg-red-50 dark:bg-red-900/20 px-3 py-1 text-xs font-medium text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 disabled:opacity-40 transition-colors"
                                         >
                                             Delete
                                         </button>
@@ -143,7 +143,7 @@ const ManageUsers = () => {
                         })}
                         {users?.length === 0 && (
                             <tr>
-                                <td colSpan={5} className="px-4 py-6 text-center text-sm text-gray-500">
+                                <td colSpan={5} className="px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
                                     No users found.
                                 </td>
                             </tr>
