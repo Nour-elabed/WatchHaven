@@ -17,16 +17,16 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-      <ul className="space-y-2 text-gray-600">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+      <ul className="space-y-2 text-gray-600 dark:text-gray-400">
         {links.map((link, index) => (
           <li key={index}>
             {link.url.startsWith('/') ? (
-              <Link to={link.url} className="hover:text-gray-900 transition-colors">
+              <Link to={link.url} className="hover:text-gray-900 dark:hover:text-white transition-colors">
                 {link.label}
               </Link>
             ) : (
-              <a href={link.url} className="hover:text-gray-900 transition-colors">
+              <a href={link.url} className="hover:text-gray-900 dark:hover:text-white transition-colors">
                 {link.label}
               </a>
             )}

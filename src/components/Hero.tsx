@@ -19,7 +19,7 @@ const Hero = () => {
   ]
 
   return (
-    <section className="w-full relative bg-gray-50/20 pb-12">
+    <section className="w-full relative bg-gray-50/20 dark:bg-gray-900/20 pb-12">
       <div className="w-full h-[600px] md:h-[85vh]">
         <EmblaCarousel>
         {slides.map((img: string, index: number) => (
@@ -101,4 +101,4 @@ const Hero = () => {
     </section>
   )
 }
-export default Hero
+export default Hero

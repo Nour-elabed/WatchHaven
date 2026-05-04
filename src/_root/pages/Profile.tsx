@@ -111,17 +111,17 @@ const Profile = () => {
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
       {/* Back Button */}
-      <button 
-        onClick={() => window.history.back()} 
-        className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-6 group"
+      <button
+        onClick={() => window.history.back()}
+        className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors mb-6 group"
       >
-        <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-black transition-colors">
+        <div className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:border-black dark:group-hover:border-gray-500 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </div>
         <span className="font-medium">Back</span>
       </button>
 
-      <div className="flex flex-col lg:flex-row gap-12 text-gray-900">
+      <div className="flex flex-col lg:flex-row gap-12 text-gray-900 dark:text-gray-100">
         {/* Profile Section */}
         <div className="w-full lg:w-1/3 space-y-8">
           <div className="premium-card p-8">
@@ -206,9 +206,9 @@ const Profile = () => {
             )}
           </div>
 
-          <div className="premium-card p-8 bg-black text-white">
+          <div className="premium-card p-8 bg-black dark:bg-gray-800 text-white">
             <h3 className="text-lg font-bold mb-4">Account Security</h3>
-            <p className="text-sm text-gray-400 mb-6">Keep your account secure by using a strong password and monitoring active sessions.</p>
+            <p className="text-sm text-gray-400 dark:text-gray-300 mb-6">Keep your account secure by using a strong password and monitoring active sessions.</p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
@@ -225,20 +225,20 @@ const Profile = () => {
         {/* Content Section */}
         <div className="flex-1 space-y-12">
           {/* Tabs */}
-          <div className="flex gap-8 border-b border-gray-100">
+          <div className="flex gap-8 border-b border-gray-100 dark:border-gray-800">
             <button
-              onClick={() => setActiveTab('orders')}
-              className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'orders' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
+              onClick={() => handleTabChange('orders')}
+              className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'orders' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
             >
               Order History
-              {activeTab === 'orders' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black animate-in slide-in-from-left duration-300"></div>}
+              {activeTab === 'orders' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black dark:bg-white animate-in slide-in-from-left duration-300"></div>}
             </button>
             <button
-              onClick={() => setActiveTab('seller')}
-              className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'seller' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
+              onClick={() => handleTabChange('seller')}
+              className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${activeTab === 'seller' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
             >
               Seller Dashboard
-              {activeTab === 'seller' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black animate-in slide-in-from-left duration-300"></div>}
+              {activeTab === 'seller' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black dark:bg-white animate-in slide-in-from-left duration-300"></div>}
             </button>
           </div>
 
@@ -246,30 +246,30 @@ const Profile = () => {
             <div className="space-y-8 animate-in fade-in duration-500">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
                 <div>
-                  <h2 className="text-3xl font-bold tracking-tight">Order History</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-foreground">Order History</h2>
                   <p className="text-muted-foreground text-sm mt-1">Manage and track your recent timepiece acquisitions</p>
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest bg-secondary px-3 py-1 rounded-full">{ordersList.length} total orders</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest bg-secondary dark:bg-gray-800 px-3 py-1 rounded-full">{ordersList.length} total orders</span>
               </div>
 
               {ordersList && ordersList.length > 0 ? (
                 <div className="space-y-4">
                   {ordersList.map((order: Order) => (
-                    <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div key={order._id} className="premium-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-card">
                       <div className="flex items-center gap-6">
-                        <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-bold text-muted-foreground">
+                        <div className="w-16 h-16 bg-secondary dark:bg-gray-800 rounded-xl flex items-center justify-center font-bold text-muted-foreground dark:text-gray-400">
                           #{order._id.slice(-4).toUpperCase()}
                         </div>
                         <div>
                           <p className="text-xs font-bold uppercase text-muted-foreground tracking-widest mb-1">
                             {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                           </p>
-                          <p className="font-bold">{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
+                          <p className="font-bold text-foreground">{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
                         </div>
                       </div>
 
                       <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2">
-                        <span className="text-xl font-bold">${order.totalPrice.toLocaleString()}</span>
+                        <span className="text-xl font-bold text-foreground">${order.totalPrice.toLocaleString()}</span>
                         <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getStatusColor(order.status)}`}>
                           {order.status}
                         </span>
@@ -278,11 +278,11 @@ const Profile = () => {
                   ))}
                 </div>
               ) : (
-                <div className="premium-card p-20 flex flex-col items-center justify-center text-center">
-                  <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"><circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" /><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" /></svg>
+                <div className="premium-card p-20 flex flex-col items-center justify-center text-center bg-white dark:bg-card">
+                  <div className="w-20 h-20 bg-secondary dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground dark:text-gray-400"><circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" /><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" /></svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">No orders yet</h3>
+                  <h3 className="text-xl font-bold mb-2 text-foreground">No orders yet</h3>
                   <p className="text-muted-foreground max-w-xs mb-8">Start your collection today and discover exceptional timepieces.</p>
                   <button
                     onClick={() => window.location.href = '/shop'}
