@@ -68,24 +68,24 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
-        <button 
-          onClick={() => navigate(-1)} 
-          className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-6 group"
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors mb-6 group"
         >
-          <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-black transition-colors">
+          <div className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:border-black dark:group-hover:border-gray-400 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
           </div>
           <span className="font-medium">Back</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
+
           {/* Product Image */}
           <div className="space-y-4">
-            <div className="aspect-square overflow-hidden rounded-lg bg-white">
+            <div className="aspect-square overflow-hidden rounded-lg bg-white dark:bg-card">
               <img
                 src={product.image}
                 alt={product.name}
@@ -102,24 +102,24 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="space-y-6">
             {/* Breadcrumb */}
-            <nav className="flex items-center space-x-2 text-sm text-gray-500">
-              <button onClick={() => navigate("/shop")} className="hover:text-black">Shop</button>
+            <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+              <button onClick={() => navigate("/shop")} className="hover:text-black dark:hover:text-white">Shop</button>
               <span>/</span>
-              <button 
-                onClick={() => navigate(`/shop?gender=${product.gender.toLowerCase()}`)} 
-                className="hover:text-black capitalize"
+              <button
+                onClick={() => navigate(`/shop?gender=${product.gender.toLowerCase()}`)}
+                className="hover:text-black dark:hover:text-white capitalize"
               >
                 {product.gender.toLowerCase()}
               </button>
               <span>/</span>
-              <span className="text-black">{product.name}</span>
+              <span className="text-black dark:text-white">{product.name}</span>
             </nav>
 
             {/* Product Title */}
             <div className="space-y-2">
               {/* Seller info */}
               {product.seller && (
-                <div className="flex items-center gap-3 py-4 border-y border-gray-100 mb-6">
+                <div className="flex items-center gap-3 py-4 border-y border-gray-100 dark:border-gray-800 mb-6">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold uppercase ${isOwn ? 'bg-blue-100 text-blue-600' : 'bg-secondary'}`}>
                     {isOwn ? 'Y' : product.seller.username.charAt(0)}
                   </div>
@@ -131,13 +131,13 @@ const ProductDetail = () => {
               )}
 
               <div className="flex items-center gap-4 mb-8">
-                <span className="px-3 py-1 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-full">
+                <span className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-wider rounded-full">
                   {product.brand}
                 </span>
-                <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium uppercase tracking-wider rounded-full">
+                <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium uppercase tracking-wider rounded-full">
                   {product.category}
                 </span>
-                <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium uppercase tracking-wider rounded-full">
+                <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium uppercase tracking-wider rounded-full">
                   {product.gender}
                 </span>
                 {product.seller && (
@@ -146,7 +146,7 @@ const ProductDetail = () => {
                   </span>
                 )}
               </div>
-              <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
+              <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-gray-100 leading-tight">
                 {product.name}
               </h1>
             </div>
@@ -165,12 +165,12 @@ const ProductDetail = () => {
                 ))}
               </div>
               <span className="text-sm font-medium">{product.rating}</span>
-              <span className="text-sm text-gray-500">({product.numReviews} reviews)</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">({product.numReviews} reviews)</span>
             </div>
 
             {/* Price */}
             <div className="space-y-1">
-              <div className="text-3xl font-bold text-gray-900">
+              <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </div>
               {product.stock > 0 ? (
@@ -182,8 +182,8 @@ const ProductDetail = () => {
 
             {/* Description */}
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-gray-900">Description</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Description</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 {product.description}
               </p>
             </div>
@@ -191,7 +191,7 @@ const ProductDetail = () => {
             {/* Action Buttons */}
             <div className="space-y-4">
               {isOwn ? (
-                <div className="w-full bg-blue-50 text-blue-600 py-4 px-6 rounded-lg font-semibold text-center border border-blue-200">
+                <div className="w-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 py-4 px-6 rounded-lg font-semibold text-center border border-blue-200 dark:border-blue-800">
                   This is your listing — you can manage it from your Seller Dashboard
                 </div>
               ) : (
@@ -199,14 +199,14 @@ const ProductDetail = () => {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock === 0}
-                    className="flex-1 bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="flex-1 bg-black dark:bg-white text-white dark:text-black py-3 px-6 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
                   >
                     Add to Cart
                   </button>
                   <button
                     onClick={handleBuyNow}
                     disabled={product.stock === 0}
-                    className="flex-1 bg-white text-black border-2 border-black py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                    className="flex-1 bg-white dark:bg-transparent text-black dark:text-white border-2 border-black dark:border-white py-3 px-6 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-white/10 transition-colors disabled:bg-gray-100 dark:disabled:bg-transparent disabled:border-gray-300 dark:disabled:border-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed"
                   >
                     Buy Now
                   </button>
@@ -215,24 +215,24 @@ const ProductDetail = () => {
             </div>
 
             {/* Product Details */}
-            <div className="space-y-4 pt-6 border-t border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Product Details</h3>
+            <div className="space-y-4 pt-6 border-t border-gray-200 dark:border-gray-800">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Product Details</h3>
               <dl className="grid grid-cols-1 gap-4">
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Brand</dt>
-                  <dd className="font-medium">{product.brand}</dd>
+                  <dt className="text-gray-600 dark:text-gray-400">Brand</dt>
+                  <dd className="font-medium text-foreground">{product.brand}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Category</dt>
-                  <dd className="font-medium">{product.category}</dd>
+                  <dt className="text-gray-600 dark:text-gray-400">Category</dt>
+                  <dd className="font-medium text-foreground">{product.category}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Gender</dt>
-                  <dd className="font-medium">{product.gender}</dd>
+                  <dt className="text-gray-600 dark:text-gray-400">Gender</dt>
+                  <dd className="font-medium text-foreground">{product.gender}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Stock</dt>
-                  <dd className="font-medium">{product.stock} units</dd>
+                  <dt className="text-gray-600 dark:text-gray-400">Stock</dt>
+                  <dd className="font-medium text-foreground">{product.stock} units</dd>
                 </div>
               </dl>
             </div>

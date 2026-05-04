@@ -57,15 +57,15 @@ const CartDrawer = () => {
             {/* ── Drawer Panel ── */}
             <div
                 ref={drawerRef}
-                className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col
+                className={`fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-950 z-50 shadow-2xl flex flex-col
           transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "translate-x-full"}`}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
                     <div className="flex items-center gap-2">
                         <ShoppingCart size={20} className="text-gray-700" />
-                        <h2 className="text-lg font-bold text-gray-900">Your Cart</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Your Cart</h2>
                         {totalItems > 0 && (
                             <span className="ml-1 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                                 {totalItems}
@@ -168,7 +168,7 @@ const CartDrawer = () => {
 
                 {/* ── Order Summary Footer (only when items exist) ── */}
                 {items.length > 0 && (
-                    <div className="border-t border-gray-100 px-6 py-5 space-y-3 bg-gray-50">
+                    <div className="border-t border-gray-100 dark:border-gray-800 px-6 py-5 space-y-3 bg-gray-50 dark:bg-gray-900">
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between text-gray-500">
                                 <span>Subtotal</span>

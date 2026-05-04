@@ -67,7 +67,7 @@ const SellerDashboard = () => {
             {activeTab === 'products' ? (
                 <div className="space-y-4">
                     {products.length > 0 ? products.map(product => (
-                        <div key={product._id} className="relative bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col sm:flex-row">
+                        <div key={product._id} className="relative bg-white dark:bg-card border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col sm:flex-row">
                             {/* LEFT — Image */}
                             <div className="relative w-full sm:w-56 h-52 sm:h-auto shrink-0 overflow-hidden bg-gray-50">
                                 <img 
@@ -91,8 +91,8 @@ const SellerDashboard = () => {
                                 {/* Top: Info */}
                                 <div className="space-y-2">
                                     <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">{product.brand}</p>
-                                    <h3 className="font-bold text-gray-900 text-xl leading-tight group-hover:text-blue-600 transition-colors truncate">{product.name}</h3>
-                                    <p className="text-sm text-gray-400">{product.gender} &middot; {product.category} Collection</p>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 text-xl leading-tight group-hover:text-blue-600 transition-colors truncate">{product.name}</h3>
+                                    <p className="text-sm text-gray-400 dark:text-gray-500">{product.gender} &middot; {product.category} Collection</p>
                                     <div className="flex items-center gap-2">
                                         <svg className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                                         <span className="text-sm font-semibold">{product.rating}</span>
@@ -101,19 +101,19 @@ const SellerDashboard = () => {
                                 </div>
 
                                 {/* Bottom: Price + Actions */}
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-gray-100">
-                                    <p className="text-2xl font-black text-gray-900">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                                    <p className="text-2xl font-black text-gray-900 dark:text-gray-100">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
                                     <div className="flex gap-2">
-                                        <button 
-                                            onClick={() => setEditingProduct(product)} 
-                                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm hover:bg-black hover:text-white transition-all"
+                                        <button
+                                            onClick={() => setEditingProduct(product)}
+                                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-semibold text-sm hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                                             Edit
                                         </button>
-                                        <button 
-                                            onClick={() => { if(window.confirm('Delete this listing?')) deleteMutation.mutate(product._id) }} 
-                                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-50 text-red-500 font-semibold text-sm hover:bg-red-500 hover:text-white transition-all"
+                                        <button
+                                            onClick={() => { if(window.confirm('Delete this listing?')) deleteMutation.mutate(product._id) }}
+                                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500 font-semibold text-sm hover:bg-red-500 hover:text-white transition-all"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                                             Delete

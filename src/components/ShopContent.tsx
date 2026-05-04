@@ -111,7 +111,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
         {products.map((product) => (
           <div
             key={product._id}
-            className="premium-card group overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 w-full border border-gray-100"
+            className="premium-card group overflow-hidden bg-white dark:bg-card rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 w-full border border-gray-100 dark:border-gray-800"
           >
             <div className="relative h-60 md:h-64 overflow-hidden">
               <Link to={`/product/${product._id}`}>
@@ -127,7 +127,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                 />
               </Link>
               <div className="absolute top-4 left-4 flex flex-col gap-2">
-                <span className="glass px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-black bg-white/90">
+                <span className="glass px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-black dark:text-white bg-white/90 dark:bg-black/70">
                   {product.brand}
                 </span>
                 {product.stock === 0 && (
@@ -142,7 +142,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
               <div className="flex justify-between items-start">
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">{product.gender}</p>
-                  <h3 className="font-bold text-lg leading-tight group-hover:text-accent transition-colors line-clamp-1">
+                  <h3 className="font-bold text-lg leading-tight group-hover:text-accent transition-colors line-clamp-1 text-foreground">
                     {product.name}
                   </h3>
                   {product.seller && (
@@ -158,7 +158,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="font-bold text-xl text-gray-900">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  <span className="font-bold text-xl text-foreground">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                   <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
                 </div>
               </div>
@@ -170,7 +170,7 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
               ) : (
                 <button
                   onClick={() => handleAddToCart(product)}
-                  className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-black dark:bg-white text-white dark:text-black py-3 px-4 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center gap-2"
                   aria-label={`Add ${product.name} to cart`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
