@@ -36,7 +36,7 @@ const Shop = () => {
         {/* Back to Home */}
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-8 group"
+          className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-4 group"
         >
           <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-black transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -63,10 +63,10 @@ const Shop = () => {
           </aside>
 
           {/* MAIN CONTENT */}
-          <main className="flex-1 space-y-12">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <main className="flex-1 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
-                <h1 className="text-4xl font-extrabold tracking-tight mb-3">The Collection</h1>
+                <h1 className="text-4xl font-extrabold tracking-tight mb-1">The Collection</h1>
                 <p className="text-muted-foreground text-lg">Discover our curated selection of premium timepieces</p>
               </div>
               <div className="flex items-center gap-3">
