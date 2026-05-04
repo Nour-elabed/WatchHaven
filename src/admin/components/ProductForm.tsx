@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Product } from "@/types";
 import type { AdminProductPayload } from "@/services/adminService";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X } from "lucide-react";
 
 interface ProductFormProps {
     initialValue?: Product | null;
@@ -28,9 +28,45 @@ const ProductForm = ({ initialValue, onSubmit }: ProductFormProps) => {
         setForm((prev) => ({ ...prev, [key]: value }));
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const compressImage = (file: File, maxWidth = 800, quality = 0.7): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            const url = URL.createObjectURL(file);
+            img.onload = () => {
+                URL.revokeObjectURL(url);
+                const canvas = document.createElement("canvas");
+                let { width, height } = img;
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                if (!ctx) return reject(new Error("Canvas not supported"));
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL("image/jpeg", quality));
+            };
+            img.onerror = () => reject(new Error("Failed to load image"));
+            img.src = url;
+        });
+    };
+
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+            alert("Image must be under 10MB");
+            return;
+        }
+
+        try {
+            const compressed = await compressImage(file, 800, 0.7);
+            setPreview(compressed);
+            update("image", compressed);
+        } catch {
+            // Fallback to regular FileReader if compression fails
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64String = reader.result as string;

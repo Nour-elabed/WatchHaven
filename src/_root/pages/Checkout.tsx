@@ -43,7 +43,8 @@ const Checkout = () => {
       const orderItems = items.map((item) => ({
         product: item.productId,
         name: item.name,
-        image: item.image,
+        // Strip base64 images from order payload — they're too large for storage
+        image: item.image?.startsWith('data:') ? '/assets/images/placeholder.svg' : (item.image || '/assets/images/placeholder.svg'),
         price: item.price,
         quantity: item.quantity,
       }))
