@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { Spinner } from '@/components/ui/spinner'
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
+import { ThemeProvider } from '@/context/ThemeContext'
 import PrivateRoute from '@/routes/PrivateRoute'
 import AdminRoute from '@/routes/AdminRoute'
 import SuperAdminRoute from '@/routes/SuperAdminRoute'
@@ -50,6 +51,7 @@ const PageLoader = () => (
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <AuthProvider>
         <CartProvider>
           <Toaster position="top-right" richColors />
@@ -96,6 +98,7 @@ const App = () => {
           </Suspense>
         </CartProvider>
       </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }
