@@ -7,12 +7,26 @@ import type { Order, User } from '@/types'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 import SellerDashboard from '@/components/SellerDashboard'
+import { useSearchParams } from 'react-router-dom'
 
 const Profile = () => {
   const { user, updateProfile } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [activeTab, setActiveTab] = useState<'orders' | 'seller'>('orders')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [activeTab, setActiveTab] = useState<'orders' | 'seller'>(
+    (searchParams.get('tab') as 'orders' | 'seller') || 'orders'
+  )
+
+  // Update URL when tab changes
+  const handleTabChange = (tab: 'orders' | 'seller') => {
+    setActiveTab(tab)
+    if (tab === 'seller') {
+      setSearchParams({ tab: 'seller' })
+    } else {
+      setSearchParams({})
+    }
+  }
 
   const [formData, setFormData] = useState({
     username: '',
