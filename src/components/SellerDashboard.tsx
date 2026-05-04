@@ -67,31 +67,31 @@ const SellerDashboard = () => {
             {activeTab === 'products' ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {products.length > 0 ? products.map(product => (
-                        <div key={product._id} className="bg-white border border-gray-100 rounded-3xl p-5 flex gap-6 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300 group relative">
-                            <div className="relative w-28 h-28 shrink-0 overflow-hidden rounded-2xl bg-gray-50 border border-gray-100">
+                        <div key={product._id} className="bg-white border border-gray-100 rounded-3xl p-5 flex gap-4 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300 group relative overflow-hidden">
+                            <div className="relative w-24 h-24 shrink-0 overflow-hidden rounded-2xl bg-gray-50 border border-gray-100">
                                 <img 
                                     src={product.image} 
                                     alt={product.name} 
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     onError={(e) => { e.currentTarget.src = "/assets/images/placeholder.svg" }}
                                 />
-                                <div className="absolute top-2 left-2">
-                                    <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-tighter ${product.stock > 0 ? 'bg-black text-white' : 'bg-red-500 text-white'}`}>
-                                        {product.stock > 0 ? `${product.stock} IN STOCK` : 'OUT OF STOCK'}
+                                <div className="absolute top-1 left-1">
+                                    <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-tighter ${product.stock > 0 ? 'bg-black text-white' : 'bg-red-500 text-white'}`}>
+                                        {product.stock > 0 ? `${product.stock} IN STOCK` : 'SOLD OUT'}
                                     </span>
                                 </div>
                             </div>
                             
-                            <div className="flex-1 flex flex-col justify-between py-1">
-                                <div className="space-y-1">
-                                    <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{product.brand}</p>
-                                    <h3 className="font-extrabold text-gray-900 text-lg leading-tight group-hover:text-blue-600 transition-colors">{product.name}</h3>
-                                    <p className="text-xs text-gray-400 font-medium line-clamp-1 italic">{product.category} Collection</p>
+                            <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+                                <div className="space-y-0.5">
+                                    <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest truncate">{product.brand}</p>
+                                    <h3 className="font-extrabold text-gray-900 text-base leading-tight group-hover:text-blue-600 transition-colors truncate">{product.name}</h3>
+                                    <p className="text-xs text-gray-400 font-medium truncate italic">{product.category} Collection</p>
                                 </div>
                                 
-                                <div className="flex items-center justify-between mt-4">
-                                    <p className="text-2xl font-black text-gray-900">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-                                    <div className="flex gap-3">
+                                <div className="flex items-center justify-between mt-3 gap-2">
+                                    <p className="text-xl font-black text-gray-900 truncate">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                                    <div className="flex gap-2 shrink-0">
                                         <button 
                                             onClick={() => setEditingProduct(product)} 
                                             className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-600 hover:bg-black hover:text-white transition-all shadow-sm"
