@@ -38,10 +38,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        setUser(readStoredUser());
-        setIsLoading(false);
+    const logout = useCallback(() => {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem("cart_items");
+        setUser(null);
     }, []);
+
+    useEffect(() => {
+        const stored = readStoredUser();
+        if (stored) {
+            setUser(stored);
+            // Validate token on startup to ensure session is still valid on server
+            authService.getProfile()
+                .then(profile => {
+                    // Update local storage with fresh profile data but keep existing token
+                    const merged = { ...profile, token: stored.token };
+                    setUser(merged);
+                    writeStoredUser(merged);
+                })
+                .catch(() => {
+                    // If profile fetch fails (e.g. 401), interceptor in api.ts 
+                    // will emit "auth:logout" which we handle in the other useEffect.
+                    // But we can also explicitly logout here for robustness.
+                    logout();
+                })
+                .finally(() => setIsLoading(false));
+        } else {
+            setIsLoading(false);
+        }
+    }, [logout]);
 
     useEffect(() => {
         const handleForceLogout = () => {
@@ -59,11 +84,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return userData;
     }, []);
 
-    const logout = useCallback(() => {
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem("cart_items");
-        setUser(null);
-    }, []);
 
     const updateProfile = useCallback(async (payload: { username?: string; email?: string; password?: string }) => {
         const updated = await authService.updateProfile(payload);
