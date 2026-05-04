@@ -155,7 +155,7 @@ export const localProducts: Product[] = [
     price: 549.99,
     category: "Smart",
     gender: "WOMEN",
-    image: "/assets/watches/women/d894f4b5863c0c27ca5de987a41742d.jpg",
+    image: "/assets/watches/women/d894f4b5863c0c27ca5de987a41742d4.jpg",
     stock: 28,
     rating: 4.5,
     numReviews: 189,

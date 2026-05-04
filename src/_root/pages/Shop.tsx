@@ -2,7 +2,7 @@ import Sidebar from "@/components/Sidebar"
 import ShopContent from "@/components/ShopContent"
 import Footer from "@/components/Footer"
 import { useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 const Shop = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000])
@@ -10,6 +10,7 @@ const Shop = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedGender, setSelectedGender] = useState<string>("ALL")
   
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get("q") || ""
 
@@ -32,6 +33,17 @@ const Shop = () => {
   return (
     <>
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-16">
+        {/* Back to Home */}
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-8 group"
+        >
+          <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-black transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </div>
+          <span className="font-medium">Back to Home</span>
+        </button>
+
         <div className="flex flex-col lg:flex-row gap-16">
           
           {/* SIDEBAR */}

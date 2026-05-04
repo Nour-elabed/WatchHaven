@@ -69,7 +69,7 @@ const SellerDashboard = () => {
                     {products.length > 0 ? products.map(product => (
                         <div key={product._id} className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group">
                             {/* Product Image */}
-                            <div className="relative h-52 overflow-hidden bg-gray-50">
+                            <div className="relative h-64 overflow-hidden bg-gray-50">
                                 <img 
                                     src={product.image} 
                                     alt={product.name} 
@@ -89,7 +89,7 @@ const SellerDashboard = () => {
                             </div>
                             
                             {/* Product Info */}
-                            <div className="p-5 space-y-3">
+                            <div className="p-6 space-y-4">
                                 <div>
                                     <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">{product.brand}</p>
                                     <h3 className="font-bold text-gray-900 text-lg leading-tight mt-1 group-hover:text-blue-600 transition-colors">{product.name}</h3>

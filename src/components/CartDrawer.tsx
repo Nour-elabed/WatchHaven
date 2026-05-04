@@ -92,7 +92,7 @@ const CartDrawer = () => {
                             <p className="text-gray-500 font-medium">Your cart is empty</p>
                             <p className="text-sm text-gray-400">Add some products to get started!</p>
                             <button
-                                onClick={closeCart}
+                                onClick={() => { closeCart(); navigate('/shop'); }}
                                 className="mt-2 bg-black text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200"
                             >
                                 Continue Shopping
@@ -196,7 +196,7 @@ const CartDrawer = () => {
                         </button>
                         <div className="flex gap-2">
                             <button
-                                onClick={closeCart}
+                                onClick={() => { closeCart(); navigate('/shop'); }}
                                 className="flex-1 border border-gray-300 text-gray-700 font-medium py-2.5 rounded-full hover:bg-gray-100 transition-colors text-sm"
                             >
                                 Continue Shopping
