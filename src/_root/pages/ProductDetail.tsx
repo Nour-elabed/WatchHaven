@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { useCart } from "@/context/useCart"
+import { useAuth } from "@/context/AuthContext"
 import { toast } from "sonner"
 import { getProductById } from "@/services/productService"
 import type { Product } from "@/types"
@@ -10,6 +11,7 @@ const ProductDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { addToCart } = useCart()
+  const { user } = useAuth()
 
   const { data: product, isLoading, isError } = useQuery<Product>({
     queryKey: ["product", id],
@@ -17,9 +19,14 @@ const ProductDetail = () => {
     enabled: !!id,
   })
 
+  const isOwn = product?.seller && user ? product.seller._id === user.id : false
+
   const handleAddToCart = async () => {
     if (!product) return
-    
+    if (isOwn) {
+      toast.error("You can't buy your own product")
+      return
+    }
     await addToCart({
       productId: product._id,
       name: product.name,
@@ -30,7 +37,7 @@ const ProductDetail = () => {
   }
 
   const handleBuyNow = () => {
-    if (!product) return
+    if (!product || isOwn) return
     handleAddToCart()
     navigate("/cart")
   }
@@ -113,12 +120,12 @@ const ProductDetail = () => {
               {/* Seller info */}
               {product.seller && (
                 <div className="flex items-center gap-3 py-4 border-y border-gray-100 mb-6">
-                  <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-sm font-bold uppercase">
-                    {product.seller.username.charAt(0)}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold uppercase ${isOwn ? 'bg-blue-100 text-blue-600' : 'bg-secondary'}`}>
+                    {isOwn ? 'Y' : product.seller.username.charAt(0)}
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">Authorized Seller</p>
-                    <p className="text-sm font-bold">{product.seller.username}</p>
+                    <p className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{isOwn ? 'Your Listing' : 'Authorized Seller'}</p>
+                    <p className="text-sm font-bold">{isOwn ? 'You' : product.seller.username}</p>
                   </div>
                 </div>
               )}
@@ -134,8 +141,8 @@ const ProductDetail = () => {
                   {product.gender}
                 </span>
                 {product.seller && (
-                  <span className="px-3 py-1 bg-accent/10 text-accent text-xs font-bold uppercase tracking-wider rounded-full">
-                    Sold by: {product.seller.username}
+                  <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full ${isOwn ? 'bg-blue-100 text-blue-600' : 'bg-accent/10 text-accent'}`}>
+                    {isOwn ? 'Your Listing' : `Sold by: ${product.seller.username}`}
                   </span>
                 )}
               </div>
@@ -183,22 +190,28 @@ const ProductDetail = () => {
 
             {/* Action Buttons */}
             <div className="space-y-4">
-              <div className="flex gap-4">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={product.stock === 0}
-                  className="flex-1 bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                  Add to Cart
-                </button>
-                <button
-                  onClick={handleBuyNow}
-                  disabled={product.stock === 0}
-                  className="flex-1 bg-white text-black border-2 border-black py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                >
-                  Buy Now
-                </button>
-              </div>
+              {isOwn ? (
+                <div className="w-full bg-blue-50 text-blue-600 py-4 px-6 rounded-lg font-semibold text-center border border-blue-200">
+                  This is your listing — you can manage it from your Seller Dashboard
+                </div>
+              ) : (
+                <div className="flex gap-4">
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={product.stock === 0}
+                    className="flex-1 bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    Add to Cart
+                  </button>
+                  <button
+                    onClick={handleBuyNow}
+                    disabled={product.stock === 0}
+                    className="flex-1 bg-white text-black border-2 border-black py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                  >
+                    Buy Now
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Product Details */}

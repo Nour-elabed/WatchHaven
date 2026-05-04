@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { useCart } from "@/context/useCart"
+import { useAuth } from "@/context/AuthContext"
 import { toast } from "sonner"
 import { Link } from "react-router-dom"
 import { getProducts } from "@/services/productService"
@@ -17,6 +18,7 @@ interface ShopContentProps {
 
 const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender, searchQuery, onClearFilters }: ShopContentProps) => {
   const { addToCart } = useCart()
+  const { user } = useAuth()
 
   const { data: response, isLoading, isError } = useQuery<ApiResponse<Product[]>>({
     queryKey: ["products", priceRange, sortOrder, selectedCategories, selectedGender, searchQuery],
@@ -44,7 +46,21 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
     },
   })
 
+  const isOwnProduct = (product: Product) => {
+    if (!user || !product.seller) return false
+    return product.seller._id === user.id
+  }
+
+  const getSellerLabel = (product: Product) => {
+    if (!product.seller) return null
+    return isOwnProduct(product) ? 'You' : product.seller.username
+  }
+
   const handleAddToCart = async (product: Product) => {
+    if (isOwnProduct(product)) {
+      toast.error("You can't buy your own product")
+      return
+    }
     await addToCart({
       productId: product._id,
       name: product.name,
@@ -131,8 +147,8 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                   </h3>
                   {product.seller && (
                     <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mt-1.5 flex items-center gap-1.5">
-                      <span className="w-1 h-1 rounded-full bg-accent"></span>
-                      Sold by: <span className="text-black">{product.seller.username}</span>
+                      <span className={`w-1 h-1 rounded-full ${isOwnProduct(product) ? 'bg-blue-500' : 'bg-accent'}`}></span>
+                      {isOwnProduct(product) ? 'Sold by:' : 'Sold by:'} <span className={isOwnProduct(product) ? 'text-blue-600' : 'text-black'}>{getSellerLabel(product)}</span>
                     </p>
                   )}
                   <div className="flex items-center gap-2 mt-2">
@@ -147,19 +163,24 @@ const ShopContent = ({ priceRange, sortOrder, selectedCategories, selectedGender
                 </div>
               </div>
 
-              {/* Full-width black Add to Cart bar */}
-              <button
-                onClick={() => handleAddToCart(product)}
-                className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center gap-2"
-                aria-label={`Add ${product.name} to cart`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="8" cy="21" r="1"/>
-                  <circle cx="19" cy="21" r="1"/>
-                  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-                </svg>
-                Add to Cart
-              </button>
+              {isOwnProduct(product) ? (
+                <div className="w-full bg-blue-50 text-blue-600 py-3 px-4 rounded-lg font-semibold text-center text-sm border border-blue-200">
+                  Your Listing
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center gap-2"
+                  aria-label={`Add ${product.name} to cart`}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="8" cy="21" r="1"/>
+                    <circle cx="19" cy="21" r="1"/>
+                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                  </svg>
+                  Add to Cart
+                </button>
+              )}
             </div>
           </div>
         ))}

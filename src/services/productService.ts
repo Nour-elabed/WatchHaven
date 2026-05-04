@@ -17,14 +17,20 @@ export interface GetProductsParams {
 export const getProducts = async (params?: GetProductsParams): Promise<ApiResponse<Product[]>> => {
     try {
         const { data } = await api.get<ApiResponse<Product[]>>("/products", { params });
+        const apiProducts = data.success && data.data ? data.data : [];
         
-        // If API succeeds but returns empty data, fallback to seed products
-        if (data.success && (!data.data || data.data.length === 0)) {
-            console.warn("API returned empty products, falling back to seed data");
-            return getLocalProducts(params);
-        }
+        // Always merge with seed products so the catalog stays full
+        const seedResult = getLocalProducts(params);
+        const seedProducts = seedResult.data || [];
         
-        return data;
+        // Use a Set to avoid duplicates — API products take priority
+        const seenIds = new Set(apiProducts.map(p => p._id));
+        const merged = [
+            ...apiProducts,
+            ...seedProducts.filter(p => !seenIds.has(p._id)),
+        ];
+        
+        return { success: true, data: merged, message: "Products fetched" };
     } catch (error) {
         console.error("API fetch failed, falling back to seed data:", error);
         return getLocalProducts(params);
