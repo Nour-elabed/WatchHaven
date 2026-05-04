@@ -1,5 +1,5 @@
 import api from "./api";
-import type { Order, ApiResponse, ShippingAddress, OrderItem } from "@/types";
+import type { Order, ApiResponse, ShippingAddress } from "@/types";
 
 export interface CreateOrderPayload {
     orderItems: any[];
