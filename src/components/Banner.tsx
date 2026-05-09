@@ -16,10 +16,12 @@ const Banner = () => {
           <span className="text-xs sm:text-sm md:text-base font-bold tracking-widest text-black/70 uppercase mb-3 drop-shadow-sm">
             100% original products
           </span>
+
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-black mb-4 leading-[1.15] max-w-lg drop-shadow-sm">
             The All New Fashion<br />
             Collection Items
+            
           </h1>
           
           <span className="text-sm sm:text-base md:text-xl font-medium text-black/80 mb-8 drop-shadow-sm">
